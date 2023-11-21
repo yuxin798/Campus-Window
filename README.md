@@ -6,7 +6,7 @@
 
 ###  项目地址
 
-- Github：
+- Github：https://github.com/yuxin798/Campus-Window
 
 ###  项目成员
 
