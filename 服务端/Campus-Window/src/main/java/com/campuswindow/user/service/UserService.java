@@ -18,7 +18,7 @@ public class UserService {
     public User register(User user) {
         String id = UUID.randomUUID().toString();
         user.setUserId(id);
-        user.setAvatar("D:\\图片\\默认.png");
+        user.setAvatar("D:\\images\\users\\default.jpg");
         return repository.save(user);
     }
 

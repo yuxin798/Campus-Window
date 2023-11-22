@@ -11,10 +11,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -23,7 +20,7 @@ import java.io.IOException;
 import java.util.Random;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping(path = "/user")
 public class UserController {
 
     @Autowired
@@ -42,18 +39,21 @@ public class UserController {
         Random random = new Random();
         int code = random.nextInt(9000) + 1000;
         message.setText("验证码为：" + code);
+        System.out.println(code);
         mailSender.send(message);
         return ResultVOUtil.success(code);
     }
 
-    @PostMapping("/register")
-    public Result register(@Valid User user, BindingResult bindingResult){
+    @PostMapping(path = "/register")
+    public Result register(@RequestBody @Valid User user, BindingResult bindingResult){
+        System.out.println("前端新增数据" + user);
         String errorMessage = null;
         if (bindingResult.hasErrors()){
             errorMessage = bindingResult.getFieldError().getDefaultMessage();
             return ResultVOUtil.error(errorMessage);
         }
         User registerUser = service.register(user);
+        System.out.println("后端新增数据" + registerUser);
         if (registerUser != null){
             return ResultVOUtil.success(registerUser);
         }else {
@@ -61,8 +61,9 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
-    public Result login(@Validated(User.Login.class) User user, BindingResult bindingResult){
+    @PostMapping(path = "/login")
+    public Result login(@RequestBody @Validated(User.Login.class) User user, BindingResult bindingResult){
+        System.out.println("前端登陆数据" + user);
         String errorMessage = null;
         if (bindingResult.hasErrors()){
             errorMessage = bindingResult.getFieldError().getDefaultMessage();
@@ -70,6 +71,7 @@ public class UserController {
         }
         System.out.println(user);
         User loginUser = service.login(user);
+        System.out.println("后端登陆数据" + loginUser);
         if (loginUser == null){
             return ResultVOUtil.error("用户名或密码错误");
         }
@@ -77,11 +79,11 @@ public class UserController {
     }
 
     @PostMapping("/updatePassword")
-    public Result updatePassword(String userId, String password){
-        if(password == null){
+    public Result updatePassword(@RequestBody User user){
+        if(user.getPassword() == null){
             return ResultVOUtil.error("新密码不能为空");
         }
-        int count = service.updatePassword(userId, password);
+        int count = service.updatePassword(user.getUserId(), user.getPassword());
         if (count == 1){
             return ResultVOUtil.success("修改成功");
         }else {
