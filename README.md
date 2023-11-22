@@ -20,8 +20,8 @@
   - Email：
   - Github：
 - 袁胜（UE/UI设计师）
-  - Email：
-  - Github：
+  - Email：2660956387@qq.com
+  - Github：https://github.com/cirmoon
 - 李芮（UE/UI设计师）
   - Email：
   - Github：
