@@ -12,7 +12,7 @@
 
 - 刘铭洋（项目经理）
   - Email： 1783034566@qq.com
-  - Github：
+  - Github：https://github.com/lmy2144455
 - 牛光磊（开发工程师）
   - Email： 1241250055@qq.com
   - Github：https://github.com/yuxin798
