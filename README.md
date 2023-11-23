@@ -23,8 +23,8 @@
   - Email：2660956387@qq.com
   - Github：https://github.com/cirmoon
 - 李芮（UE/UI设计师）
-  - Email：
-  - Github：
+  - Email：2505530848@qq.com
+  - Github：https://github.com/LUOEEEE
 - 郭峰（测试工程师）
   - Email：
   - Github：
