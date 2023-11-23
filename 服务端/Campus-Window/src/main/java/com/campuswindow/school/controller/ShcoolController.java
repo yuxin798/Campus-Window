@@ -4,6 +4,8 @@ import com.campuswindow.school.entity.School;
 import com.campuswindow.school.service.SchoolService;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +15,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/school")
+@Tag(name = "学校接口")
 public class ShcoolController {
 
     @Autowired
     private SchoolService service;
 
     @GetMapping("/findAll")
+    @Operation(summary = "查询所有数据")
     public Result findAll(){
         List<School> schools = service.findAll();
         if (schools == null){
@@ -28,6 +32,7 @@ public class ShcoolController {
     }
 
     @GetMapping("/findOne")
+    @Operation(summary = "根据学校名字查询学校")
     public Result findOne(String schoolName){
         School school = service.findOne(schoolName);
         return ResultVOUtil.success(school);

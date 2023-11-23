@@ -13,8 +13,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("update User set avatar = ?2 where userId = ?1")
     int updateAvatarByUserId(String userId, String avatar);
 
-    @Modifying
-    @Query("update User set password = ?2 where userId = ?1")
-    int updatePasswordByUserId(String userId, String password);
 
+    @Modifying
+    @Query("update User set password = ?2 where email = ?1")
+    int updatePasswordByEmail(String email, String password);
 }
