@@ -38,6 +38,9 @@ public class LearningController {
         StringBuilder builder = new StringBuilder();
         try {
             for (int i = 0; i < avatars.length ;i++){
+                if (avatars[i].isEmpty()){
+                    break;
+                }
                 String fileName = avatars[i].getOriginalFilename();
                 String suffix = fileName.substring(fileName.indexOf("."));
                 String  filePath = "D:\\images\\learnings\\" + learningActivity.getUserId() + i  + suffix;
@@ -57,6 +60,16 @@ public class LearningController {
             return ResultVOUtil.error("发帖失败");
         }
         return ResultVOUtil.success("发帖成功");
+    }
+
+    @GetMapping("/deleteActivity")
+    @Operation(summary = "删帖")
+    public Result deleteActivity(String activityId){
+        if (activityId == null){
+            return ResultVOUtil.error("失败");
+        }
+        service.deleteActivity(activityId);
+        return ResultVOUtil.success("成功");
     }
 
     @GetMapping("/selectActivity")

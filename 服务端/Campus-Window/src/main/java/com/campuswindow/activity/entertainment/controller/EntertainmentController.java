@@ -37,14 +37,17 @@ public class EntertainmentController {
     public Result sendActivity(EntertainmentActivity entertainmentActivity, MultipartFile[] avatars) throws ParseException {
         StringBuilder builder = new StringBuilder();
         try {
-            for (int i = 0; i < avatars.length ;i++){
+            for (int i = 0; i < avatars.length; i++) {
+                if (avatars[i].isEmpty()){
+                    break;
+                }
                 String fileName = avatars[i].getOriginalFilename();
                 String suffix = fileName.substring(fileName.indexOf("."));
-                String  filePath = "D:\\images\\entertainments\\" + entertainmentActivity.getUserId() + i  + suffix;
+                String filePath = "D:\\images\\entertainments\\" + entertainmentActivity.getUserId() + i + suffix;
                 avatars[i].transferTo(new File(filePath));
-                if (i == 0){
+                if (i == 0) {
                     builder.append(filePath);
-                }else {
+                } else {
                     builder.append("|" + filePath);
                 }
             }
@@ -57,6 +60,16 @@ public class EntertainmentController {
             return ResultVOUtil.error("发帖失败");
         }
         return ResultVOUtil.success("发帖成功");
+    }
+
+    @GetMapping("/deleteActivity")
+    @Operation(summary = "删帖")
+    public Result deleteActivity(String activityId){
+        if (activityId == null){
+            return ResultVOUtil.error("失败");
+        }
+        service.deleteActivity(activityId);
+        return ResultVOUtil.success("成功");
     }
 
     @GetMapping("/selectActivity")

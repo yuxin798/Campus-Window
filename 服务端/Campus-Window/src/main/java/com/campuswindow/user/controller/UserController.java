@@ -7,6 +7,7 @@ import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -24,6 +25,7 @@ import java.util.Random;
 @RestController
 @RequestMapping(path = "/user")
 @Tag(name = "用户接口")
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -44,6 +46,7 @@ public class UserController {
     public Result sendEmailForUpdatePassword(String to){
         User user = service.existEmail(to);
         if (user == null){
+            log.info("用户模块：用户不存在");
             return ResultVOUtil.error("用户不存在");
         }
         return sendEmail(to);
@@ -123,12 +126,16 @@ public class UserController {
     @PostMapping("/uploadAvatar")
     @Operation(summary = "上传头像")
     public Result uploadAvatar(String userId, MultipartFile avatar){
+        if (avatar.isEmpty()){
+            return ResultVOUtil.error("文件不能为空");
+        }
         String fileName = avatar.getOriginalFilename();
         String suffix = fileName.substring(fileName.indexOf("."));
         String  filePath = "D:\\images\\users\\" + userId + suffix;
         try {
             avatar.transferTo(new File(filePath));
         } catch (IOException e) {
+            log.error("用户模块-上传头像", e);
             throw new RuntimeException(e);
         }
         int count = service.uploadAvatar(userId, filePath);

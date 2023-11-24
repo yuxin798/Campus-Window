@@ -33,4 +33,8 @@ public class EntertainmentService {
         List<EntertainmentActivity> activities =  repository.findActivityByUserId(userId, sort);
         return activities;
     }
+
+    public void deleteActivity(String activityId) {
+        repository.deleteById(activityId);
+    }
 }

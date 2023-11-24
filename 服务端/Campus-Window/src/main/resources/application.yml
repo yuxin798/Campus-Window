@@ -39,6 +39,6 @@ spring:
             enable: true
     protocol: smtp
     port: 465
-
-
+#logging:
+#  config: classpath:logback-dev.xml
 
