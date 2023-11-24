@@ -3,7 +3,7 @@ package com.campuswindow;
 public class Result<T>{
     private String code;
     private String msg;
-    private T Data;
+    private T data;
 
     public String getCode() {
         return code;
@@ -22,11 +22,11 @@ public class Result<T>{
     }
 
     public T getData() {
-        return Data;
+        return data;
     }
 
     public void setData(T data) {
-        Data = data;
+        this.data = data;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class Result<T>{
         return "Result{" +
                 "code='" + code + '\'' +
                 ", msg='" + msg + '\'' +
-                ", Data=" + Data +
+                ", data=" + data +
                 '}';
     }
 }

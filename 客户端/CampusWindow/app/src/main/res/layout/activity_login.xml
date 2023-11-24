@@ -17,12 +17,14 @@
         android:id="@+id/edt_lg_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入邮箱"/>
+        android:hint="请输入邮箱"
+        android:textSize="25dp"/>
     <EditText
         android:id="@+id/edt_lg_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入密码"/>
+        android:hint="请输入密码"
+        android:textSize="25dp"/>
     <Button
         android:id="@+id/btn_lg_login"
         android:layout_width="match_parent"

@@ -67,17 +67,19 @@ public class LoginActivity extends AppCompatActivity {
         Log.i("email,pwd",email.toString()+""+pwd.toString());
         if(email.isEmpty()||pwd.isEmpty()){
             Toast.makeText(this,"邮箱或密码不能为空",Toast.LENGTH_SHORT).show();
-        }else{
+        }else {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.i("email,pwd",email.toString()+""+pwd.toString());
+                    Log.i("email,pwd", email.toString() + "" + pwd.toString());
                     Result login = LoginService.login(email, pwd, LoginActivity.this);
+                    if (login.getMsg().equals("成功")) {
+                        Intent intent = new Intent(LoginActivity.this, IndexActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }).start();
         }
-        //TODO 跳转到首页
-
     }
     //注册事件
     private void userRegister() {
@@ -86,7 +88,8 @@ public class LoginActivity extends AppCompatActivity {
     }
     //忘记密码事件
     private void userFgPwd() {
-
+        Intent intent = new Intent(LoginActivity.this,ForgetPwdActivity.class);
+        startActivity(intent);
     }
 
 }

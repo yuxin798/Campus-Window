@@ -47,19 +47,21 @@ public class RegisterActivity extends AppCompatActivity {
                 user.setSchool(school);
 
                 Log.i("user1:",user.toString());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i("user2:",user.toString());
-                        register = registerService.register(user);
-                    }
-                }).start();
+
                 //TODO Android端：提示邮箱是否正确
                 boolean a = !userCode.isEmpty() && userCode.equals(code+"");
                 boolean b = !pwd.isEmpty() && pwd.equals(pwd2);
                 Log.i("code:",""+code);
                 Log.i("a&b:",""+a+b);
                 if(register!=null && a && b) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.i("user2:",user.toString());
+                            register = registerService.register(user);
+                        }
+                    }).start();
+
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
@@ -76,10 +78,9 @@ public class RegisterActivity extends AppCompatActivity {
                     public void run() {
                         register = registerService.verify(user);
                         Log.i("register:",register.toString());
-                        code = register.getData() + "";
+                        code = ((Double)register.getData()).intValue()+"" ;
                     }
                 }).start();
-
             }
         });
         btnReNo.setOnClickListener(new View.OnClickListener() {
