@@ -25,9 +25,6 @@ public class ShcoolController {
     @Operation(summary = "查询所有数据")
     public Result findAll(){
         List<School> schools = service.findAll();
-        if (schools == null){
-            return ResultVOUtil.error("网络异常，请稍后重试");
-        }
         return ResultVOUtil.success(schools);
     }
 

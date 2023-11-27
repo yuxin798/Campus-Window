@@ -21,7 +21,7 @@ public class LearningService {
         return repository.findAll(sort);
     }
     public LearningActivity sendActivity(LearningActivity learningActivity) throws ParseException {
-        learningActivity.setActivityId(UUID.randomUUID().toString());
+        learningActivity.setActivityId(UUID.randomUUID().toString().replaceAll("-", ""));
         learningActivity.setDate(new Timestamp(System.currentTimeMillis()));
         LearningActivity save = repository.save(learningActivity);
         return save;

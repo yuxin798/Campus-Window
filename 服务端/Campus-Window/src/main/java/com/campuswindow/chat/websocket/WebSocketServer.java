@@ -1,13 +1,9 @@
 package com.campuswindow.chat.websocket;
 
 import com.alibaba.fastjson.JSON;
-import com.campuswindow.chat.entity.User;
 import org.springframework.stereotype.Component;
 
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
@@ -18,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketServer {
     private static Map<String, Session> clients = new ConcurrentHashMap<>();
     private String userId;
-    private static Integer number = 0;
+    private static Integer number = 0;//在线用户数
 
     @OnOpen
     public void OnOpen(Session session, @PathParam("userId") String userId){
@@ -37,13 +33,19 @@ public class WebSocketServer {
 
     @OnMessage
     public void onMessage(String message) {
-        User user = JSON.parseObject(message, User.class);
-        if (user.getMsg().getType() == 1){
-            System.out.println("朕来");
-            sendMessageToOne(user.getMsg().getToUserId(), message);
-        }else {
-            sendMessageToAll(message);
-        }
+//        Msg msg = JSON.parseObject(message, Msg.class);
+        sendMessageToAll(message);
+//        if (msg.getType() == 1){
+//            System.out.println("朕来");
+//            sendMessageToOne(msg.getToUserId(), message);
+//        }else {
+//            sendMessageToAll(message);
+//        }
+    }
+
+    @OnError
+    public void onError(Throwable throwable) {
+        throwable.printStackTrace();
     }
 
     public void sendMessageToAll(String message){

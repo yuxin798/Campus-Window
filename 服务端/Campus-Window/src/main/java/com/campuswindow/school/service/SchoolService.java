@@ -22,8 +22,4 @@ public class SchoolService {
     public School findOne(String schoolName) {
         return repository.findSchoolBySchoolName(schoolName);
     }
-
-//    public School findOne(String userId) {
-//        return repository.findSchoolById(userId);
-//    }
 }

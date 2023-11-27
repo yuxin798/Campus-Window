@@ -11,19 +11,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
-
-#  mail:
-#    default-encoding: UTF-8
-#    host: smtp.163.com
-#    username: yuxin_798@163.com
-#    password: VRTADKMKPKSJJWCI
-#    properties:
-#      mail:
-#        smtp:
-#          auth: true
-#          starttls:
-#            enable: true
-#            required: true
+  redis:
+    url: redis://147258369@192.168.144.132:6379
   mail:
     default-encoding: UTF-8
     host: smtp.163.com
@@ -39,6 +28,21 @@ spring:
             enable: true
     protocol: smtp
     port: 465
+  servlet:
+    multipart:
+      max-file-size: 1000MB
 #logging:
 #  config: classpath:logback-dev.xml
+campus-window:
+  minio:
+    endpoint: http://192.168.144.132:9000
+    access-key: minioadmin
+    secret-key: minioadmin
+    bucket: campus-bucket
+    allowed-content-type:
+      "[image/png]": png
+      "[image/jpeg]": jpg
+      "[image/gif]": gif
+
+
 

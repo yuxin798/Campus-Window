@@ -1,8 +1,14 @@
 package com.campuswindow.user.service;
 
+import com.campuswindow.user.dto.ChatUserDto;
+import com.campuswindow.user.dto.LoginDto;
+import com.campuswindow.user.dto.PasswordDto;
+import com.campuswindow.user.dto.RegisterDto;
 import com.campuswindow.user.entity.User;
 import com.campuswindow.user.repository.UserRepository;
+import com.campuswindow.utils.RedisConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,24 +21,53 @@ public class UserService {
 
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
-    public User register(User user) {
-        User userByEmail = repository.findUserByEmail(user.getEmail());
-        if (userByEmail != null){
-            return null;
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
+
+    public User register(RegisterDto registerDto) {
+        String code = redisTemplate.opsForValue().get(RedisConstant.EMAIL_VALIDATE_CODE + registerDto.getEmailCodeKey());
+        if (code == null || !code.equalsIgnoreCase(registerDto.getEmailCode())){
+            throw new RuntimeException("验证码错误");
         }
-        String id = UUID.randomUUID().toString();
+        User userByEmail = repository.findUserByEmail(registerDto.getEmail());
+        if (userByEmail != null){
+            throw new RuntimeException("邮箱已存在");
+        }
+        redisTemplate.delete(RedisConstant.EMAIL_VALIDATE_CODE + registerDto.getEmailCodeKey());
+        String id = UUID.randomUUID().toString().replaceAll("-", "");
+        User user = new User();
         user.setUserId(id);
+        user.setEmail(registerDto.getEmail());
+        user.setPassword(registerDto.getPassword());
+        user.setSchool(registerDto.getSchool());
+        user.setUserName(registerDto.getUserName());
         user.setAvatar("D:\\images\\users\\default.jpg");
         user.setCreate_time(new Timestamp(System.currentTimeMillis()));
         return repository.save(user);
     }
 
-    public User login(User user) {
-        User loginUser = repository.findUserByEmail(user.getEmail());
-        if (!user.getPassword().equals(loginUser.getPassword())){
-            return null;
+    public User login(LoginDto loginDto) {
+        User loginUser = repository.findUserByEmail(loginDto.getEmail());
+        if (loginUser == null || !loginDto.getPassword().equals(loginUser.getPassword())){
+            throw new RuntimeException("邮箱或密码错误");
         }
+//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+//        // authenticate方法会调用loadUserByUsername
+//        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+//        if(Objects.isNull(authenticate)){
+//            throw new RuntimeException("用户名或密码错误");
+//        }
+//        // 校验成功，强转对象
+//        LoginDto user = (LoginDto) authenticate.getPrincipal();
+//        // 校验通过返回token
+//        String token = JwtUtil.generateKey()
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("token",token);
+//        return Result.ok(map);
+
         return loginUser;
     }
 
@@ -40,12 +75,31 @@ public class UserService {
         return repository.updateAvatarByUserId(userId, avatar);
     }
 
-    public int updatePassword(String email, String password) {
-        return repository.updatePasswordByEmail(email, password);
+    public void updatePassword(PasswordDto passwordDto) {
+        //验证邮箱验证码
+        String code = redisTemplate.opsForValue().get(RedisConstant.EMAIL_VALIDATE_CODE + passwordDto.getEmailCodeKey());
+        if (code == null || !code.equalsIgnoreCase(passwordDto.getEmailCode())){
+            throw new RuntimeException("邮箱验证码错误");
+        }
+        //两次密码是否一致
+        if (!passwordDto.getPassword().equals(passwordDto.getConfirmPassword())){
+            throw new RuntimeException("输入密码不一致");
+        }
+        //删除验证码
+        redisTemplate.delete(RedisConstant.EMAIL_VALIDATE_CODE + passwordDto.getEmailCodeKey());
+        repository.updatePasswordByUserId(passwordDto.getUserId(), passwordDto.getPassword());
     }
 
-    //配合前面的AJAX
     public User existEmail(String email) {
         return repository.findUserByEmail(email);
+    }
+
+    public ChatUserDto findChatUserByUserId(String userId) {
+        User user = repository.findChatUserByUserId(userId);
+        return new ChatUserDto(user.getUserId(), user.getUserName(), user.getAvatar());
+    }
+
+    public User findLoginDtoByEmail(String email) {
+        return repository.findLoginDtoByEmail(email);
     }
 }

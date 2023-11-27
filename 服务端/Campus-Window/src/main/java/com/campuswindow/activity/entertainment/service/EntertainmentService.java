@@ -21,7 +21,7 @@ public class EntertainmentService {
         return repository.findAll(sort);
     }
     public EntertainmentActivity sendActivity(EntertainmentActivity entertainmentActivity) throws ParseException {
-        entertainmentActivity.setActivityId(UUID.randomUUID().toString());
+        entertainmentActivity.setActivityId(UUID.randomUUID().toString().replaceAll("-", ""));
         entertainmentActivity.setDate(new Timestamp(System.currentTimeMillis()));
         EntertainmentActivity save = repository.save(entertainmentActivity);
         return save;

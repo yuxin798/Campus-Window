@@ -21,7 +21,7 @@ public class MateService {
         return repository.findAll(sort);
     }
     public MateActivity sendActivity(MateActivity mateActivity) throws ParseException {
-        mateActivity.setActivityId(UUID.randomUUID().toString());
+        mateActivity.setActivityId(UUID.randomUUID().toString().replaceAll("-", ""));
         mateActivity.setDate(new Timestamp(System.currentTimeMillis()));
         MateActivity save = repository.save(mateActivity);
         return save;
