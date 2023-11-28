@@ -23,6 +23,11 @@ public class PostMsgFragment extends Fragment {
     private Button btnCancel,btnIssue;
     private ImageView imgUpImg,imgUpFile,imgUpVideo;
     private EditText edtTitle,edtContent;
+
+    //拍照：
+    public static final int TAKE_PHOTO = 1;
+    public static final int CHOOSE_PHOTO = 2;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,7 +35,34 @@ public class PostMsgFragment extends Fragment {
         getViews(page);
         //设置下拉列表功能方法：
         spinnerListener();
+        setListeners();
         return page;
+    }
+
+    private void setListeners() {
+        imgUpFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgUpImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
+        });
+        imgUpVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        imgUpImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void spinnerListener() {
@@ -58,6 +90,4 @@ public class PostMsgFragment extends Fragment {
         edtTitle = page.findViewById(R.id.post_msg_edt_title);
         edtContent = page.findViewById(R.id.post_msg_edt_content);
     }
-
-
 }

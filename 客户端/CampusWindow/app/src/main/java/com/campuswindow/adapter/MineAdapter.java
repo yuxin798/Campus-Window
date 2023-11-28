@@ -22,11 +22,11 @@ public class MineAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return null;
+        return fragments.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return fragments.size();
     }
 }

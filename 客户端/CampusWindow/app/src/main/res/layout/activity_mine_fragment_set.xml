@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".MineSetActivity">
+    <ImageView
+        android:id="@+id/mine_set_rollback"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@mipmap/leftarrow"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+    <Spinner
+        android:id="@+id/mine_set_item_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E5E5E5"
+        android:spinnerMode="dropdown"
+        android:entries="@array/activity_type" />
+    <Spinner
+        android:id="@+id/mine_set_item_spinner2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E5E5E5"
+        android:spinnerMode="dropdown"
+        android:entries="@array/activity_type" />
+    <Spinner
+        android:id="@+id/mine_set_item_spinner3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E5E5E5"
+        android:spinnerMode="dropdown"
+        android:entries="@array/activity_type" />
+</LinearLayout>

@@ -5,12 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".LoginActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/school2"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="校园之墙"
+        android:text="校园之窗"
         android:gravity="center"
         android:textSize="50dp"/>
     <EditText
@@ -18,13 +23,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入邮箱"
-        android:textSize="25dp"/>
+        android:text="728753465@qq.com"
+        android:textSize="25dp"
+        android:drawableLeft="@mipmap/user"/>
     <EditText
         android:id="@+id/edt_lg_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入密码"
-        android:textSize="25dp"/>
+        android:text="521125"
+        android:textSize="25dp"
+        android:drawableLeft="@mipmap/pwd"
+        android:inputType="numberPassword"/>
     <Button
         android:id="@+id/btn_lg_login"
         android:layout_width="match_parent"

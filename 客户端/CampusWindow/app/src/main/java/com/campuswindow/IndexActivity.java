@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.campuswindow.adapter.IndexAdapter;
@@ -37,7 +38,19 @@ public class IndexActivity extends AppCompatActivity {
         indexVp2.setAdapter(indexAdapter);
 
         defineMediator();
+        //“我的”设置中跳转回来
+        mineSetRollBack();
+    }
 
+    private void mineSetRollBack() {
+        int id = getIntent().getIntExtra("id", 0);
+        if (id == 1) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.mine_fg_dra,new MineFragment())
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     private void defineMediator() {
@@ -47,24 +60,35 @@ public class IndexActivity extends AppCompatActivity {
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 switch(position){
                     case 0:
+                        Drawable drawable1 = getResources().getDrawable(R.drawable.home);
+                        tab.setIcon(drawable1);
                         tab.setText("首页");
                         break;
                     case 1:
+                        Drawable drawable2 = getResources().getDrawable(R.drawable.community);
+                        tab.setIcon(drawable2);
                         tab.setText("畅聊室");
                         break;
                     case 2:
-                        tab.setText("发帖");
+                        Drawable drawable = getResources().getDrawable(R.drawable.add2);
+//                        tab.setText("发帖");
+                        tab.setIcon(drawable);
                         break;
                     case 3:
+                        Drawable drawable3 = getResources().getDrawable(R.drawable.chat);
+                        tab.setIcon(drawable3);
                         tab.setText("聊天室");
                         break;
                     case 4:
+                        Drawable drawable4 = getResources().getDrawable(R.drawable.mine);
+                        tab.setIcon(drawable4);
                         tab.setText("我的");
                         break;
                 }
             }
         }
         );
+        mediator.attach();
     }
 
     private void initPages() {

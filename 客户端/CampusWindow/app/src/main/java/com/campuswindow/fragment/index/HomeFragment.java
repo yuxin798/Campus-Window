@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+        mediator.attach();
     }
 
     private void setFragments() {

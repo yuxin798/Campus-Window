@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp">
@@ -9,7 +10,7 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/post_msg_cancel"
-            android:background="@mipmap/Xmark"
+            android:background="@mipmap/info"
             android:layout_width="50dp"
             android:layout_height="50dp"/>
         <Button
@@ -48,17 +49,17 @@
             android:orientation="horizontal">
             <ImageButton
                 android:id="@+id/post_msg_img_upload"
-                android:src="@mipmap/imageUpload"
+                android:src="@mipmap/upimage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <ImageButton
                 android:id="@+id/post_msg_file_upload"
-                android:src="@mipmap/fileUpload"
+                android:src="@mipmap/upfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <ImageButton
                 android:id="@+id/post_msg_video_upload"
-                android:src="@mipmap/videoUpload"
+                android:src="@mipmap/upvideo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -87,11 +88,14 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/search"
+            android:src="@mipmap/rightarrow2"
             android:layout_alignRight="@+id/post_msg_spinner"
             android:layout_marginRight="10dp"
             android:layout_centerVertical="true"/>
     </RelativeLayout>
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-
+    </HorizontalScrollView>
 </RelativeLayout>

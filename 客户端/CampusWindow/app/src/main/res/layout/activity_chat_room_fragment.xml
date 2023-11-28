@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/chat_room_img"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:src="@mipmap/ikun"/>
+        <TextView
+            android:id="@+id/chat_room_name"
+            android:layout_toRightOf="@+id/chat_room_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="北冥渔"/>
+        <TextView
+            android:id="@+id/chat_room_state"
+            android:layout_toRightOf="@+id/chat_room_img"
+            android:layout_alignBottom="@+id/chat_room_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="状态:"/>
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/chat_room_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

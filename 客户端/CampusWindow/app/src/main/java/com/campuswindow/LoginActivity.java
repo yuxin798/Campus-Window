@@ -3,6 +3,8 @@ package com.campuswindow;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +25,35 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getViews();
         setListeners();
+        setEditColor();
 
+    }
+
+    private void setEditColor() {
+        edtEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    GradientDrawable gd = new GradientDrawable();
+                    gd.setStroke(3,Color.RED);
+                    edtEmail.setBackground(gd);
+                }else{
+                    edtEmail.setBackground(null);
+                }
+            }
+        });
+        edtPwd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    GradientDrawable gd = new GradientDrawable();
+                    gd.setStroke(3,Color.RED);
+                    edtPwd.setBackground(gd);
+                }else{
+                    edtPwd.setBackground(null);
+                }
+            }
+        });
     }
 
     private void setListeners() {
