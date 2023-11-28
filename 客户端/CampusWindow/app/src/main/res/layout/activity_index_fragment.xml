@@ -6,7 +6,6 @@
     android:padding="5dp">
 
     <LinearLayout
-        android:id="@+id/index_fg_lin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -24,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:textSize="25dp"
-                android:drawableLeft="@mipmap/search" />
+                android:drawableLeft="@drawable/search3" />
         </LinearLayout>
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/index_fg_tbl"

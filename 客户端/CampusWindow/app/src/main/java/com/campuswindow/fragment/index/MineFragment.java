@@ -76,6 +76,7 @@ public class MineFragment extends Fragment {
         dealNavigation();//处理侧滑栏点击事件
 
         mineAdapter = new MineAdapter(fragments,getActivity());
+        mineFgVp2.setOffscreenPageLimit(2);
         mineFgVp2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         mineFgVp2.setAdapter(mineAdapter);
         defineMediator();
@@ -164,8 +165,6 @@ public class MineFragment extends Fragment {
         launcher.launch(intent);
     }
 
-
-
     private void createLauncher() {
         launcher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -218,7 +217,6 @@ public class MineFragment extends Fragment {
         imgHead = page.findViewById(R.id.mine_img);
         btnNavig = page.findViewById(R.id.mine_btn_navig);
         mineNav = page.findViewById(R.id.mine_fg_nav);
-        mineDra = page.findViewById(R.id.mine_fg_dra);
         btnSet = page.findViewById(R.id.mine_btn_setting);
     }
 

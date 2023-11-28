@@ -3,6 +3,7 @@ package com.campuswindow;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.graphics.drawable.Drawable;
@@ -39,18 +40,18 @@ public class IndexActivity extends AppCompatActivity {
 
         defineMediator();
         //“我的”设置中跳转回来
-        mineSetRollBack();
+        //mineSetRollBack();
     }
 
     private void mineSetRollBack() {
-        int id = getIntent().getIntExtra("id", 0);
-        if (id == 1) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.mine_fg_dra,new MineFragment())
-                    .addToBackStack(null)
-                    .commit();
-        }
+//        int id = getIntent().getIntExtra("id", 0);
+//        if (id == 1) {
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.mine_fg_dra,new MineFragment())
+//                    .addToBackStack(null)
+//                    .commit();
+//        }
     }
 
     private void defineMediator() {
