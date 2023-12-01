@@ -9,4 +9,5 @@ import java.util.List;
 public interface EntertainmentRepository extends JpaRepository<EntertainmentActivity, String> {
 
     List<EntertainmentActivity> findActivityByUserId(String userId, Sort sort);
+
 }

@@ -8,6 +8,7 @@ import com.campuswindow.user.dto.PasswordDto;
 import com.campuswindow.user.dto.RegisterDto;
 import com.campuswindow.user.entity.User;
 import com.campuswindow.user.service.UserService;
+import com.campuswindow.utils.MinioConstant;
 import com.campuswindow.utils.RedisConstant;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
@@ -35,16 +36,12 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class UserController {
 
-    @Autowired
-    private UserService service;
+    private UserService userService;
+    private JavaMailSender mailSender;
+    private StringRedisTemplate redisTemplate;
+    private FileUploadService fileUploadService;
     @Value("${spring.mail.username}")
     private String from;
-    @Autowired
-    private JavaMailSender mailSender;
-    @Autowired
-    private StringRedisTemplate redisTemplate;
-    @Autowired
-    private FileUploadService fileUploadService;
 
     @GetMapping("/sendEmailCode")
     @Operation(summary = "邮箱注册发送验证码")
@@ -55,7 +52,7 @@ public class UserController {
     @GetMapping("/sendEmailForUpdatePassword")
     @Operation(summary = "忘记密码发送验证码")
     public Result<?> sendEmailForUpdatePassword(String to){
-        User user = service.existEmail(to);
+        User user = userService.existEmail(to);
         if (user == null){
             log.info("用户模块：用户不存在");
             throw new RuntimeException("用户不存在");
@@ -87,7 +84,7 @@ public class UserController {
             throw new RuntimeException(errorMessage);
         }
         //注册校验
-        User registerUser = service.register(registerDto);
+        User registerUser = userService.register(registerDto);
         return ResultVOUtil.success(registerUser);
     }
 
@@ -101,7 +98,7 @@ public class UserController {
             throw new RuntimeException(errorMessage);
         }
         //登陆校验
-        User loginUser = service.login(loginDto);
+        User loginUser = userService.login(loginDto);
         return ResultVOUtil.success(loginUser.getUserId());
     }
 
@@ -114,33 +111,42 @@ public class UserController {
             errorMessage = errors.getFieldError().getDefaultMessage();
             throw new RuntimeException(errorMessage);
         }
-        service.updatePassword(passwordDto);
+        userService.updatePassword(passwordDto);
         return ResultVOUtil.success();
     }
 
-    @PostMapping("/uploadAvatar")
+    @PostMapping("/avatar")
     @Operation(summary = "上传头像")
     public Result<String> uploadAvatar(String userId, MultipartFile avatar) throws IOException {
         if (avatar.isEmpty()){
-            throw new RuntimeException("文件不能为空");
+            throw new RuntimeException("头像不能为空");
         }
-//        String fileName = avatar.getOriginalFilename();
-//        String suffix = fileName.substring(fileName.indexOf("."));
-//        String  filePath = "D:\\images\\users\\" + userId + suffix;
-//        try {
-//            avatar.transferTo(new File(filePath));
-//        } catch (IOException e) {
-//            log.error("用户模块-上传头像", e);
-//            throw new RuntimeException(e);
-//        }
-        String filePath = fileUploadService.save(avatar);
-        service.uploadAvatar(userId, filePath);
+        String filePath = fileUploadService.save(avatar, MinioConstant.USERS_ROOT_PATH);
+        userService.uploadAvatar(userId, filePath);
         return ResultVOUtil.success();
     }
 
     @GetMapping("/findOne")
+    @Operation(summary = "根据用户Id查询用户")
     public Result<ChatUserDto> findOne(String userId){
-        ChatUserDto chatUserDto = service.findChatUserByUserId(userId);
+        ChatUserDto chatUserDto = userService.findChatUserByUserId(userId);
         return ResultVOUtil.success(chatUserDto);
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+    @Autowired
+    public void setMailSender(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+    @Autowired
+    public void setRedisTemplate(StringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+    @Autowired
+    public void setFileUploadService(FileUploadService fileUploadService) {
+        this.fileUploadService = fileUploadService;
     }
 }

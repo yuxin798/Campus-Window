@@ -15,9 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Slf4j
@@ -27,7 +24,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     private MinioProperties minioProperties;
 
     @Override
-    public String save(MultipartFile file) {
+    public String save(MultipartFile file, String fileRootPath) {
         InputStream in = null;
         try {
             in = file.getInputStream();
@@ -49,8 +46,8 @@ public class FileUploadServiceImpl implements FileUploadService {
             // fileName = "avatar" + date + UUID
             // /avatar/20230917/uuid.png
             String fileName =
-                    "/avatar/" +
-                    LocalDate.now(ZoneId.of("+8")).format(DateTimeFormatter.ofPattern("yyyyMMdd")) +
+                    fileRootPath +
+//                    LocalDate.now(ZoneId.of("+8")).format(DateTimeFormatter.ofPattern("yyyyMMdd")) +
                     "/" + UUID.randomUUID().toString().replaceAll("-", "") +
                     "." + getSuffix(file.getContentType());
             // Upload

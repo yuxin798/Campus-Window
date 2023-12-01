@@ -2,10 +2,11 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:mysql://47.95.220.145:3306/Campus-Window?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://localhost:3306/Campus-Window?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: 552010.a
+    password:
+    type: com.alibaba.druid.pool.DruidDataSource
   jpa:
     database: mysql
     show-sql: true
@@ -41,8 +42,10 @@ campus-window:
     bucket: campus-bucket
     allowed-content-type:
       "[image/png]": png
-      "[image/jpeg]": jpg
+      "[image/jpg]": jpg
+      "[image/jpeg]": jpeg
       "[image/gif]": gif
+      "[video/mp4]": mp4
 
 
 

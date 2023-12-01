@@ -1,7 +1,10 @@
 package com.campuswindow.activity.mate.controller;
 
+import com.campuswindow.activity.mate.dto.MateActivityDto;
 import com.campuswindow.activity.mate.entity.MateActivity;
 import com.campuswindow.activity.mate.service.MateService;
+import com.campuswindow.fileupload.FileUploadService;
+import com.campuswindow.utils.MinioConstant;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -20,62 +21,50 @@ import java.util.List;
 @Tag(name = "搭子活动接口")
 public class MateController {
 
-    @Autowired
-    private MateService service;
+    private MateService mateService;
+    private FileUploadService fileUploadService;
 
     @GetMapping("/findAll")
     @Operation(summary = "查询所有数据")
     public Result findAll(){
-        List<MateActivity> activities = service.findAll();
-        if (activities == null){
-            return ResultVOUtil.error("网络异常，请稍后重试");
-        }
+        List<MateActivity> activities = mateService.findAll();
         return ResultVOUtil.success(activities);
     }
+
+    @PostMapping("/avatar")
+    @Operation(summary = "上传文件")
+    public Result<String> avatar(MultipartFile file) {
+        String url = fileUploadService.save(file, MinioConstant.MATES_ROOT_PATH);
+        return ResultVOUtil.success(url);
+    }
+
     @PostMapping("/sendActivity")
     @Operation(summary = "发帖")
-    public Result sendActivity(MateActivity mateActivity, MultipartFile[] avatars) throws ParseException {
-        StringBuilder builder = new StringBuilder();
-        try {
-            for (int i = 0; i < avatars.length ;i++){
-                if (avatars[i].isEmpty()){
-                    break;
-                }
-                String fileName = avatars[i].getOriginalFilename();
-                String suffix = fileName.substring(fileName.indexOf("."));
-                String  filePath = "D:\\images\\mates\\" + mateActivity.getUserId() + i  + suffix;
-                avatars[i].transferTo(new File(filePath));
-                if (i == 0){
-                    builder.append(filePath);
-                }else {
-                    builder.append("|" + filePath);
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        mateActivity.setActivityImages(builder.toString());
-        MateActivity newMateActivity = service.sendActivity(mateActivity);
-        if (newMateActivity == null){
-            return ResultVOUtil.error("发帖失败");
-        }
-        return ResultVOUtil.success("发帖成功");
+    public Result sendActivity(@RequestBody MateActivityDto mateActivityDto) throws ParseException {
+        MateActivity newMateActivity = mateService.sendActivity(mateActivityDto);
+        return ResultVOUtil.success();
     }
 
     @GetMapping("/deleteActivity")
     @Operation(summary = "删帖")
     public Result deleteActivity(String activityId){
-        if (activityId == null){
-            return ResultVOUtil.error("失败");
-        }
-        service.deleteActivity(activityId);
-        return ResultVOUtil.success("成功");
+        mateService.deleteActivity(activityId);
+        return ResultVOUtil.success();
     }
 
     @GetMapping("/selectActivity")
     @Operation(summary = "根据userId查询某个人的所有帖子")
     public Result selectActivity(String userId){
-        List<MateActivity> activities = service.selectActivity(userId);
+        List<MateActivity> activities = mateService.selectActivity(userId);
         return ResultVOUtil.success(activities);
+    }
+
+    @Autowired
+    public void setMateService(MateService mateService) {
+        this.mateService = mateService;
+    }
+    @Autowired
+    public void setFileUploadService(FileUploadService fileUploadService) {
+        this.fileUploadService = fileUploadService;
     }
 }

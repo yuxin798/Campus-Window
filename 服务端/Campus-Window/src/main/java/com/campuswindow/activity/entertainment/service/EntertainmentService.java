@@ -1,7 +1,10 @@
 package com.campuswindow.activity.entertainment.service;
 
+import com.campuswindow.activity.entertainment.dto.EntertainmentActivityDto;
 import com.campuswindow.activity.entertainment.entity.EntertainmentActivity;
 import com.campuswindow.activity.entertainment.repository.EntertainmentRepository;
+import com.campuswindow.user.entity.User;
+import com.campuswindow.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -13,16 +16,26 @@ import java.util.UUID;
 
 @Service
 public class EntertainmentService {
-    @Autowired
+
     private EntertainmentRepository repository;
+    @Autowired
+    private UserRepository userRepository;
     public List<EntertainmentActivity> findAll() {
         Sort.Order order = Sort.Order.desc("date");
         Sort sort = Sort.by(order);
         return repository.findAll(sort);
     }
-    public EntertainmentActivity sendActivity(EntertainmentActivity entertainmentActivity) throws ParseException {
+    public EntertainmentActivity sendActivity(EntertainmentActivityDto entertainmentActivityDto) throws ParseException {
+        EntertainmentActivity entertainmentActivity = new EntertainmentActivity();
         entertainmentActivity.setActivityId(UUID.randomUUID().toString().replaceAll("-", ""));
         entertainmentActivity.setDate(new Timestamp(System.currentTimeMillis()));
+        entertainmentActivity.setActivityTitle(entertainmentActivityDto.getActivityTitle());
+        entertainmentActivity.setActivityContent(entertainmentActivityDto.getActivityContent());
+        entertainmentActivity.setUserId(entertainmentActivityDto.getUserId());
+        User user = userRepository.findUserNameAndAvatarAndSchoolByUserId(entertainmentActivity.getUserId());
+        entertainmentActivity.setUserName(user.getUserName());
+        entertainmentActivity.setAvatar(user.getAvatar());
+        entertainmentActivity.setSchool(user.getSchool());
         EntertainmentActivity save = repository.save(entertainmentActivity);
         return save;
     }
@@ -36,5 +49,10 @@ public class EntertainmentService {
 
     public void deleteActivity(String activityId) {
         repository.deleteById(activityId);
+    }
+
+    @Autowired
+    public void setRepository(EntertainmentRepository repository) {
+        this.repository = repository;
     }
 }

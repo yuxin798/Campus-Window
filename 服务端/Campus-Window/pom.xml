@@ -17,6 +17,11 @@
         <java.version>8</java.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.2.6</version>
+        </dependency>
 <!--        &lt;!&ndash;            生成和解析token&ndash;&gt;-->
 <!--        <dependency>-->
 <!--            <groupId>io.jsonwebtoken</groupId>-->

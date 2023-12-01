@@ -16,9 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/school")
 @Tag(name = "学校接口")
-public class ShcoolController {
+public class SchoolController {
 
-    @Autowired
     private SchoolService service;
 
     @GetMapping("/findAll")
@@ -33,5 +32,10 @@ public class ShcoolController {
     public Result findOne(String schoolName){
         School school = service.findOne(schoolName);
         return ResultVOUtil.success(school);
+    }
+
+    @Autowired
+    public void setService(SchoolService service) {
+        this.service = service;
     }
 }

@@ -19,9 +19,7 @@ import java.util.UUID;
 @Transactional
 public class UserService {
 
-    @Autowired
-    private UserRepository repository;
-    @Autowired
+    private UserRepository userRepository;
     private StringRedisTemplate redisTemplate;
 
 //    @Autowired
@@ -32,7 +30,7 @@ public class UserService {
         if (code == null || !code.equalsIgnoreCase(registerDto.getEmailCode())){
             throw new RuntimeException("验证码错误");
         }
-        User userByEmail = repository.findUserByEmail(registerDto.getEmail());
+        User userByEmail = userRepository.findUserByEmail(registerDto.getEmail());
         if (userByEmail != null){
             throw new RuntimeException("邮箱已存在");
         }
@@ -45,12 +43,12 @@ public class UserService {
         user.setSchool(registerDto.getSchool());
         user.setUserName(registerDto.getUserName());
         user.setAvatar("D:\\images\\users\\default.jpg");
-        user.setCreate_time(new Timestamp(System.currentTimeMillis()));
-        return repository.save(user);
+        user.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        return userRepository.save(user);
     }
 
     public User login(LoginDto loginDto) {
-        User loginUser = repository.findUserByEmail(loginDto.getEmail());
+        User loginUser = userRepository.findUserByEmail(loginDto.getEmail());
         if (loginUser == null || !loginDto.getPassword().equals(loginUser.getPassword())){
             throw new RuntimeException("邮箱或密码错误");
         }
@@ -72,7 +70,7 @@ public class UserService {
     }
 
     public int uploadAvatar(String userId, String avatar) {
-        return repository.updateAvatarByUserId(userId, avatar);
+        return userRepository.updateAvatarByUserId(userId, avatar);
     }
 
     public void updatePassword(PasswordDto passwordDto) {
@@ -87,19 +85,29 @@ public class UserService {
         }
         //删除验证码
         redisTemplate.delete(RedisConstant.EMAIL_VALIDATE_CODE + passwordDto.getEmailCodeKey());
-        repository.updatePasswordByUserId(passwordDto.getUserId(), passwordDto.getPassword());
+        userRepository.updatePasswordByUserId(passwordDto.getUserId(), passwordDto.getPassword());
     }
 
     public User existEmail(String email) {
-        return repository.findUserByEmail(email);
+        return userRepository.findUserByEmail(email);
     }
 
     public ChatUserDto findChatUserByUserId(String userId) {
-        User user = repository.findChatUserByUserId(userId);
+        User user = userRepository.findChatUserByUserId(userId);
         return new ChatUserDto(user.getUserId(), user.getUserName(), user.getAvatar());
     }
 
     public User findLoginDtoByEmail(String email) {
-        return repository.findLoginDtoByEmail(email);
+        return userRepository.findLoginDtoByEmail(email);
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setRedisTemplate(StringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
     }
 }

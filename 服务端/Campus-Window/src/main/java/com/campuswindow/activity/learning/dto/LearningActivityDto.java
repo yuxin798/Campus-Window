@@ -1,10 +1,10 @@
-package com.campuswindow.activity.entertainment.dto;
+package com.campuswindow.activity.learning.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class SendActivityDto {
+public class LearningActivityDto {
     @Schema(name = "活动标题")
     private String activityTitle;
     @Schema(name = "活动内容")

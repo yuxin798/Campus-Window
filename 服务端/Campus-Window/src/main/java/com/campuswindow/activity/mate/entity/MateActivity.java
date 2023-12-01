@@ -21,12 +21,13 @@ public class MateActivity {
     private String activityTitle;
     @Schema(name = "活动内容")
     private String activityContent;
-    @Schema(name = "活动图片")
-    private String activityImages;
     @Schema(name = "活动发布日期")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Timestamp date;
     @Schema(name = "所属用户Id")
     private String userId;
-
+    private String userName;
+    private String avatar;
+    @Schema(name = "学校")
+    private String school;
 }

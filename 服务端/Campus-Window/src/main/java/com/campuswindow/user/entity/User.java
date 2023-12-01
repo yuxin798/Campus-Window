@@ -28,7 +28,7 @@ public class User {
     private String school;
     private String avatar;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Timestamp create_time;
+    private Timestamp createTime;
 
     public @interface Login {}
 }

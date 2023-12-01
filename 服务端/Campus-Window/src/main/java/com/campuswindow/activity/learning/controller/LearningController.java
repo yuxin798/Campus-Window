@@ -1,7 +1,10 @@
 package com.campuswindow.activity.learning.controller;
 
+import com.campuswindow.activity.learning.dto.LearningActivityDto;
 import com.campuswindow.activity.learning.entity.LearningActivity;
 import com.campuswindow.activity.learning.service.LearningService;
+import com.campuswindow.fileupload.FileUploadService;
+import com.campuswindow.utils.MinioConstant;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -20,62 +21,50 @@ import java.util.List;
 @Tag(name = "学术活动接口")
 public class LearningController {
 
-    @Autowired
-    private LearningService service;
+    private LearningService learningService;
+    private FileUploadService fileUploadService;
 
     @GetMapping("/findAll")
     @Operation(summary = "查询所有数据")
     public Result findAll(){
-        List<LearningActivity> activities = service.findAll();
-        if (activities == null){
-            return ResultVOUtil.error("网络异常，请稍后重试");
-        }
+        List<LearningActivity> activities = learningService.findAll();
         return ResultVOUtil.success(activities);
     }
+
+    @PostMapping("/avatar")
+    @Operation(summary = "上传文件")
+    public Result<String> avatar(MultipartFile file) {
+        String url = fileUploadService.save(file, MinioConstant.LEARNINGS_ROOT_PATH);
+        return ResultVOUtil.success(url);
+    }
+
     @PostMapping("/sendActivity")
     @Operation(summary = "发帖")
-    public Result sendActivity(LearningActivity learningActivity, MultipartFile[] avatars) throws ParseException {
-        StringBuilder builder = new StringBuilder();
-        try {
-            for (int i = 0; i < avatars.length ;i++){
-                if (avatars[i].isEmpty()){
-                    break;
-                }
-                String fileName = avatars[i].getOriginalFilename();
-                String suffix = fileName.substring(fileName.indexOf("."));
-                String  filePath = "D:\\images\\learnings\\" + learningActivity.getUserId() + i  + suffix;
-                avatars[i].transferTo(new File(filePath));
-                if (i == 0){
-                    builder.append(filePath);
-                }else {
-                    builder.append("|" + filePath);
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        learningActivity.setActivityImages(builder.toString());
-        LearningActivity newLearningActivity = service.sendActivity(learningActivity);
-        if (newLearningActivity == null){
-            return ResultVOUtil.error("发帖失败");
-        }
-        return ResultVOUtil.success("发帖成功");
+    public Result sendActivity(@RequestBody LearningActivityDto learningActivityDto) throws ParseException {
+        learningService.sendActivity(learningActivityDto);
+        return ResultVOUtil.success();
     }
 
     @GetMapping("/deleteActivity")
     @Operation(summary = "删帖")
     public Result deleteActivity(String activityId){
-        if (activityId == null){
-            return ResultVOUtil.error("失败");
-        }
-        service.deleteActivity(activityId);
-        return ResultVOUtil.success("成功");
+        learningService.deleteActivity(activityId);
+        return ResultVOUtil.success();
     }
 
     @GetMapping("/selectActivity")
     @Operation(summary = "根据userId查询某个人的所有帖子")
     public Result selectActivity(String userId){
-        List<LearningActivity> activities = service.selectActivity(userId);
+        List<LearningActivity> activities = learningService.selectActivity(userId);
         return ResultVOUtil.success(activities);
+    }
+
+    @Autowired
+    public void setLearningService(LearningService learningService) {
+        this.learningService = learningService;
+    }
+    @Autowired
+    public void setFileUploadService(FileUploadService fileUploadService) {
+        this.fileUploadService = fileUploadService;
     }
 }

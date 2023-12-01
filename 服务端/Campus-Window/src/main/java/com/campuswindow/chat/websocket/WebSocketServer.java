@@ -1,6 +1,8 @@
 package com.campuswindow.chat.websocket;
 
 import com.alibaba.fastjson.JSON;
+import com.campuswindow.chat.entity.ChatMessage;
+import com.campuswindow.chat.service.ChatForService;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -15,6 +17,8 @@ public class WebSocketServer {
     private static Map<String, Session> clients = new ConcurrentHashMap<>();
     private String userId;
     private static Integer number = 0;//在线用户数
+    public static ChatForService chatForService;
+    boolean flag = false;
 
     @OnOpen
     public void OnOpen(Session session, @PathParam("userId") String userId){
@@ -33,14 +37,14 @@ public class WebSocketServer {
 
     @OnMessage
     public void onMessage(String message) {
-//        Msg msg = JSON.parseObject(message, Msg.class);
-        sendMessageToAll(message);
-//        if (msg.getType() == 1){
-//            System.out.println("朕来");
-//            sendMessageToOne(msg.getToUserId(), message);
-//        }else {
-//            sendMessageToAll(message);
-//        }
+        ChatMessage chatMessage = JSON.parseObject(message, ChatMessage.class);
+        String toUserId = chatMessage.getToUserId();
+        if (toUserId == null){
+            sendMessageToAll(message);
+        }else {
+            sendMessageToOne(chatMessage.getToUserId(), message);
+        }
+        chatForService.saveMessage(flag, chatMessage);
     }
 
     @OnError
@@ -60,6 +64,9 @@ public class WebSocketServer {
         for (Map.Entry<String, Session> entry : clients.entrySet()) {
             if (entry.getKey().equals(toUserId)){
                 entry.getValue().getAsyncRemote().sendText(message);
+                chatForService.clearUnread(userId, toUserId);
+                flag = true;
+                break;
             }
         }
     }
