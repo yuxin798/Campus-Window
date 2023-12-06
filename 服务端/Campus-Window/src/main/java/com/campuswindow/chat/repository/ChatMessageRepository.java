@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, String>, JpaSpecificationExecutor<ChatMessage> {
 
     Page<ChatMessage> findAllByFromUserIdAndToUserId(Pageable pageable, String fromUserId, String toUserId);
@@ -18,4 +20,8 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, String
     @Query(value = "update chat_message set is_latest = false where link_id = ?1", nativeQuery = true)
     @Modifying
     void updateMessageStatus(String linkId);
+
+    @Query(value = "select * from chat_message where from_user_id = ?1 or from_user_id = ?2 order by send_time asc ",nativeQuery = true)
+    List<ChatMessage> findAll(String fromUserId, String toUserId);
+
 }

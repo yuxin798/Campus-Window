@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatMessageDto {
-    private String sendUserId;
-    //信息内容
+    private String fromUserId;
+    //接收者
+    private String toUserId;
+    //内容
     private String content;
-    //发送时间
-    private Timestamp sendTime;
+
 }

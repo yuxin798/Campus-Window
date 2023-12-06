@@ -2,7 +2,9 @@ package com.campuswindow.activity.mate.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,6 +15,8 @@ import java.sql.Timestamp;
 @Table(name = "tbl_activity_mate")
 @Data
 @Schema(name = "搭子活动")
+@AllArgsConstructor
+@NoArgsConstructor
 public class MateActivity {
     @Id
     @Schema(name = "活动Id")
@@ -30,4 +34,6 @@ public class MateActivity {
     private String avatar;
     @Schema(name = "学校")
     private String school;
+    @Schema(name = "点赞数")
+    private int love;
 }

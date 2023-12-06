@@ -3,15 +3,14 @@ package com.campuswindow.activity.mate.controller;
 import com.campuswindow.activity.mate.dto.MateActivityDto;
 import com.campuswindow.activity.mate.entity.MateActivity;
 import com.campuswindow.activity.mate.service.MateService;
+import com.campuswindow.activity.mate.vo.MateActivityVo;
 import com.campuswindow.fileupload.FileUploadService;
-import com.campuswindow.utils.MinioConstant;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.util.List;
@@ -27,17 +26,9 @@ public class MateController {
     @GetMapping("/findAll")
     @Operation(summary = "查询所有数据")
     public Result findAll(){
-        List<MateActivity> activities = mateService.findAll();
+        List<MateActivityVo> activities = mateService.findAll();
         return ResultVOUtil.success(activities);
     }
-
-    @PostMapping("/avatar")
-    @Operation(summary = "上传文件")
-    public Result<String> avatar(MultipartFile file) {
-        String url = fileUploadService.save(file, MinioConstant.MATES_ROOT_PATH);
-        return ResultVOUtil.success(url);
-    }
-
     @PostMapping("/sendActivity")
     @Operation(summary = "发帖")
     public Result sendActivity(@RequestBody MateActivityDto mateActivityDto) throws ParseException {
@@ -55,8 +46,22 @@ public class MateController {
     @GetMapping("/selectActivity")
     @Operation(summary = "根据userId查询某个人的所有帖子")
     public Result selectActivity(String userId){
-        List<MateActivity> activities = mateService.selectActivity(userId);
+        List<MateActivityVo> activities = mateService.selectActivity(userId);
         return ResultVOUtil.success(activities);
+    }
+
+    @GetMapping("/addLove")
+    @Operation(summary = "点赞")
+    public Result addLove(String activityId){
+        mateService.addLove(activityId);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/decreaseLove")
+    @Operation(summary = "取消点赞")
+    public Result decreaseLove(String activityId){
+        mateService.decreaseLove(activityId);
+        return ResultVOUtil.success();
     }
 
     @Autowired

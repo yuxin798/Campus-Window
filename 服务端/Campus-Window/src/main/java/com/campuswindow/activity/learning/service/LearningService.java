@@ -1,58 +1,91 @@
 package com.campuswindow.activity.learning.service;
 
+import com.campuswindow.activity.activityimage.service.ActivityImageService;
 import com.campuswindow.activity.learning.dto.LearningActivityDto;
 import com.campuswindow.activity.learning.entity.LearningActivity;
 import com.campuswindow.activity.learning.repository.LearningRepository;
+import com.campuswindow.activity.learning.vo.LearningActivityVo;
 import com.campuswindow.user.entity.User;
 import com.campuswindow.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class LearningService {
 
-    private LearningRepository repository;
-    @Autowired
+    private LearningRepository learningRepository;
     private UserRepository userRepository;
-    public List<LearningActivity> findAll() {
-        Sort.Order order = Sort.Order.desc("date");
-        Sort sort = Sort.by(order);
-        return repository.findAll(sort);
-    }
+    private ActivityImageService activityImageService;
+
+    /*
+     * 发帖
+     */
     public LearningActivity sendActivity(LearningActivityDto learningActivityDto) throws ParseException {
-        LearningActivity learningActivity = new LearningActivity();
-        learningActivity.setActivityId(UUID.randomUUID().toString().replaceAll("-", ""));
-        learningActivity.setDate(new Timestamp(System.currentTimeMillis()));
-        learningActivity.setActivityTitle(learningActivityDto.getActivityTitle());
-        learningActivity.setActivityContent(learningActivityDto.getActivityContent());
-        learningActivity.setUserId(learningActivityDto.getUserId());
-        User user = userRepository.findUserNameAndAvatarAndSchoolByUserId(learningActivity.getUserId());
-        learningActivity.setUserName(user.getUserName());
-        learningActivity.setAvatar(user.getAvatar());
-        learningActivity.setSchool(user.getSchool());
-        LearningActivity save = repository.save(learningActivity);
+        String activityId = UUID.randomUUID().toString().replaceAll("-", "");
+        Timestamp sendTime = new Timestamp(System.currentTimeMillis());
+        User user = userRepository.findUserNameAndAvatarAndSchoolByUserId(learningActivityDto.getUserId());
+        LearningActivity learningActivity = new LearningActivity(activityId, learningActivityDto.getActivityTitle(), learningActivityDto.getActivityContent(), sendTime, learningActivityDto.getUserId(), user.getUserName(), user.getAvatar(), user.getSchool(), 0);
+        LearningActivity save = learningRepository.save(learningActivity);
+        activityImageService.updateActivityIdByUserId(activityId, learningActivityDto.getUserId());
         return save;
     }
 
-    public List<LearningActivity> selectActivity(String userId) {
-        Sort.Order order = Sort.Order.desc("date");
-        Sort sort = Sort.by(order);
-        List<LearningActivity> activities =  repository.findActivityByUserId(userId, sort);
-        return activities;
+    /*
+     * 删帖
+     */
+    public void deleteActivity(String activityId) {
+        learningRepository.deleteById(activityId);
     }
 
-    public void deleteActivity(String activityId) {
-        repository.deleteById(activityId);
+    /*
+     * 查询所有学术帖子
+     */
+    public List<LearningActivityVo> findAll() {
+        List<LearningActivityVo> learningActivityVos = learningRepository.findAllOderByDate()
+                .stream().peek(e -> e.setActivityImages(activityImageService.findActivityImageByActivityId(e.getActivityId()))).collect(Collectors.toList());
+        return learningActivityVos;
+    }
+
+    /*
+     * 根据userId查询某个人的所有帖子
+     */
+    public List<LearningActivityVo> selectActivity(String userId) {
+        return learningRepository.findActivityByUserId(userId)
+                .stream().peek(e -> e.setActivityImages(activityImageService.findActivityImageByActivityId(e.getActivityId())))
+                .collect(Collectors.toList());
+    }
+
+    /*
+     * 点赞
+     */
+    public void addLove(String activityId) {
+        learningRepository.updateLove(activityId, 1);
+    }
+    /*
+     * 取消点赞
+     */
+    public void decreaseLove(String activityId) {
+        learningRepository.updateLove(activityId, -1);
     }
 
     @Autowired
-    public void setRepository(LearningRepository repository) {
-        this.repository = repository;
+    public void setLearningRepository(LearningRepository learningRepository) {
+        this.learningRepository = learningRepository;
+    }
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+    @Autowired
+    public void setActivityImageService(ActivityImageService activityImageService) {
+        this.activityImageService = activityImageService;
     }
 }

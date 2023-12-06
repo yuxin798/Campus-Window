@@ -13,13 +13,13 @@ import java.sql.Timestamp;
 @Data
 public class ChatLink {
     @Id
+    private String id;
     //关系表id
     private String linkId;
     //发送者
     private String fromUserId;
     //接收者
     private String toUserId;
-    private String groupId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Timestamp createTime;
 
