@@ -5,7 +5,6 @@ import com.campuswindow.activity.entertainment.dto.EntertainmentActivityDto;
 import com.campuswindow.activity.entertainment.entity.EntertainmentActivity;
 import com.campuswindow.activity.entertainment.repository.EntertainmentRepository;
 import com.campuswindow.activity.entertainment.vo.EntertainmentActivityVo;
-import com.campuswindow.user.entity.User;
 import com.campuswindow.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,17 +33,14 @@ public class EntertainmentService {
         String activityId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp sendTime = new Timestamp(System.currentTimeMillis());
         activityImageService.updateActivityIdByUserId(activityId, entertainmentActivityDto.getUserId());
-        User user = userRepository.findUserNameAndAvatarAndSchoolByUserId(entertainmentActivityDto.getUserId());
-        EntertainmentActivity entertainmentActivity = new EntertainmentActivity(activityId, entertainmentActivityDto.getActivityTitle(), entertainmentActivityDto.getActivityContent(), sendTime, entertainmentActivityDto.getUserId(), user.getUserName(), user.getAvatar(), user.getSchool(), 0);
+        EntertainmentActivity entertainmentActivity = new EntertainmentActivity(activityId, entertainmentActivityDto.getActivityTitle(), entertainmentActivityDto.getActivityContent(), sendTime, entertainmentActivityDto.getUserId(), 0);
         EntertainmentActivity save = entertainmentRepository.save(entertainmentActivity);
-
         return save;
     }
 
     public List<EntertainmentActivityVo> selectActivity(String userId) {
-        List<EntertainmentActivityVo> entertainmentActivityVos = entertainmentRepository.findActivityByUserId(userId)
+        return entertainmentRepository.findActivityByUserId(userId)
                 .stream().peek(e -> e.setActivityImages(activityImageService.findActivityImageByActivityId(e.getActivityId()))).collect(Collectors.toList());
-        return entertainmentActivityVos;
     }
 
     public void deleteActivity(String activityId) {

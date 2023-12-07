@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,6 +22,16 @@ public class CommentVo {
     private Date sendTime;
     private String userName;
     private String avatar;
-//    private List<String> images;
+    private List<String> commentImages;
 
+    public CommentVo(String commentId, String activityId, String userId, String content, int love, Date sendTime, String userName, String avatar) {
+        this.commentId = commentId;
+        this.activityId = activityId;
+        this.userId = userId;
+        this.content = content;
+        this.love = love;
+        this.sendTime = sendTime;
+        this.userName = userName;
+        this.avatar = avatar;
+    }
 }

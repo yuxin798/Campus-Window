@@ -1,7 +1,7 @@
-package com.campuswindow.activity.activityimage.controller;
+package com.campuswindow.activity.commentimage.controller;
 
-import com.campuswindow.activity.activityimage.entity.ActivityImage;
-import com.campuswindow.activity.activityimage.service.ActivityImageService;
+import com.campuswindow.activity.commentimage.entity.CommentImage;
+import com.campuswindow.activity.commentimage.service.CommentImageService;
 import com.campuswindow.fileupload.FileUploadService;
 import com.campuswindow.utils.MinioConstant;
 import com.campuswindow.utils.ResultVOUtil;
@@ -18,20 +18,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/activity")
-@Tag(name = "帖子文件处理接口")
-public class UploadImageAndViedoController {
-
+@RequestMapping("/comment")
+@Tag(name = "评论文件处理接口")
+public class CommentImageController {
     private FileUploadService fileUploadService;
-    private ActivityImageService activityImageService;
+    private CommentImageService commentImageService;
 
     @Autowired
     public void setFileUploadService(FileUploadService fileUploadService) {
         this.fileUploadService = fileUploadService;
     }
     @Autowired
-    public void setActivityService(ActivityImageService activityImageService) {
-        this.activityImageService = activityImageService;
+    public void setCommentImageService(CommentImageService commentImageService) {
+        this.commentImageService = commentImageService;
     }
 
     @PostMapping("/avatar")
@@ -40,27 +39,21 @@ public class UploadImageAndViedoController {
         String url =  fileUploadService.save(file, MinioConstant.ACTIVITY_ROOT_PATH);
         String suffix = url.substring(url.lastIndexOf(".") + 1);
         String imageId = UUID.randomUUID().toString().replace("-", "");
-        ActivityImage activityImage = new ActivityImage(imageId, null, userId, url, -1);;
+        CommentImage commentImage = new CommentImage(imageId, null, userId, url, -1);;
         if (suffix.equals("mp4")){
-            activityImage.setType(1);
+            commentImage.setType(1);
         }else {
-            activityImage.setType(0);
+            commentImage.setType(0);
         }
-        activityImageService.saveActivityImage(activityImage);
+        commentImageService.saveCommentImage(commentImage);
         return ResultVOUtil.success(url);
     }
 
-    @GetMapping("/deleteActivityImage")
+    @GetMapping("/deleteCommentImage")
     @Operation(summary = "删除文件")
-    public Result deleteActivityImage(String userId) {
-        activityImageService.deleteActivityImageByUserId(userId);
+    public Result deleteCommentImage(String userId) {
+        commentImageService.deleteCommentImageByUserId(userId);
         return ResultVOUtil.success();
     }
 
-    @GetMapping("/deleteActivityImageByImage")
-    @Operation(summary = "删除文件根据图片URL")
-    public Result deleteActivityImageByImage(String image) {
-        activityImageService.deleteActivityImageByImage(image);
-        return ResultVOUtil.success();
-    }
 }

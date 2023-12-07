@@ -13,7 +13,7 @@ public interface CommentRepository extends JpaRepository<Comment, String> {
 //    @Query(value = "select ", nativeQuery = true)
 //    void findAllByUserId(String userId);
 
-    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentVo(c.commentId, c.activityId, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar) from Comment as c join User as u on c.userId = u.userId where c.activityId = ?1")
+    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentVo(c.commentId, c.activityId, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar) from Comment as c join User as u on c.userId = u.userId where c.activityId = ?1 order by c.love desc, c.sendTime desc ")
     List<CommentVo> findAllByActivityId(String activityId);
 
 

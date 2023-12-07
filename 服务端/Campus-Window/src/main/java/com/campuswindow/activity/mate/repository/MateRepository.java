@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface MateRepository extends JpaRepository<MateActivity, String> {
 
-    @Query(value = "select new com.campuswindow.activity.mate.vo.MateActivityVo(activityId, activityTitle, activityContent, date, userId, userName, avatar, school, love) from MateActivity where userId = ?1 order by date desc")
+    @Query(value = "select new com.campuswindow.activity.mate.vo.MateActivityVo(m.activityId, m.activityTitle, m.activityContent, m.date, m.userId, u.userName, u.avatar, u.school, m.love) from MateActivity as m join User as u on m.userId = u.userId where m.userId = ?1 order by m.date desc")
     List<MateActivityVo> findActivityByUserId(String userId);
 
     @Query(value = "update tbl_activity_mate set love = love + ?2 where activity_id = ?1", nativeQuery = true)
     @Modifying
     void updateLove(String activityId, int i);
 
-    @Query(value = "select new com.campuswindow.activity.mate.vo.MateActivityVo(activityId, activityTitle, activityContent, date, userId, userName, avatar, school, love) from MateActivity order by date desc ")
+    @Query(value = "select new com.campuswindow.activity.mate.vo.MateActivityVo(m.activityId, m.activityTitle, m.activityContent, m.date, m.userId, u.userName, u.avatar, u.school, m.love) from MateActivity as m join User as u on m.userId = u.userId order by m.date desc ")
     List<MateActivityVo> findAllOderByDate();
 }

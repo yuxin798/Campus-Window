@@ -46,6 +46,8 @@ campus-window:
       "[image/jpeg]": jpeg
       "[image/gif]": gif
       "[video/mp4]": mp4
-
+#logging:
+#  level:
+#    web: trace
 
 

@@ -40,6 +40,9 @@ public class ActivityImageService {
         activityImageRepository.deleteActivityImageByUserId(userId);
     }
 
+    /*
+     * 根据activityId 查询 tbl_activity_image 表中的图片URL
+     */
     public List<String> findActivityImageByActivityId(String activityId){
         return activityImageRepository.findActivityImageByActivityId(activityId);
     }
@@ -49,5 +52,12 @@ public class ActivityImageService {
      */
     public void deleteActivityImageByActivityId(String activityId){
         activityImageRepository.deleteActivityImageByActivityId(activityId);
+    }
+
+    /*
+     * 用户点击图片右上角的×号，根据图片URL删除 tbl_activity_image 表中的图片数据
+     */
+    public void deleteActivityImageByImage(String image){
+        activityImageRepository.deleteActivityImageByImage(image);
     }
 }

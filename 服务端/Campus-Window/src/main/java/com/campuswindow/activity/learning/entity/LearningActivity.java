@@ -30,10 +30,6 @@ public class LearningActivity {
     private Timestamp date;
     @Schema(name = "所属用户Id")
     private String userId;
-    private String userName;
-    private String avatar;
-    @Schema(name = "学校")
-    private String school;
     @Schema(name = "点赞数")
     private int love;
 }

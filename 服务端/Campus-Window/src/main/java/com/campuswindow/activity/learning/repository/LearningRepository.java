@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface LearningRepository extends JpaRepository<LearningActivity, String> {
 
-    @Query(value = "select new com.campuswindow.activity.learning.vo.LearningActivityVo(activityId, activityTitle, activityContent, date, userId, userName, avatar, school, love) from LearningActivity order by date desc ")
+    @Query(value = "select new com.campuswindow.activity.learning.vo.LearningActivityVo(l.activityId, l.activityTitle, l.activityContent, l.date, l.userId, u.userName, u.avatar, u.school, l.love) from LearningActivity as l join User as u on l.userId = u.userId where l.userId = ?1 order by l.date desc ")
     List<LearningActivityVo> findActivityByUserId(String userId);
 
     @Query(value = "update tbl_activity_learning set love = love + ?2 where activity_id = ?1", nativeQuery = true)
     @Modifying
     void updateLove(String activityId, int flag);
 
-    @Query(value = "select new com.campuswindow.activity.learning.vo.LearningActivityVo(activityId, activityTitle, activityContent, date, userId, userName, avatar, school, love) from LearningActivity order by date desc ")
+    @Query(value = "select new com.campuswindow.activity.learning.vo.LearningActivityVo(l.activityId, l.activityTitle, l.activityContent, l.date, l.userId, u.userName, u.avatar, u.school, l.love) from LearningActivity as l join User as u on l.userId = u.userId order by l.date desc ")
     List<LearningActivityVo> findAllOderByDate();
 }

@@ -27,12 +27,11 @@ CREATE TABLE `chat_list` (
   `link_id` varchar(255) NOT NULL COMMENT '聊天主表id',
   `from_user_id` varchar(30) NOT NULL COMMENT '发送者',
   `to_user_id` varchar(30) NOT NULL COMMENT '接收者',
-  `to_user_name` varchar(100) DEFAULT NULL,
-  `to_user_avatar` varchar(100) DEFAULT NULL,
+  `from_window` tinyint(4) DEFAULT NULL,
+  `to_window` tinyint(4) DEFAULT NULL,
   `last_msg` varchar(100) DEFAULT NULL,
   `unread` int(11) DEFAULT NULL COMMENT '未读数',
   `status` tinyint(1) DEFAULT NULL COMMENT '是否删除',
-  `group_id` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`list_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -43,7 +42,7 @@ CREATE TABLE `chat_list` (
 
 LOCK TABLES `chat_list` WRITE;
 /*!40000 ALTER TABLE `chat_list` DISABLE KEYS */;
-INSERT INTO `chat_list` VALUES ('1','1','1','2','2','2','2',0,0,NULL);
+INSERT INTO `chat_list` VALUES ('1','3ed9aafaeaad46d1a89f8735a4563486','1','2',0,0,'广告词',0,1),('2','3ed9aafaeaad46d1a89f8735a4563486','2','1',0,0,'广告词',0,1);
 /*!40000 ALTER TABLE `chat_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,7 +61,6 @@ CREATE TABLE `chat_message` (
   `content` varchar(255) NOT NULL COMMENT '聊天内容',
   `send_time` datetime NOT NULL COMMENT '发送时间',
   `type` int(11) NOT NULL COMMENT '消息类型',
-  `is_latest` tinyint(4) DEFAULT NULL COMMENT '是否为最后一条信息',
   PRIMARY KEY (`message_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -73,7 +71,7 @@ CREATE TABLE `chat_message` (
 
 LOCK TABLES `chat_message` WRITE;
 /*!40000 ALTER TABLE `chat_message` DISABLE KEYS */;
-INSERT INTO `chat_message` VALUES ('2ab1fd1f83204dada26cb5ddfb509fcd','1','1','2','hello','2023-12-01 13:04:57',0,NULL),('68ed09af3d994120883ee27a536e101c','1','1','2','hello','2023-12-01 13:00:52',0,0),('7792c8445eea4f76a6b45bbf852b2c68','1','1','2','hello','2023-12-01 13:03:15',0,0),('b463bc363bab427c8c2e2a05017f1e5c','1','1','2','hello','2023-12-01 13:03:00',0,0);
+INSERT INTO `chat_message` VALUES ('114894428cde4e6db762aedd5750c4fb','3ed9aafaeaad46d1a89f8735a4563486','1','2','313131','2023-12-05 21:59:04',0),('14a0169524c5451eaebc430a77b67df4','3ed9aafaeaad46d1a89f8735a4563486','1','2','2424242','2023-12-05 22:36:21',0),('1e72cae6c7de4fb79713306a5c25fb2a','3ed9aafaeaad46d1a89f8735a4563486','2','1','2222','2023-12-05 22:36:19',0),('1fb81f4afe4040608d963081f8bee9a1','3ed9aafaeaad46d1a89f8735a4563486','1','2','13131','2023-12-05 22:00:44',0),('3ead4613138e333341313563486','3ed9aafaeaad46d1a89f8735a4563486','2','1','bbb1','1970-01-21 00:43:06',0),('3f0462c79ed7468b84b1e0f40be23050','3ed9aafaeaad46d1a89f8735a4563486','1','2','213131','2023-12-05 22:35:13',0),('402eb0e57cc64b8bb64cb97c8e2b087b','3ed9aafaeaad46d1a89f8735a4563486','2','1','2424','2023-12-05 22:50:45',0),('40c54640d7dc4c4993aaa189cf7a2423','3ed9aafaeaad46d1a89f8735a4563486','2','1','广告词','2023-12-05 22:51:21',0),('41893ac4a59d43879437aaf71fa02e2c','3ed9aafaeaad46d1a89f8735a4563486','2','1','111111111111111111','2023-12-05 22:35:12',0),('427829126c2d4642871b5cfb7f136d32','3ed9aafaeaad46d1a89f8735a4563486','1','2','13131','2023-12-05 21:41:56',0),('4b93e828ef21414cade4dec22863f9c5','3ed9aafaeaad46d1a89f8735a4563486','1','2','aaaaaaaaaaaa','2023-12-05 22:35:21',0),('4cba5177e931407687e621fae3b28905','3ed9aafaeaad46d1a89f8735a4563486','1','2','13131','2023-12-05 21:44:45',0),('81d98397d7a547f6a6c4ead5b572942f','3ed9aafaeaad46d1a89f8735a4563486','1','2','1321','2023-12-05 21:42:13',0),('847ac969c55f4a80ad66a61d6472fdf2','3ed9aafaeaad46d1a89f8735a4563486','1','2','23131','2023-12-05 22:33:34',0),('847f4311dd784ad18f60e182ab8f1001','3ed9aafaeaad46d1a89f8735a4563486','1','2','3131','2023-12-05 22:51:05',0),('899439f5fb334096a6c4f4c90dbfab3b','3ed9aafaeaad46d1a89f8735a4563486','1','2','`2`2','2023-12-05 22:39:08',0),('90786c3f016144609077e89a2c41dbad','3ed9aafaeaad46d1a89f8735a4563486','2','1','13131','2023-12-05 22:35:19',0),('91f59a4ca48044a48b68e26bacf49d49','3ed9aafaeaad46d1a89f8735a4563486','2','1','313131','2023-12-05 22:51:06',0),('9d13a4e36bde4640b8b7524fa03043b4','3ed9aafaeaad46d1a89f8735a4563486','2','1','131313','2023-12-05 22:47:27',0),('9e39c27d971740d78f04b0ef7672049c','3ed9aafaeaad46d1a89f8735a4563486','1','2','w ao\n','2023-12-05 22:51:21',0),('da393642fd1845c5bc3cbe537d23d86e','3ed9aafaeaad46d1a89f8735a4563486','1','2','13131','2023-12-05 22:33:27',0);
 /*!40000 ALTER TABLE `chat_message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,11 +83,12 @@ DROP TABLE IF EXISTS `chat_user_link`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chat_user_link` (
+  `id` varchar(100) NOT NULL,
   `link_id` varchar(255) NOT NULL COMMENT '聊天主表id',
   `from_user_id` varchar(30) NOT NULL COMMENT '发送者',
   `to_user_id` varchar(30) DEFAULT NULL COMMENT '接收者',
   `create_time` datetime DEFAULT NULL COMMENT '创建关联时间',
-  PRIMARY KEY (`link_id`) USING BTREE
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -99,33 +98,8 @@ CREATE TABLE `chat_user_link` (
 
 LOCK TABLES `chat_user_link` WRITE;
 /*!40000 ALTER TABLE `chat_user_link` DISABLE KEYS */;
-INSERT INTO `chat_user_link` VALUES ('1','1','2','2023-11-29 19:40:23');
+INSERT INTO `chat_user_link` VALUES ('72e420d0fcc94803a2772c3161d09cf1','3ed9aafaeaad46d1a89f8735a4563486','1','2','2023-12-03 21:33:44'),('be6553b1bc694fc38f907827db8bfe53','3ed9aafaeaad46d1a89f8735a4563486','2','1','2023-12-03 21:33:44');
 /*!40000 ALTER TABLE `chat_user_link` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `chat_user_link_group`
---
-
-DROP TABLE IF EXISTS `chat_user_link_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `chat_user_link_group` (
-  `public_id` varchar(100) DEFAULT NULL,
-  `group_id` varchar(100) DEFAULT NULL,
-  `user_id` varchar(100) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `chat_user_link_group`
---
-
-LOCK TABLES `chat_user_link_group` WRITE;
-/*!40000 ALTER TABLE `chat_user_link_group` DISABLE KEYS */;
-INSERT INTO `chat_user_link_group` VALUES ('a64ecb07dd8f4bacba54fe8e732d44f1','8b7048a2ba2c4cce883e8fb67098b6f9','1','2023-12-01 12:35:15'),('7c476f456183466f8bd3c77626e02753','8b7048a2ba2c4cce883e8fb67098b6f9','2','2023-12-01 12:35:15'),('ae6f2ae966504c769b6d43f0445c89a7','3d73234892734a86b249ae15eb882e14','1','2023-12-01 12:35:34'),('fb2c6a95d07c432c9139ef7cd55e06ab','3d73234892734a86b249ae15eb882e14','2','2023-12-01 12:35:34');
-/*!40000 ALTER TABLE `chat_user_link_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -140,10 +114,8 @@ CREATE TABLE `tbl_activity_entertainment` (
   `activity_title` varchar(32) DEFAULT NULL,
   `activity_content` varchar(255) DEFAULT NULL,
   `date` datetime NOT NULL,
-  `user_id` varchar(32) DEFAULT NULL,
-  `user_name` varchar(100) DEFAULT NULL,
-  `avatar` varchar(100) DEFAULT NULL,
-  `school` varchar(100) DEFAULT NULL,
+  `user_id` varchar(32) NOT NULL,
+  `love` int(11) DEFAULT NULL,
   PRIMARY KEY (`activity_id`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -155,6 +127,33 @@ CREATE TABLE `tbl_activity_entertainment` (
 LOCK TABLES `tbl_activity_entertainment` WRITE;
 /*!40000 ALTER TABLE `tbl_activity_entertainment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `tbl_activity_entertainment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_activity_image`
+--
+
+DROP TABLE IF EXISTS `tbl_activity_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tbl_activity_image` (
+  `image_id` varchar(100) NOT NULL,
+  `activity_id` varchar(100) DEFAULT NULL,
+  `user_id` varchar(100) DEFAULT NULL,
+  `image` varchar(100) DEFAULT NULL,
+  `type` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`image_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_activity_image`
+--
+
+LOCK TABLES `tbl_activity_image` WRITE;
+/*!40000 ALTER TABLE `tbl_activity_image` DISABLE KEYS */;
+INSERT INTO `tbl_activity_image` VALUES ('10c7a6d377fa41daaa64818434cc7e4b',NULL,'1','http://192.168.144.132:9000/campus-bucket/activity/842997f973904776a064309dfc2c3553.jpeg',0),('843075dfc97843588c90c2959761937f',NULL,'1','http://192.168.144.132:9000/campus-bucket/activity/3f612a1f83d54298b9e5a1ab8f29c2f8.mp4',1);
+/*!40000 ALTER TABLE `tbl_activity_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -170,9 +169,7 @@ CREATE TABLE `tbl_activity_learning` (
   `activity_content` varchar(100) DEFAULT NULL,
   `date` datetime NOT NULL,
   `user_id` varchar(100) NOT NULL,
-  `user_name` varchar(100) DEFAULT NULL,
-  `avatar` varchar(100) DEFAULT NULL,
-  `school` varchar(100) DEFAULT NULL,
+  `love` int(11) DEFAULT NULL,
   PRIMARY KEY (`activity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -183,7 +180,7 @@ CREATE TABLE `tbl_activity_learning` (
 
 LOCK TABLES `tbl_activity_learning` WRITE;
 /*!40000 ALTER TABLE `tbl_activity_learning` DISABLE KEYS */;
-INSERT INTO `tbl_activity_learning` VALUES ('92b030446b6049a793afef6c927c9008','朕亲临','吾皇万岁万岁万岁','2023-11-30 23:01:19','1','1','http://192.168.144.132:9000/campus-bucket/entertainments/3395e117e9604001b1a4e14310926199.jpg','河北师范大学');
+INSERT INTO `tbl_activity_learning` VALUES ('c7654f7d823342418666e92f3a5d7b85','朕亲临','吾皇万岁万岁万岁','2023-12-06 21:26:37','1',0);
 /*!40000 ALTER TABLE `tbl_activity_learning` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,9 +197,7 @@ CREATE TABLE `tbl_activity_mate` (
   `activity_content` varchar(100) DEFAULT NULL,
   `date` datetime NOT NULL,
   `user_id` varchar(100) NOT NULL,
-  `user_name` varchar(100) DEFAULT NULL,
-  `avatar` varchar(100) DEFAULT NULL,
-  `school` varchar(100) DEFAULT NULL,
+  `love` int(11) DEFAULT NULL,
   PRIMARY KEY (`activity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -213,8 +208,63 @@ CREATE TABLE `tbl_activity_mate` (
 
 LOCK TABLES `tbl_activity_mate` WRITE;
 /*!40000 ALTER TABLE `tbl_activity_mate` DISABLE KEYS */;
-INSERT INTO `tbl_activity_mate` VALUES ('e1441cf6a87c411394b0789174900e06','朕亲临','吾皇万岁万岁万岁','2023-11-30 23:02:46','1','1','http://192.168.144.132:9000/campus-bucket/entertainments/3395e117e9604001b1a4e14310926199.jpg','河北师范大学');
+INSERT INTO `tbl_activity_mate` VALUES ('2178ee983d794566a7d04dbf2eafcff0','朕亲临','吾皇万岁万岁万岁','2023-12-06 21:36:11','2',0),('66b5211e9ab844fab34064a9edcac845','朕亲临','吾皇万岁万岁万岁','2023-12-06 21:36:09','1',0),('6dac7b6153a94eb9bef87719ebe97733','朕亲临','吾皇万岁万岁万岁','2023-12-06 21:35:16','1',0);
 /*!40000 ALTER TABLE `tbl_activity_mate` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_comment`
+--
+
+DROP TABLE IF EXISTS `tbl_comment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tbl_comment` (
+  `comment_id` varchar(100) NOT NULL,
+  `activity_id` varchar(100) DEFAULT NULL,
+  `user_id` varchar(100) DEFAULT NULL,
+  `content` varchar(100) DEFAULT NULL,
+  `love` int(11) DEFAULT NULL,
+  `send_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`comment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_comment`
+--
+
+LOCK TABLES `tbl_comment` WRITE;
+/*!40000 ALTER TABLE `tbl_comment` DISABLE KEYS */;
+INSERT INTO `tbl_comment` VALUES ('7234735d5e3d450f890633879109c7be','248772f1f42140c6a058cd774de0a17e','1','真tm帅',1,'2023-12-06 20:35:04');
+/*!40000 ALTER TABLE `tbl_comment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_comment_image`
+--
+
+DROP TABLE IF EXISTS `tbl_comment_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tbl_comment_image` (
+  `image_id` varchar(100) NOT NULL,
+  `comment_id` varchar(100) DEFAULT NULL,
+  `user_id` varchar(100) DEFAULT NULL,
+  `image` varchar(100) DEFAULT NULL,
+  `type` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`image_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_comment_image`
+--
+
+LOCK TABLES `tbl_comment_image` WRITE;
+/*!40000 ALTER TABLE `tbl_comment_image` DISABLE KEYS */;
+INSERT INTO `tbl_comment_image` VALUES ('93a3cc4c2d884f84a5df3ad37a07b03c','7234735d5e3d450f890633879109c7be','1','http://192.168.144.132:9000/campus-bucket/activity//eed26945f9fb4a09b6d3f6ea0788e4e6.jpeg',0),('a8014daaf4cc48e098fabe622f49829f','7234735d5e3d450f890633879109c7be','1','http://192.168.144.132:9000/campus-bucket/activity//d94d059500ae4725aa6f66ee28324699.jpeg',0);
+/*!40000 ALTER TABLE `tbl_comment_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -294,7 +344,7 @@ CREATE TABLE `tbl_user` (
 
 LOCK TABLES `tbl_user` WRITE;
 /*!40000 ALTER TABLE `tbl_user` DISABLE KEYS */;
-INSERT INTO `tbl_user` VALUES ('1','1','1@qq.com','1','河北师范大学','http://192.168.144.132:9000/campus-bucket/entertainments/3395e117e9604001b1a4e14310926199.jpg','2023-11-22 16:42:31'),('2','欲心','789@qq.com','123456','123','http://192.168.144.132:9000/campus-bucket/avatar/20231126/57accd755a0340c6b39e6e05569c494b.png','2023-11-22 17:15:10'),('f88d909b2fb9494abc3fcdb313bb87f0','zhjm','728753465@qq.com','521125','school','http://192.168.144.132:9000/campus-bucket/avatar/20231126/57accd755a0340c6b39e6e05569c494b.png','2023-11-22 16:42:31');
+INSERT INTO `tbl_user` VALUES ('1','1','1@qq.com','1','河北师范大学','http://192.168.144.132:9000/campus-bucket/activity/d53f823074fd48119944ef59613e7bca.jpeg','2023-11-22 16:42:31'),('2','欲心','789@qq.com','123456','123','http://192.168.144.132:9000/campus-bucket/activity/d53f823074fd48119944ef59613e7bca.jpeg','2023-11-22 17:15:10'),('f88d909b2fb9494abc3fcdb313bb87f0','zhjm','728753465@qq.com','521125','school','http://192.168.144.132:9000/campus-bucket/activity/d53f823074fd48119944ef59613e7bca.jpeg','2023-11-22 16:42:31');
 /*!40000 ALTER TABLE `tbl_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -311,4 +361,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-01 14:22:22
+-- Dump completed on 2023-12-07 17:38:40

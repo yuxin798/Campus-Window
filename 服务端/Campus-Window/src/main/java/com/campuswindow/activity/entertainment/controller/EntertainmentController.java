@@ -64,12 +64,10 @@ public class EntertainmentController {
         return ResultVOUtil.success();
     }
 
-
     @Autowired
     public void setEntertainmentService(EntertainmentService entertainmentService) {
         this.entertainmentService = entertainmentService;
     }
-
     @Autowired
     public void setFileUploadService(FileUploadService fileUploadService) {
         this.fileUploadService = fileUploadService;

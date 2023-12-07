@@ -5,7 +5,6 @@ import com.campuswindow.activity.mate.dto.MateActivityDto;
 import com.campuswindow.activity.mate.entity.MateActivity;
 import com.campuswindow.activity.mate.repository.MateRepository;
 import com.campuswindow.activity.mate.vo.MateActivityVo;
-import com.campuswindow.user.entity.User;
 import com.campuswindow.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +31,7 @@ public class MateService {
     public MateActivity sendActivity(MateActivityDto mateActivityDto) throws ParseException {
         String activityId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp sendTime = new Timestamp(System.currentTimeMillis());
-        User user = userRepository.findUserNameAndAvatarAndSchoolByUserId(mateActivityDto.getUserId());
-        MateActivity mateActivity = new MateActivity(activityId, mateActivityDto.getActivityTitle(), mateActivityDto.getActivityContent(), sendTime, mateActivityDto.getUserId(), user.getUserName(), user.getAvatar(), user.getSchool(), 0);
+        MateActivity mateActivity = new MateActivity(activityId, mateActivityDto.getActivityTitle(), mateActivityDto.getActivityContent(), sendTime, mateActivityDto.getUserId(), 0);
         MateActivity save = repository.save(mateActivity);
         activityImageService.updateActivityIdByUserId(activityId, mateActivityDto.getUserId());
         return save;

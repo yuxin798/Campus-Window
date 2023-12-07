@@ -5,7 +5,6 @@ import com.campuswindow.activity.learning.dto.LearningActivityDto;
 import com.campuswindow.activity.learning.entity.LearningActivity;
 import com.campuswindow.activity.learning.repository.LearningRepository;
 import com.campuswindow.activity.learning.vo.LearningActivityVo;
-import com.campuswindow.user.entity.User;
 import com.campuswindow.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +30,7 @@ public class LearningService {
     public LearningActivity sendActivity(LearningActivityDto learningActivityDto) throws ParseException {
         String activityId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp sendTime = new Timestamp(System.currentTimeMillis());
-        User user = userRepository.findUserNameAndAvatarAndSchoolByUserId(learningActivityDto.getUserId());
-        LearningActivity learningActivity = new LearningActivity(activityId, learningActivityDto.getActivityTitle(), learningActivityDto.getActivityContent(), sendTime, learningActivityDto.getUserId(), user.getUserName(), user.getAvatar(), user.getSchool(), 0);
+        LearningActivity learningActivity = new LearningActivity(activityId, learningActivityDto.getActivityTitle(), learningActivityDto.getActivityContent(), sendTime, learningActivityDto.getUserId(), 0);
         LearningActivity save = learningRepository.save(learningActivity);
         activityImageService.updateActivityIdByUserId(activityId, learningActivityDto.getUserId());
         return save;
