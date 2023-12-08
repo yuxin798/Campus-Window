@@ -1,5 +1,6 @@
 package com.campuswindow.activity.comment.vo;
 
+import com.campuswindow.activity.commentimage.entity.CommentImage;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,7 @@ public class CommentVo {
     private Date sendTime;
     private String userName;
     private String avatar;
-    private List<String> commentImages;
+    private List<CommentImage> commentImages;
 
     public CommentVo(String commentId, String activityId, String userId, String content, int love, Date sendTime, String userName, String avatar) {
         this.commentId = commentId;

@@ -20,6 +20,16 @@ public class CommentImageController {
     private FileUploadService fileUploadService;
     private CommentImageService commentImageService;
 
+    /*
+     * 评论文件处理接口
+     */
+    @PostMapping("/avatar")
+    @Operation(summary = "上传文件")
+    public Result<String> avatar(MultipartFile file) {
+        String url =  fileUploadService.save(file, MinioConstant.ACTIVITY_ROOT_PATH);
+        return ResultVOUtil.success(url);
+    }
+
     @Autowired
     public void setFileUploadService(FileUploadService fileUploadService) {
         this.fileUploadService = fileUploadService;
@@ -29,10 +39,4 @@ public class CommentImageController {
         this.commentImageService = commentImageService;
     }
 
-    @PostMapping("/avatar")
-    @Operation(summary = "上传文件")
-    public Result<String> avatar(MultipartFile file) {
-        String url =  fileUploadService.save(file, MinioConstant.ACTIVITY_ROOT_PATH);
-        return ResultVOUtil.success(url);
-    }
 }

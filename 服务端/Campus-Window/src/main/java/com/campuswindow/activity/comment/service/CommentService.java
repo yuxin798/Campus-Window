@@ -21,7 +21,7 @@ public class CommentService {
     private CommentImageService commentImageService;
 
     /*
-     * 发表评论
+     * 发表评论，同时将图片或视频网络地址保存到数据库中
      */
     public void addComment(CommentDto commentDto){
         String commentId = UUID.randomUUID().toString().replace("-", "");
@@ -41,7 +41,7 @@ public class CommentService {
     }
 
     /*
-     * 根据帖子Id查询所有评论，包含图片和视频，并根据点赞数和发表事件降序排序
+     * 根据帖子Id查询所有评论，包含图片和视频网络地址，并根据点赞数和发表事件降序排序
      */
     public List<CommentVo> findAllCommentsByActivityId(String activityId) {
         return commentRepository.findAllByActivityId(activityId)

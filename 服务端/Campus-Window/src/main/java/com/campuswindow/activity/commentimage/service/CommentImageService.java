@@ -15,11 +15,6 @@ public class CommentImageService {
 
     private CommentImageRepository commentImageRepository;
 
-    @Autowired
-    public void setCommentImageRepository(CommentImageRepository commentImageRepository) {
-        this.commentImageRepository = commentImageRepository;
-    }
-
     /*
      * 根据评论Id删除评论图片或视频
      * 用点：删评论时同时删除 tbl_activity_image 表中的图片数据
@@ -42,7 +37,12 @@ public class CommentImageService {
     /*
      * 根据评论Id查询评论图片或视频
      */
-    public List<String> findCommentImageByCommentId(String commentId){
+    public List<CommentImage> findCommentImageByCommentId(String commentId){
         return commentImageRepository.findCommentImageByCommentId(commentId);
+    }
+
+    @Autowired
+    public void setCommentImageRepository(CommentImageRepository commentImageRepository) {
+        this.commentImageRepository = commentImageRepository;
     }
 }
