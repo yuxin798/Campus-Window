@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 @Transactional
 public class CommentImageService {
@@ -17,29 +20,29 @@ public class CommentImageService {
         this.commentImageRepository = commentImageRepository;
     }
 
-    public void saveCommentImage(CommentImage commentImage) {
-        commentImageRepository.save(commentImage);
-    }
-
     /*
-     * 用户发表评论后，根据UserId 更改 tbl_activity_image 表中的commentId
-     */
-    public void updateCommentIdByUserId(String commentId, String userId){
-        commentImageRepository.updateCommentIdByUserId(commentId, userId);
-    }
-
-    /*
-     * 用户点击返回按键表明不再发帖，删除 tbl_activity_image 表中的无效的图片数据
-     */
-
-    public void deleteCommentImageByUserId(String userId) {
-        commentImageRepository.deleteCommentImageByUserId(userId);
-    }
-
-    /*
-     * 删帖时同时删除 tbl_activity_image 表中的图片数据
+     * 根据评论Id删除评论图片或视频
+     * 用点：删评论时同时删除 tbl_activity_image 表中的图片数据
      */
     public void deleteCommentImageByCommentId(String commentId){
         commentImageRepository.deleteCommentImageByCommentId(commentId);
+    }
+
+    /*
+     * 保存评论图片或视频 type 0 评论图片 1 评论视频
+     */
+    public void save(List<String> images, String contentId, String userId, int type){
+        for(String image : images){
+            String imageId = UUID.randomUUID().toString().replace("-", "");
+            CommentImage commentImage = new CommentImage(imageId, contentId, userId, image, type);
+            commentImageRepository.save(commentImage);
+        }
+    }
+
+    /*
+     * 根据评论Id查询评论图片或视频
+     */
+    public List<String> findCommentImageByCommentId(String commentId){
+        return commentImageRepository.findCommentImageByCommentId(commentId);
     }
 }

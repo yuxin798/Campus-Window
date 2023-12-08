@@ -1,5 +1,6 @@
 package com.campuswindow.activity.mate.vo;
 
+import com.campuswindow.activity.activityimage.entity.ActivityImage;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class MateActivityVo {
     private String avatar;
     private String school;
     private int love;
-    private List<String> activityImages;
+    private List<ActivityImage> activityImages;
 
     public MateActivityVo(String activityId, String activityTitle, String activityContent, Date date, String userId, String userName, String avatar, String school, int love) {
         this.activityId = activityId;

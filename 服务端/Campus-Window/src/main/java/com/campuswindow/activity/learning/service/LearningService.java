@@ -32,7 +32,8 @@ public class LearningService {
         Timestamp sendTime = new Timestamp(System.currentTimeMillis());
         LearningActivity learningActivity = new LearningActivity(activityId, learningActivityDto.getActivityTitle(), learningActivityDto.getActivityContent(), sendTime, learningActivityDto.getUserId(), 0);
         LearningActivity save = learningRepository.save(learningActivity);
-        activityImageService.updateActivityIdByUserId(activityId, learningActivityDto.getUserId());
+        activityImageService.save(learningActivityDto.getImages(), activityId, learningActivityDto.getUserId(), 0);
+        activityImageService.save(learningActivityDto.getVideos(), activityId, learningActivityDto.getUserId(), 1);
         return save;
     }
 
@@ -41,6 +42,7 @@ public class LearningService {
      */
     public void deleteActivity(String activityId) {
         learningRepository.deleteById(activityId);
+        activityImageService.deleteActivityImageByActivityId(activityId);
     }
 
     /*

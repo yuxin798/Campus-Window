@@ -1,7 +1,6 @@
 package com.campuswindow.activity.mate.controller;
 
 import com.campuswindow.activity.mate.dto.MateActivityDto;
-import com.campuswindow.activity.mate.entity.MateActivity;
 import com.campuswindow.activity.mate.service.MateService;
 import com.campuswindow.activity.mate.vo.MateActivityVo;
 import com.campuswindow.fileupload.FileUploadService;
@@ -32,7 +31,7 @@ public class MateController {
     @PostMapping("/sendActivity")
     @Operation(summary = "发帖")
     public Result sendActivity(@RequestBody MateActivityDto mateActivityDto) throws ParseException {
-        MateActivity newMateActivity = mateService.sendActivity(mateActivityDto);
+        mateService.sendActivity(mateActivityDto);
         return ResultVOUtil.success();
     }
 

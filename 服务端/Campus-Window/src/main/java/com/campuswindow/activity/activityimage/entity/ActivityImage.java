@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/*
+ * @description: 帖子图片视频实体类
+ */
 @Data
 @Entity
 @Table(name = "tbl_activity_image")

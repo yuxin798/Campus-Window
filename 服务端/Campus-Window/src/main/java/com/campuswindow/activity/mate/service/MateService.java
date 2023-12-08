@@ -33,7 +33,8 @@ public class MateService {
         Timestamp sendTime = new Timestamp(System.currentTimeMillis());
         MateActivity mateActivity = new MateActivity(activityId, mateActivityDto.getActivityTitle(), mateActivityDto.getActivityContent(), sendTime, mateActivityDto.getUserId(), 0);
         MateActivity save = repository.save(mateActivity);
-        activityImageService.updateActivityIdByUserId(activityId, mateActivityDto.getUserId());
+        activityImageService.save(mateActivityDto.getImages(), activityId, mateActivityDto.getUserId(), 0);
+        activityImageService.save(mateActivityDto.getVideos(), activityId, mateActivityDto.getUserId(), 1);
         return save;
     }
 
@@ -45,6 +46,7 @@ public class MateService {
 
     public void deleteActivity(String activityId) {
         repository.deleteById(activityId);
+        activityImageService.deleteActivityImageByActivityId(activityId);
     }
 
     public void addLove(String activityId) {

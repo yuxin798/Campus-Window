@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
+/*
+ * @description:评论返回前端实体类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

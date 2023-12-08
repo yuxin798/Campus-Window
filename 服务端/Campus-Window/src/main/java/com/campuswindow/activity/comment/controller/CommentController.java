@@ -22,11 +22,9 @@ public class CommentController {
 
     private CommentService commentService;
 
-    @Autowired
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
-    }
-
+    /*
+     * 发表评论，同时将上传的图片或视频保存到数据库
+     */
     @GetMapping("/addComment")
     @Operation(summary = "发表评论")
     public Result addComment(@RequestBody CommentDto commentDto){
@@ -34,6 +32,9 @@ public class CommentController {
         return ResultVOUtil.success();
     }
 
+    /*
+     * 根据评论Id删除评论，同时删除该评论所有的视频或图片
+     */
     @GetMapping("/deleteComment")
     @Operation(summary = "删除评论")
     public Result deleteComment(String commentId){
@@ -41,6 +42,9 @@ public class CommentController {
         return ResultVOUtil.success();
     }
 
+    /*
+     * 根据帖子Id查询所有评论
+     */
     @GetMapping("findAllCommentsByActivityId")
     @Operation(summary = "根据帖子Id查询所有评论")
     public Result<List<CommentVo>> findAllCommentsByActivityId(String activityId){
@@ -48,6 +52,9 @@ public class CommentController {
         return ResultVOUtil.success(comments);
     }
 
+    /*
+     * 点赞
+     */
     @GetMapping("/addLove")
     @Operation(summary = "点赞")
     public Result addLove(String commentId){
@@ -55,6 +62,9 @@ public class CommentController {
         return ResultVOUtil.success();
     }
 
+    /*
+     * 取消点赞
+     */
     @GetMapping("/decreaseLove")
     @Operation(summary = "取消点赞")
     public Result decreaseLove(String commentId){
@@ -68,5 +78,10 @@ public class CommentController {
 //        commentService.findAllComments(userId);
 //        return ResultVOUtil.success();
 //    }
+
+    @Autowired
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
 }

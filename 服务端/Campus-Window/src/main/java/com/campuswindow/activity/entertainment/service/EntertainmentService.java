@@ -32,9 +32,10 @@ public class EntertainmentService {
     public EntertainmentActivity sendActivity(EntertainmentActivityDto entertainmentActivityDto) throws ParseException {
         String activityId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp sendTime = new Timestamp(System.currentTimeMillis());
-        activityImageService.updateActivityIdByUserId(activityId, entertainmentActivityDto.getUserId());
         EntertainmentActivity entertainmentActivity = new EntertainmentActivity(activityId, entertainmentActivityDto.getActivityTitle(), entertainmentActivityDto.getActivityContent(), sendTime, entertainmentActivityDto.getUserId(), 0);
         EntertainmentActivity save = entertainmentRepository.save(entertainmentActivity);
+        activityImageService.save(entertainmentActivityDto.getImages(), activityId, entertainmentActivityDto.getUserId(), 0);
+        activityImageService.save(entertainmentActivityDto.getVideos(), activityId, entertainmentActivityDto.getUserId(), 1);
         return save;
     }
 

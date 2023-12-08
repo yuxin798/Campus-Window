@@ -9,7 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
-
+/*
+ * @description: 评论实体类
+ */
 @Data
 @Entity
 @Table(name = "tbl_comment")

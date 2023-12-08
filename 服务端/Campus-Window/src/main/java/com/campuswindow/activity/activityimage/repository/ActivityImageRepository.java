@@ -8,22 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ActivityImageRepository extends JpaRepository<ActivityImage, String> {
-
-    @Query(value = "update tbl_activity_image set activity_id = ?1 where user_id = ?2 and activity_id is null", nativeQuery = true)
-    @Modifying
-    void updateActivityIdByUserId(String activityId, String userId);
-
-    @Query(value = "delete from tbl_activity_image where user_id = ?1 and activity_id is null ", nativeQuery = true)
-    @Modifying
-    void deleteActivityImageByUserId(String userId);
+    /*
+     * 根据活动Id删除活动图片或视频
+     */
     @Query(value = "delete from tbl_activity_image where activity_id = ?1 ", nativeQuery = true)
     @Modifying
     void deleteActivityImageByActivityId(String activityId);
 
-    @Query(value = "delete from tbl_activity_image where image = ?1", nativeQuery = true)
-    @Modifying
-    void deleteActivityImageByImage(String image);
-
-    @Query(value = "select image from tbl_activity_image where activity_id = ?1",nativeQuery = true)
-    List<String> findActivityImageByActivityId(String activityId);
+    /*
+     * 根据活动Id查询活动图片或视频，且排序为视频在前，图片在后
+     */
+    @Query(value = "select * from tbl_activity_image where activity_id = ?1 order by type desc",nativeQuery = true)
+    List<ActivityImage> findActivityImageByActivityId(String activityId);
 }

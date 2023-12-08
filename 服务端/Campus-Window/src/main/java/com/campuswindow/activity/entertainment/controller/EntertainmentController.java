@@ -23,7 +23,7 @@ public class EntertainmentController {
     private FileUploadService fileUploadService;
 
     @GetMapping("/findAll")
-    @Operation(summary = "查询所有数据")
+    @Operation(summary = "查询所有娱乐帖子")
     public Result findAll(){
         List<EntertainmentActivityVo> activities = entertainmentService.findAll();
         return ResultVOUtil.success(activities);
