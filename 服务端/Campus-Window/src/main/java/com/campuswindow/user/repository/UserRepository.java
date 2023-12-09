@@ -16,8 +16,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     User findChatUserByUserId(String userId);
 
     @Modifying
-    @Query("update User set password = ?2 where userId = ?1")
-    void updatePasswordByUserId(String userId, String password);
+    @Query("update User set password = ?2 where email = ?1")
+    void updatePasswordByUserId(String email, String password);
 
     User findLoginDtoByEmail(String email);
 

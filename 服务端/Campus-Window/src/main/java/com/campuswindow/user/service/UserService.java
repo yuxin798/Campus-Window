@@ -74,18 +74,7 @@ public class UserService {
     }
 
     public void updatePassword(PasswordDto passwordDto) {
-        //验证邮箱验证码
-        String code = redisTemplate.opsForValue().get(RedisConstant.EMAIL_VALIDATE_CODE + passwordDto.getEmailCodeKey());
-        if (code == null || !code.equalsIgnoreCase(passwordDto.getEmailCode())){
-            throw new RuntimeException("邮箱验证码错误");
-        }
-        //两次密码是否一致
-        if (!passwordDto.getPassword().equals(passwordDto.getConfirmPassword())){
-            throw new RuntimeException("输入密码不一致");
-        }
-        //删除验证码
-        redisTemplate.delete(RedisConstant.EMAIL_VALIDATE_CODE + passwordDto.getEmailCodeKey());
-        userRepository.updatePasswordByUserId(passwordDto.getUserId(), passwordDto.getPassword());
+        userRepository.updatePasswordByUserId(passwordDto.getEmail(), passwordDto.getPassword());
     }
 
     public User existEmail(String email) {

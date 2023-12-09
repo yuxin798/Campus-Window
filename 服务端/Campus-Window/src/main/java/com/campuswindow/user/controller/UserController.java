@@ -74,6 +74,18 @@ public class UserController {
         mailSender.send(message);
         return ResultVOUtil.success(uuid);
     }
+
+    @PostMapping("/checkEmailCode")
+    @Operation(summary = "忘记密码发送验证码")
+    public Result<String> checkEmailCode(String code, String emailCodeKey){
+        String checkCode = redisTemplate.opsForValue().get(RedisConstant.EMAIL_VALIDATE_CODE + emailCodeKey);
+        if (!code.equals(checkCode)){
+            throw new RuntimeException("邮箱验证码错误");
+        }
+        redisTemplate.delete(RedisConstant.EMAIL_VALIDATE_CODE + emailCodeKey);
+        return ResultVOUtil.success();
+    }
+
     @PostMapping(path = "/register")
     @Operation(summary = "用户注册")
     public Result<User> register(@RequestBody @Valid RegisterDto registerDto, Errors errors){
