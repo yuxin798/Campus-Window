@@ -1,5 +1,7 @@
 package com.campuswindow.activity.mate.service;
 
+import com.campuswindow.activity.activity.entity.ActivityVo;
+import com.campuswindow.activity.activityimage.entity.ActivityImage;
 import com.campuswindow.activity.activityimage.service.ActivityImageService;
 import com.campuswindow.activity.mate.dto.MateActivityDto;
 import com.campuswindow.activity.mate.entity.MateActivity;
@@ -20,11 +22,11 @@ import java.util.stream.Collectors;
 @Transactional
 public class MateService {
 
-    private MateRepository repository;
+    private MateRepository mateRepository;
     private UserRepository userRepository;
     private ActivityImageService activityImageService;
     public List<MateActivityVo> findAll() {
-        return repository.findAllOderByDate()
+        return mateRepository.findAllOderByDate()
                 .stream().peek(e -> e.setActivityImages(activityImageService.findActivityImageByActivityId(e.getActivityId())))
                 .collect(Collectors.toList());
     }
@@ -32,34 +34,45 @@ public class MateService {
         String activityId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp sendTime = new Timestamp(System.currentTimeMillis());
         MateActivity mateActivity = new MateActivity(activityId, mateActivityDto.getActivityTitle(), mateActivityDto.getActivityContent(), sendTime, mateActivityDto.getUserId(), 0);
-        MateActivity save = repository.save(mateActivity);
+        MateActivity save = mateRepository.save(mateActivity);
         activityImageService.save(mateActivityDto.getImages(), activityId, mateActivityDto.getUserId(), 0);
         activityImageService.save(mateActivityDto.getVideos(), activityId, mateActivityDto.getUserId(), 1);
         return save;
     }
 
     public List<MateActivityVo> selectActivity(String userId) {
-        return repository.findActivityByUserId(userId)
+        return mateRepository.findActivityByUserId(userId)
                 .stream().peek(e -> e.setActivityImages(activityImageService.findActivityImageByActivityId(e.getActivityId())))
                 .collect(Collectors.toList());
     }
 
     public void deleteActivity(String activityId) {
-        repository.deleteById(activityId);
+        mateRepository.deleteById(activityId);
         activityImageService.deleteActivityImageByActivityId(activityId);
     }
 
+    public MateActivityVo findOneByActivityId(String activityId) {
+        MateActivityVo mateActivityVo = mateRepository.findOneByActivityId(activityId);
+        List<ActivityImage> images = activityImageService.findActivityImageByActivityId(activityId);
+        mateActivityVo.setActivityImages(images);
+        return mateActivityVo;
+    }
+
+    public List<ActivityVo> findAllLikeActivityTitle(String activityTitle){
+        return mateRepository.findAllLikeActivityTitle(activityTitle);
+    }
+
     public void addLove(String activityId) {
-        repository.updateLove(activityId, 1);
+        mateRepository.updateLove(activityId, 1);
     }
 
     public void decreaseLove(String activityId) {
-        repository.updateLove(activityId, -1);
+        mateRepository.updateLove(activityId, -1);
     }
 
     @Autowired
-    public void setRepository(MateRepository repository) {
-        this.repository = repository;
+    public void setRepository(MateRepository mateRepository) {
+        this.mateRepository = mateRepository;
     }
     @Autowired
     public void setUserRepository(UserRepository userRepository) {

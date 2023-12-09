@@ -1,5 +1,7 @@
 package com.campuswindow.activity.learning.service;
 
+import com.campuswindow.activity.activity.entity.ActivityVo;
+import com.campuswindow.activity.activityimage.entity.ActivityImage;
 import com.campuswindow.activity.activityimage.service.ActivityImageService;
 import com.campuswindow.activity.learning.dto.LearningActivityDto;
 import com.campuswindow.activity.learning.entity.LearningActivity;
@@ -61,6 +63,17 @@ public class LearningService {
         return learningRepository.findActivityByUserId(userId)
                 .stream().peek(e -> e.setActivityImages(activityImageService.findActivityImageByActivityId(e.getActivityId())))
                 .collect(Collectors.toList());
+
+    }
+    public List<ActivityVo> findAllLikeActivityTitle(String activityTitle){
+        return learningRepository.findAllLikeActivityTitle(activityTitle);
+    }
+
+    public LearningActivityVo findOneByActivityId(String activityId) {
+        LearningActivityVo learningActivityVo = learningRepository.findOneByActivityId(activityId);
+        List<ActivityImage> images = activityImageService.findActivityImageByActivityId(activityId);
+        learningActivityVo.setActivityImages(images);
+        return learningActivityVo;
     }
 
     /*

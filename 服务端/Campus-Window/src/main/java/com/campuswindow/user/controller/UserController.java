@@ -127,7 +127,7 @@ public class UserController {
     }
 
     @GetMapping("/findOne")
-    @Operation(summary = "根据用户Id查询用户")
+    @Operation(summary = "根据用户Id查询用户名字和头像")
     public Result<ChatUserDto> findOne(String userId){
         ChatUserDto chatUserDto = userService.findChatUserByUserId(userId);
         return ResultVOUtil.success(chatUserDto);

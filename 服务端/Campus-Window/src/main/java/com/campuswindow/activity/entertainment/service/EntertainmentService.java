@@ -1,5 +1,7 @@
 package com.campuswindow.activity.entertainment.service;
 
+import com.campuswindow.activity.activity.entity.ActivityVo;
+import com.campuswindow.activity.activityimage.entity.ActivityImage;
 import com.campuswindow.activity.activityimage.service.ActivityImageService;
 import com.campuswindow.activity.entertainment.dto.EntertainmentActivityDto;
 import com.campuswindow.activity.entertainment.entity.EntertainmentActivity;
@@ -48,6 +50,18 @@ public class EntertainmentService {
         entertainmentRepository.deleteById(activityId);
         activityImageService.deleteActivityImageByActivityId(activityId);
     }
+
+    public List<ActivityVo> findAllLikeActivityTitle(String activityTitle){
+        return entertainmentRepository.findAllLikeActivityTitle(activityTitle);
+    }
+
+    public EntertainmentActivityVo findOneByActivityId(String activityId) {
+        EntertainmentActivityVo entertainmentActivityVo = entertainmentRepository.findOneByActivityId(activityId);
+        List<ActivityImage> images = activityImageService.findActivityImageByActivityId(activityId);
+        entertainmentActivityVo.setActivityImages(images);
+        return entertainmentActivityVo;
+    }
+
     public void addLove(String activityId) {
         entertainmentRepository.updateLove(activityId, 1);
     }

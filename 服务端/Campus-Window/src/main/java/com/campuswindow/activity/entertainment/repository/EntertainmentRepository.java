@@ -1,5 +1,6 @@
 package com.campuswindow.activity.entertainment.repository;
 
+import com.campuswindow.activity.activity.entity.ActivityVo;
 import com.campuswindow.activity.entertainment.entity.EntertainmentActivity;
 import com.campuswindow.activity.entertainment.vo.EntertainmentActivityVo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +20,12 @@ public interface EntertainmentRepository extends JpaRepository<EntertainmentActi
 
     @Query(value = "select new com.campuswindow.activity.entertainment.vo.EntertainmentActivityVo(e.activityId, e.activityTitle, e.activityContent, e.date, e.userId, u.userName, u.avatar, u.school, e.love) from EntertainmentActivity as e join User as u on e.userId = u.userId order by e.date desc ")
     List<EntertainmentActivityVo> findAllOderByDate();
+
+    @Query(value = "select new com.campuswindow.activity.activity.entity.ActivityVo(e.activityId, e.activityTitle) " +
+            "from EntertainmentActivity as e " +
+            "where e.activityTitle like %?1%")
+    List<ActivityVo> findAllLikeActivityTitle(String activityTitle);
+
+    @Query(value = "select new com.campuswindow.activity.entertainment.vo.EntertainmentActivityVo(e.activityId, e.activityTitle, e.activityContent, e.date, e.userId, u.userName, u.avatar, u.school, e.love) from EntertainmentActivity as e join User as u on e.userId = u.userId where e.activityId = ?1")
+    EntertainmentActivityVo findOneByActivityId(String activityId);
 }
