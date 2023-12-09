@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewActivity">
+
+    <FrameLayout
+        android:id="@+id/main_page_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawableTop="@drawable/selector_index"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="首页"/>
+
+        <RadioButton
+            android:id="@+id/rb_community"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="false"
+            android:drawableTop="@drawable/selector_fy_chat"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="畅聊室"/>
+
+        <Button
+            android:id="@+id/new_img"
+            android:background="@drawable/addd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <RadioButton
+            android:checked="false"
+            android:id="@+id/rb_chat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/selector_chat"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="聊天室"/>
+
+        <RadioButton
+            android:checked="false"
+            android:id="@+id/rb_mine"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/selector_mine"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="我的"/>
+
+    </RadioGroup>
+
+</RelativeLayout>

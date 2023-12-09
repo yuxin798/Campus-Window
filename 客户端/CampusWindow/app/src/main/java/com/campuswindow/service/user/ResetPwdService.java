@@ -3,6 +3,7 @@ package com.campuswindow.service.user;
 import android.util.Log;
 
 import com.campuswindow.Result;
+import com.campuswindow.entity.PasswordDto;
 import com.campuswindow.entity.User;
 import com.campuswindow.server.API;
 import com.google.gson.Gson;
@@ -49,9 +50,9 @@ public class ResetPwdService {
         }
     }
 
-    public Result sendRtPwd(User user) {
+    public Result sendRtPwd(PasswordDto passwordDto) {
         client = new OkHttpClient();
-        String  userJson = new Gson().toJson(user);
+        String  userJson = new Gson().toJson(passwordDto);
         request = new Request.Builder()
                 .url(API.SERVER_URL + "updatePassword")
                 .post(RequestBody.create(

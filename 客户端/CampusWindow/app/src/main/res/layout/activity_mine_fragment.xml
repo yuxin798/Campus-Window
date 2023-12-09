@@ -1,114 +1,235 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mine_fg_dra"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <ScrollView
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/mine_fg_dra"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/mine_sv"
-        android:scrollbars="none">
-        <LinearLayout
+        android:layout_height="match_parent">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:id="@+id/mine_lin1"
+            android:layout_height="match_parent">
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/mine_fg_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
+                app:elevation="0dp">
+                <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right">
-                    <Button
-                        android:id="@+id/mine_btn_setting"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@mipmap/set"
-                        android:layout_marginRight="15dp"/>
-                    <Button
-                        android:id="@+id/mine_btn_navig"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@mipmap/navigation" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:id="@+id/mine_img"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:src="@mipmap/ikun"/>
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    app:contentScrim="?attr/colorPrimary"
+                    app:layout_scrollFlags="scroll">
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="6"
+                        android:background="@color/white"
                         android:orientation="vertical">
-                        <TextView
-                            android:layout_marginTop="15dp"
+                        <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="名称: 北冥渔"
-                            android:gravity="center"
-                            android:textSize="25dp"/>
-                        <TextView
-                            android:layout_marginTop="10dp"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:background="@drawable/background2">
+                                <!--                        这是背景图-->
+                                <ImageView
+                                    android:src="@drawable/background2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="225dp"
+                                    android:scaleType="fitXY"/>
+                                <!--                        以下是用户资料-->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/shape_10dp_top_corners"
+                                    android:orientation="vertical">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:gravity="right">
+                                        <Button
+                                            android:id="@+id/mine_fg_edit"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="编辑资料"
+                                            android:textStyle="bold"
+                                            android:textSize="18dp"
+                                            android:layout_marginRight="27dp"/>
+                                    </LinearLayout>
+                                    <TextView
+                                        android:id="@+id/mine_fg_name"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="北冥渔"
+                                        android:textStyle="bold"
+                                        android:textSize="30dp"/>
+                                    <TextView
+                                        android:id="@+id/mine_fg_label"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="个性签名:严以待人，宽以待己！"
+                                        android:textSize="20dp"/>
+                                    <LinearLayout
+                                        android:paddingLeft="15dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+                                        <RelativeLayout
+                                            android:layout_width="0dp"
+                                            android:layout_weight="1"
+                                            android:layout_height="wrap_content">
+                                            <TextView
+                                                android:id="@+id/mine_fg_award_num"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="1abc"
+                                                android:textStyle="bold"
+                                                android:textSize="18dp"/>
+                                            <TextView
+                                                android:id="@+id/mine_fg_award"
+                                                android:layout_toRightOf="@+id/mine_fg_award_num"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text=" 获赞"
+                                                android:textSize="15dp"/>
+                                        </RelativeLayout>
+                                        <RelativeLayout
+                                            android:layout_width="0dp"
+                                            android:layout_weight="1"
+                                            android:layout_height="wrap_content">
+                                            <TextView
+                                                android:id="@+id/mine_fg_follow_num"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="1abc"
+                                                android:textStyle="bold"
+                                                android:textSize="18dp"/>
+                                            <TextView
+                                                android:id="@+id/mine_fg_follow"
+                                                android:layout_toRightOf="@+id/mine_fg_follow_num"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text=" 关注"
+                                                android:textSize="15dp"/>
+                                        </RelativeLayout>
+                                        <RelativeLayout
+                                            android:layout_width="0dp"
+                                            android:layout_weight="1"
+                                            android:layout_height="wrap_content">
+                                            <TextView
+                                                android:id="@+id/mine_fg_fan_num"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="1abc"
+                                                android:textStyle="bold"
+                                                android:textSize="18dp"/>
+                                            <TextView
+                                                android:id="@+id/mine_fg_fan"
+                                                android:layout_toRightOf="@+id/mine_fg_fan_num"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text=" 粉丝"
+                                                android:textSize="15dp"/>
+                                        </RelativeLayout>
+                                        <RelativeLayout
+                                            android:layout_width="0dp"
+                                            android:layout_weight="1"
+                                            android:layout_height="wrap_content">
+                                            <TextView
+                                                android:id="@+id/mine_fg_friend_num"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="1abc"
+                                                android:textStyle="bold"
+                                                android:textSize="18dp"/>
+                                            <TextView
+                                                android:id="@+id/mine_fg_friend"
+                                                android:layout_toRightOf="@+id/mine_fg_friend_num"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text=" 好友"
+                                                android:textSize="15dp"/>
+                                        </RelativeLayout>
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <!--                        这是头像-->
+<!--                            <ImageView-->
+<!--                                android:id="@+id/mine_img"-->
+<!--                                android:layout_gravity="center_vertical"-->
+<!--                                android:layout_marginTop="20dp"-->
+<!--                                android:layout_marginLeft="30dp"-->
+<!--                                android:src="@mipmap/ikun"-->
+<!--                                android:layout_width="100dp"-->
+<!--                                android:layout_height="100dp" />-->
+                            <com.shehuan.niv.NiceImageView
+                                android:id="@+id/mine_img"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginLeft="30dp"
+                                android:src="@mipmap/ikun"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                app:is_circle="true"/>
+
+<!--                            这是导航按钮-->
+                            <ImageView
+                                android:id="@+id/mine_btn_navig"
+                                android:src="@mipmap/navigation"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="right"/>
+                        </FrameLayout>
+                        <View
+                            android:id="@+id/iv_tag"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="UUID: 66666666"
-                            android:gravity="center"
-                            android:textSize="25dp"/>
+                            android:background="@color/gray"
+                            android:layout_height="5dp"/>
                     </LinearLayout>
-                    <Button
-                        android:layout_gravity="center"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/edit"/>
-                </LinearLayout>
-                <TextView
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <!--            放入要置顶的导航栏-->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/mine_fg_tbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="个性签名:严于律人，宽以待己！！！！！！！"/>
-                <LinearLayout
+                    android:background="@color/white" />
+            </com.google.android.material.appbar.AppBarLayout>
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="always"
+                android:fillViewport="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/mine_fg_vp2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="朋友"/>
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="私聊"/>
-                </LinearLayout>
-            </LinearLayout>
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/mine_fg_tbl"
-                android:layout_width="match_parent"
-                android:layout_height="55dp" />
+                    android:layout_height="match_parent" />
+            </androidx.core.widget.NestedScrollView>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/mine_fg_vp2"
-                android:layout_width="match_parent"
-                android:layout_height="500dp" />
-        </LinearLayout>
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/mine_fg_nav"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:fitsSystemWindows="true"
+            app:menu="@menu/mine_navigation_item"/>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
-    </ScrollView>
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/mine_fg_nav"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/mine_navigation_item"/>
-</androidx.drawerlayout.widget.DrawerLayout>
+</LinearLayout>
+
+<!--在帧布局中，控件的叠放顺序是由它们在布局文件中的顺序决定的。如果你想要一个控件覆盖（在上方显示）其他控件，可以按照以下步骤进行操作：-->
+
+<!--1. 在布局文件中，确保要显示在顶部的控件位于最后的位置。这样，它将覆盖在其他控件之上。-->
+
+<!--2. 使用`android:layout_gravity`属性来控制控件的对齐方式。将设置为顶部对齐可以确保控件位于其他控件的上方。-->

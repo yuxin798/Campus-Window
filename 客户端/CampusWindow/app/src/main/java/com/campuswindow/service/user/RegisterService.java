@@ -3,12 +3,12 @@ package com.campuswindow.service.user;
 import android.util.Log;
 
 import com.campuswindow.Result;
+import com.campuswindow.entity.RegisterDto;
 import com.campuswindow.entity.User;
 import com.campuswindow.server.API;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -16,7 +16,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class RegisterService {
     private OkHttpClient client;
@@ -24,7 +23,7 @@ public class RegisterService {
     private Call call;
     private Response response;
 
-    public Result register(User user) {
+    public Result register(RegisterDto user) {
         client = new OkHttpClient();
         String userJson = new Gson().toJson(user);
         Log.i("user3:", user.toString());

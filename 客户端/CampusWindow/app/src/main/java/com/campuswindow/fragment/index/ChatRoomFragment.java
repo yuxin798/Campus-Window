@@ -1,5 +1,7 @@
 package com.campuswindow.fragment.index;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.campuswindow.R;
 import com.campuswindow.adapter.ChatRoomListAdapter;
 import com.campuswindow.entity.User;
+import com.shehuan.niv.NiceImageView;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -26,7 +29,7 @@ import java.util.List;
 
 //ctrl + p 方法参数提示信息
 public class ChatRoomFragment extends Fragment {
-    private ImageView chatImg, chatBtnImg;
+    private ImageView chatBtnImg,chatImg;
     private TextView chatName, chatState;
     private ListView chatList;
     private List<User> friend = new ArrayList<>();
@@ -37,6 +40,11 @@ public class ChatRoomFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View page = inflater.inflate(R.layout.activity_chat_room_fragment, null);
         getViews(page);
+
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setShape(GradientDrawable.OVAL);
+        chatImg.setBackground(gradientDrawable);
+
         listenerMethods();
         chatRoomListAdapter = new ChatRoomListAdapter(friend, R.layout.activity_chat_room_fragment_item, getContext());
         chatList.setAdapter(chatRoomListAdapter);

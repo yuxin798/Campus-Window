@@ -1,16 +1,15 @@
 package com.campuswindow;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.campuswindow.entity.User;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.campuswindow.entity.PasswordDto;
 import com.campuswindow.service.user.ResetPwdService;
 
 public class ResetPwdActivity extends AppCompatActivity {
@@ -34,23 +33,24 @@ public class ResetPwdActivity extends AppCompatActivity {
                 String email = intent.getStringExtra("email");
                 String pwd = edtRtPwd.getText().toString();
                 String pwd2 = edtRtPwd2.getText().toString();
-                service = new ResetPwdService();
-                User user = new User();
-                user.setEmail(email);
-                user.setPassword(pwd);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Result result = service.sendRtPwd(user);
-                        boolean a = !pwd.isEmpty() && pwd.equals(pwd2);
-                        Log.i("result.getMsg()",result.getMsg());
-                        if(result.getMsg().equals("修改成功") && a){
-
-                            intent = new Intent(ResetPwdActivity.this,LoginActivity.class);
-                            startActivity(intent);
+                if (pwd.isEmpty()){
+                    Toast.makeText(ResetPwdActivity.this, "输入密码", Toast.LENGTH_SHORT).show();
+                }else if (!pwd.equals(pwd2)){
+                    Toast.makeText(ResetPwdActivity.this, "两次密码不一样", Toast.LENGTH_SHORT).show();
+                }else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            service = new ResetPwdService();
+                            PasswordDto passwordDto = new PasswordDto(email, pwd);
+                            Result result = service.sendRtPwd(passwordDto);
+                            if(result.getMsg().equals("成功")){
+                                intent = new Intent(ResetPwdActivity.this,LoginActivity.class);
+                                startActivity(intent);
+                            }
                         }
-                    }
-                }).start();
+                    }).start();
+                }
             }
         });
         runOnUiThread(new Runnable() {

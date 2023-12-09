@@ -1,25 +1,25 @@
 package com.campuswindow;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.campuswindow.entity.RegisterDto;
 import com.campuswindow.entity.User;
 import com.campuswindow.service.user.RegisterService;
-
-import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText edtName,edtEmail,edtPwd,edtPwd2,edtSchool,edtVerify;
     private Button btnReYes,btnReNo,btnSendCode;
     private Result register;
     private RegisterService registerService = new RegisterService();
-    private String code;
+    private String emailCodeKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,19 +39,20 @@ public class RegisterActivity extends AppCompatActivity {
                 String school = edtSchool.getText().toString().trim();
                 String userCode = edtVerify.getText().toString().trim();
                 String pwd2 = edtPwd2.getText().toString().trim();
+                RegisterDto user = new RegisterDto(name, email, pwd, school, userCode, emailCodeKey);
 
-                User user = new User();
-                user.setUserName(name);
-                user.setEmail(email);
-                user.setPassword(pwd);
-                user.setSchool(school);
+//                User user = new User();
+//                user.setUserName(name);
+//                user.setEmail(email);
+//                user.setPassword(pwd);
+//                user.setSchool(school);
 
-                Log.i("user1:",user.toString());
+//                Log.i("user1:",user.toString());
 
                 //TODO Android端：提示邮箱是否正确
-                boolean a = !userCode.isEmpty() && userCode.equals(code+"");
+                boolean a = !userCode.isEmpty();
                 boolean b = !pwd.isEmpty() && pwd.equals(pwd2);
-                Log.i("code:",""+code);
+//                Log.i("code:",""+code);
                 Log.i("a&b:",""+a+b);
                 if(register!=null && a && b) {
                     new Thread(new Runnable() {
@@ -59,11 +60,32 @@ public class RegisterActivity extends AppCompatActivity {
                         public void run() {
                             Log.i("user2:",user.toString());
                             register = registerService.register(user);
+                            if (register.getMsg().equals("邮箱已存在")){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(RegisterActivity.this, "邮箱已存在", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }else if (register.getMsg().equals("验证码错误")){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }else {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                    }
+                                });
+                            }
                         }
                     }).start();
-
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                    startActivity(intent);
+                    System.out.println("register.getMsg()"  +  register.getMsg());
                 }
             }
         });
@@ -78,7 +100,8 @@ public class RegisterActivity extends AppCompatActivity {
                     public void run() {
                         register = registerService.verify(user);
                         Log.i("register:",register.toString());
-                        code = ((Double)register.getData()).intValue()+"" ;
+//                        emailCodeKey = ((Double)register.getData()).intValue()+"" ;
+                        emailCodeKey = (String)register.getData();
                     }
                 }).start();
             }

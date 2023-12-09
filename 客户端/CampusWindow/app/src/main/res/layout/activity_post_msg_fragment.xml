@@ -1,101 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="10dp">
-    <RelativeLayout
-        android:id="@+id/post_msg_re1"
+    <View
+        android:id="@+id/post_msg_fg_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/post_msg_cancel"
-            android:background="@mipmap/info"
-            android:layout_width="50dp"
-            android:layout_height="50dp"/>
-        <Button
-            android:id="@+id/post_msg_issue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="发布"
-            android:textSize="19dp"
-            android:layout_alignParentRight="true"/>
-    </RelativeLayout>
-    <EditText
-        android:id="@+id/post_msg_edt_title"
-        android:layout_below="@+id/post_msg_re1"
+        android:layout_height="0dp"
+        android:layout_weight="5"/>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLength="30"
-        android:singleLine="true"
-        android:hint="标题（必填）"/>
-    <RelativeLayout
-        android:id="@+id/post_msg_re2"
-        android:layout_below="@+id/post_msg_edt_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/post_msg_edt_content"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@null"
-            android:gravity="top"
-            android:hint="请尽情发挥吧..." />
-        <LinearLayout
-            android:layout_below="@+id/post_msg_edt_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageButton
-                android:id="@+id/post_msg_img_upload"
-                android:src="@mipmap/upimage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <ImageButton
-                android:id="@+id/post_msg_file_upload"
-                android:src="@mipmap/upfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <ImageButton
-                android:id="@+id/post_msg_video_upload"
-                android:src="@mipmap/upvideo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/post_msg_re3"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_tip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="发送位置:"
-            android:textSize="20dp"/>
-        <Spinner
-            android:id="@+id/post_msg_spinner"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/tv_tip"
-            android:background="#E5E5E5"
-            android:spinnerMode="dropdown"
-            android:entries="@array/activity_type" />
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center_vertical"
+        android:background="@drawable/shape_10dp_top_corners">
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/rightarrow2"
-            android:layout_alignRight="@+id/post_msg_spinner"
-            android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </HorizontalScrollView>
-</RelativeLayout>
+            android:id="@+id/post_msg_fg_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/postmsg"/>
+    </LinearLayout>
+</LinearLayout>

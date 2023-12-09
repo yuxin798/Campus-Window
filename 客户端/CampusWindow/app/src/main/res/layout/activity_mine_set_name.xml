@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MineSetNameActivity"
+    android:padding="10dp">
+    <RelativeLayout
+        android:id="@+id/r1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:ignoreGravity="@id/edit_user_data_back_btn">
+        <Button
+            android:id="@+id/edit_user_data_back_btn"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/angle_brackets_left"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改信息"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/r2"
+        android:layout_below="@+id/r1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/mine_set_name_edt"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="8"
+            android:background="@null"
+            android:maxLength="7"
+            android:hint="改个昵称呗~（3-7个字符之间）"/>
+        <Button
+            android:id="@+id/mine_set_name_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/xmark1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:id="@+id/r3"
+        android:layout_below="@+id/r2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/mine_set_name_rule1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="· 昵称为空默认使用原用户名"
+            android:textSize="15dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="· 昵称每七天修改一次"
+            android:textSize="15dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="· 昵称设好听点，不然不给你通过"
+            android:textSize="15dp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_below="@+id/r3"
+        android:layout_marginTop="30dp"
+        android:id="@+id/mine_set_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="保存"/>
+</RelativeLayout>

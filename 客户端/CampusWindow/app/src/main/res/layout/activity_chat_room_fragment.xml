@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp">
     <RelativeLayout
+        android:id="@+id/chat_room_fg_r1"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
+        <com.shehuan.niv.NiceImageView
             android:id="@+id/chat_room_img"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:src="@mipmap/ikun"/>
+            android:src="@mipmap/ikun"
+            app:is_circle="true"/>
         <TextView
             android:id="@+id/chat_room_name"
             android:layout_toRightOf="@+id/chat_room_img"
@@ -30,12 +34,22 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="-3dp"
-            android:src="@drawable/menu" />
+            android:layout_marginEnd="-3dp"
+            android:src="@drawable/menu1" />
 
     </RelativeLayout>
+
+    <EditText
+        android:layout_below="@+id/chat_room_fg_r1"
+        android:id="@+id/chat_room_fg_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:drawableLeft="@drawable/search3"/>
     <ListView
         android:id="@+id/chat_room_lv"
+        android:layout_below="@+id/chat_room_fg_search"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-</LinearLayout>
+</RelativeLayout>

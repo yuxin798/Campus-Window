@@ -3,17 +3,13 @@ package com.campuswindow.fragment.index;
 import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -35,16 +30,17 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
-import com.campuswindow.MineSetActivity;
+import com.campuswindow.EditUserDataActivity;
 import com.campuswindow.R;
 import com.campuswindow.adapter.MineAdapter;
 import com.campuswindow.fragment.mine.CollectFragment;
 import com.campuswindow.fragment.mine.CommentFragment;
 import com.campuswindow.fragment.mine.IssueFragment;
-
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.shehuan.niv.NiceImageView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,12 +49,14 @@ public class MineFragment extends Fragment {
     private ViewPager2 mineFgVp2;
     private List<Fragment> fragments;
     private MineAdapter mineAdapter;
-    private ImageView imgHead;
-    private Button btnNavig,btnSet;
+    private ImageView btnNavig;
     private DrawerLayout mineDra;
     private NavigationView mineNav;
     private ActivityResultLauncher<Intent> launcher;
     private Uri imageUri;
+    private Button editData;
+    private TextView name,label;
+    private NiceImageView imgHead;
 
 
 
@@ -68,21 +66,23 @@ public class MineFragment extends Fragment {
         View page = inflater.inflate(R.layout.activity_mine_fragment,null);
         initPages();
         getViews(page);
-
         createLauncher();
 
-        setTextorImg();//设置加载图片
         setBtnlistener();//设置按钮事件
         dealNavigation();//处理侧滑栏点击事件
 
+//        imgHead.bringToFront();//将头像显示在最外层，不知道行不行
+
         mineAdapter = new MineAdapter(fragments,getActivity());
-        mineFgVp2.setOffscreenPageLimit(2);
         mineFgVp2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         mineFgVp2.setAdapter(mineAdapter);
         defineMediator();
         return page;
     }
-/**
+
+
+
+    /**
  * 侧滑栏项目item处理事件
  * */
     private void dealNavigation() {
@@ -109,6 +109,7 @@ public class MineFragment extends Fragment {
                 return false;
             }
         });
+
     }
 
     /**
@@ -121,13 +122,13 @@ public class MineFragment extends Fragment {
                 mineDra.openDrawer(GravityCompat.END);
             }
         });
-        btnSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MineSetActivity.class);
-                startActivity(intent);
-            }
-        });
+//        btnSet.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getActivity(), MineSetActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         //更换头像
         imgHead.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +144,35 @@ public class MineFragment extends Fragment {
                 }
 
         });
+        //编辑资料
+        editData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userName = name.getText().toString();
+                String userLabel = label.getText().toString();
+                Intent intent = new Intent(getActivity(), EditUserDataActivity.class);
+                intent.putExtra("name",userName);
+                intent.putExtra("label",userLabel);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
+//        //向上滚动时，新的标题样式：
+//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+//                if(Math.abs(i)==ivtag.getBottom()){
+//                    pos = Math.abs(i);
+//                    ivtag.setVisibility(View.GONE);
+//                    mineFgTbl.setVisibility(View.INVISIBLE);
+//                }else{
+//                    pos=0;
+//                    mineFgTbl.setVisibility(View.GONE);
+//                    ivtag.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        });
+
     }
 
     @Override
@@ -184,10 +214,7 @@ public class MineFragment extends Fragment {
  * 进行加载图片
  * */
 
-    private void setTextorImg() {
-        Drawable drawable = getResources().getDrawable(R.drawable.ikun);
-        Glide.with(this).load(drawable).circleCrop().into(imgHead);
-    }
+
 
     private void defineMediator() {
         TabLayoutMediator mediator = new TabLayoutMediator(
@@ -217,7 +244,10 @@ public class MineFragment extends Fragment {
         imgHead = page.findViewById(R.id.mine_img);
         btnNavig = page.findViewById(R.id.mine_btn_navig);
         mineNav = page.findViewById(R.id.mine_fg_nav);
-        btnSet = page.findViewById(R.id.mine_btn_setting);
+        mineDra = page.findViewById(R.id.mine_fg_dra);
+        editData = page.findViewById(R.id.mine_fg_edit);
+        name = page.findViewById(R.id.mine_fg_name);
+        label = page.findViewById(R.id.mine_fg_label);
     }
 
     private void initPages() {

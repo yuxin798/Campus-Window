@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 
 import com.campuswindow.adapter.IndexAdapter;
 import com.campuswindow.fragment.index.ChatFyRoomFragment;
@@ -33,14 +34,13 @@ public class IndexActivity extends AppCompatActivity {
         setContentView(R.layout.activity_index);
         initPages();
         getViews();
+        indexVp2.setUserInputEnabled(false);
 
         indexAdapter = new IndexAdapter(fragmentList,this);
         indexVp2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         indexVp2.setAdapter(indexAdapter);
 
         defineMediator();
-        //“我的”设置中跳转回来
-        //mineSetRollBack();
     }
 
     private void mineSetRollBack() {

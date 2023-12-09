@@ -18,10 +18,6 @@
         android:icon="@drawable/scan"/>
     <item
         android:id="@+id/menu5"
-        android:title="面对面快传"
-        android:icon="@drawable/quick_pass"/>
-    <item
-        android:id="@+id/menu6"
         android:title="收付款"
         android:icon="@drawable/reandpay"/>
 

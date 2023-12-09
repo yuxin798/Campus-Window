@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="10dp"
     tools:context=".LoginActivity">
 
     <ImageView
+        android:id="@+id/login_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@mipmap/school2"/>
     <TextView
+        android:layout_below="@+id/login_logo"
+        android:id="@+id/login_logo_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="校园之窗"
@@ -25,6 +27,8 @@
         android:hint="请输入邮箱"
         android:text="728753465@qq.com"
         android:textSize="25dp"
+        android:textColor="@color/black"
+        android:layout_below="@id/login_logo_txt"
         android:drawableLeft="@mipmap/user"/>
     <EditText
         android:id="@+id/edt_lg_pwd"
@@ -33,25 +37,53 @@
         android:hint="请输入密码"
         android:text="521125"
         android:textSize="25dp"
+        android:textColor="@color/black"
         android:drawableLeft="@mipmap/pwd"
+        android:layout_below="@+id/edt_lg_email"
         android:inputType="numberPassword"/>
+
     <Button
-        android:id="@+id/btn_lg_login"
+        android:id="@+id/btn_lg_login1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="登录"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:layout_below="@id/edt_lg_pwd"/>
     <Button
         android:id="@+id/btn_lg_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="注册"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:layout_below="@id/btn_lg_login1"/>
     <Button
         android:id="@+id/btn_lg_forget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="忘记密码"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:layout_below="@+id/btn_lg_register"/>
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/login_radio_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="登录前，请先同意"
+            android:checked="true"
+            android:textColor="@color/black"
+            android:textSize="17dp"/>
+        <TextView
+            android:id="@+id/login_user_txt"
+            android:textColor="@color/purple_200"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户隐私协议"
+            android:textSize="17dp"/>
+    </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
