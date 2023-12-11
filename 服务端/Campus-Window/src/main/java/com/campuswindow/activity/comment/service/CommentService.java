@@ -1,8 +1,10 @@
 package com.campuswindow.activity.comment.service;
 
+import com.campuswindow.activity.activity.service.ActivityService;
 import com.campuswindow.activity.comment.dto.CommentDto;
 import com.campuswindow.activity.comment.entity.Comment;
 import com.campuswindow.activity.comment.repository.CommentRepository;
+import com.campuswindow.activity.comment.vo.CommentUserVo;
 import com.campuswindow.activity.comment.vo.CommentVo;
 import com.campuswindow.activity.commentimage.service.CommentImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class CommentService {
     private CommentRepository commentRepository;
     private CommentImageService commentImageService;
+    private ActivityService activityService;
 
     /*
      * 发表评论，同时将图片或视频网络地址保存到数据库中
@@ -30,14 +33,16 @@ public class CommentService {
         commentRepository.save(comment);
         commentImageService.save(commentDto.getImages(), commentId, commentDto.getUserId(), 0);
         commentImageService.save(commentDto.getVideos(), commentId, commentDto.getUserId(), 1);
+        activityService.addComment(commentDto.getActivityId());
     }
 
     /*
      * 根据评论Id删除评论
      */
-    public void deleteComment(String commentId) {
+    public void deleteComment(String commentId, String activityId) {
         commentRepository.deleteById(commentId);
         commentImageService.deleteCommentImageByCommentId(commentId);
+        activityService.decreaseComment(activityId);
     }
 
     /*
@@ -62,6 +67,11 @@ public class CommentService {
         commentRepository.updateLove(commentId, -1);
     }
 
+    public List<CommentUserVo> findAllComments(String userId) {
+        return commentRepository.findAllByUserId(userId)
+                .stream().peek(e -> e.setCommentImages(commentImageService.findCommentImageByCommentId(e.getCommentId()))).collect(Collectors.toList());
+    }
+
     @Autowired
     public void setCommentImageService(CommentImageService commentImageService) {
         this.commentImageService = commentImageService;
@@ -69,5 +79,9 @@ public class CommentService {
     @Autowired
     public void setCommentRepository(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
+    }
+    @Autowired
+    public void setActivityService(ActivityService activityService) {
+        this.activityService = activityService;
     }
 }

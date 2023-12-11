@@ -2,6 +2,7 @@ package com.campuswindow.activity.comment.controller;
 
 import com.campuswindow.activity.comment.dto.CommentDto;
 import com.campuswindow.activity.comment.service.CommentService;
+import com.campuswindow.activity.comment.vo.CommentUserVo;
 import com.campuswindow.activity.comment.vo.CommentVo;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
@@ -27,7 +28,7 @@ public class CommentController {
      */
     @GetMapping("/addComment")
     @Operation(summary = "发表评论")
-    public Result addComment(@RequestBody CommentDto commentDto){
+    public Result<?> addComment(@RequestBody CommentDto commentDto){
         commentService.addComment(commentDto);
         return ResultVOUtil.success();
     }
@@ -37,8 +38,8 @@ public class CommentController {
      */
     @GetMapping("/deleteComment")
     @Operation(summary = "删除评论")
-    public Result deleteComment(String commentId){
-        commentService.deleteComment(commentId);
+    public Result<?> deleteComment(String commentId, String activityId){
+        commentService.deleteComment(commentId, activityId);
         return ResultVOUtil.success();
     }
 
@@ -57,7 +58,7 @@ public class CommentController {
      */
     @GetMapping("/addLove")
     @Operation(summary = "点赞")
-    public Result addLove(String commentId){
+    public Result<?> addLove(String commentId){
         commentService.addLove(commentId);
         return ResultVOUtil.success();
     }
@@ -67,17 +68,17 @@ public class CommentController {
      */
     @GetMapping("/decreaseLove")
     @Operation(summary = "取消点赞")
-    public Result decreaseLove(String commentId){
+    public Result<?> decreaseLove(String commentId){
         commentService.decreaseLove(commentId);
         return ResultVOUtil.success();
     }
 
-//    @GetMapping("findAllComments")
-//    @Operation(summary = "根据用户Id查询所有评论")
-//    public Result findAllComments(String userId){
-//        commentService.findAllComments(userId);
-//        return ResultVOUtil.success();
-//    }
+    @GetMapping("findAllComments")
+    @Operation(summary = "根据用户Id查询所有评论")
+    public Result<List<CommentUserVo>> findAllComments(String userId){
+        List<CommentUserVo> commentUserVos = commentService.findAllComments(userId);
+        return ResultVOUtil.success(commentUserVos);
+    }
 
     @Autowired
     public void setCommentService(CommentService commentService) {

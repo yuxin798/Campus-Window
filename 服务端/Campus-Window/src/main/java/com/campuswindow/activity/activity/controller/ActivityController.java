@@ -1,36 +1,132 @@
 package com.campuswindow.activity.activity.controller;
 
-import com.campuswindow.activity.activity.entity.Activity;
-import com.campuswindow.activity.activity.entity.ActivityVo;
+import com.campuswindow.activity.activitycollect.entity.ActivityCollect;
+import com.campuswindow.activity.activitylove.entity.ActivityLove;
+import com.campuswindow.activity.activity.dto.ActivityDto;
 import com.campuswindow.activity.activity.service.ActivityService;
+import com.campuswindow.activity.activity.vo.ActivityQueryVo;
+import com.campuswindow.activity.activity.vo.ActivityVo;
+import com.campuswindow.fileupload.FileUploadService;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/activity")
+@Tag(name = "活动接口")
 public class ActivityController {
 
     private ActivityService activityService;
+    private FileUploadService fileUploadService;
 
-    @GetMapping("/findAllLikeActivityTitle/{ActivityTitle}")
-    public Result<List<ActivityVo>> findAllLikeActivityTitle(@PathVariable String ActivityTitle){
-        return ResultVOUtil.success(activityService.findAllLikeActivityTitle(ActivityTitle));
+    /*
+     * 查询所有娱乐帖子，根据发表时间降序排序
+     */
+    @GetMapping("/findAllByType")
+    @Operation(summary = "查询所有娱乐帖子")
+    public Result findAllByType(int type){
+        List<ActivityVo> activities = activityService.findAllByType(type);
+        return ResultVOUtil.success(activities);
+    }
+
+    /*
+     * 发帖，同时将图片或视频网络地址保存到数据库中
+     */
+    @PostMapping("/sendActivity")
+    @Operation(summary = "发帖")
+    public Result sendActivity(@RequestBody ActivityDto activityDto) throws ParseException {
+        activityService.sendActivity(activityDto);
+        return ResultVOUtil.success();
+    }
+
+    /*
+     * 根据帖子id删除帖子
+     */
+    @GetMapping("/deleteActivity")
+    @Operation(summary = "根据帖子id删除帖子")
+    public Result deleteActivity(String activityId){
+        activityService.deleteActivity(activityId);
+        return ResultVOUtil.success();
+    }
+
+    /*
+     * 根据userId查询某个人的所有帖子
+     */
+    @GetMapping("/selectActivity")
+    @Operation(summary = "根据userId查询某个人的所有帖子")
+    public Result<List<ActivityVo>> selectActivity(String userId){
+        List<ActivityVo> activities = activityService.selectActivity(userId);
+        return ResultVOUtil.success(activities);
+    }
+
+    /*
+     * 帖子点赞
+     */
+    @GetMapping("/addLove")
+    @Operation(summary = "点赞")
+    public Result addLove(@RequestBody ActivityLove activityLove){
+        activityService.addLove(activityLove);
+        return ResultVOUtil.success();
+    }
+
+    /*
+     * 取消帖子点赞
+     */
+    @GetMapping("/decreaseLove")
+    @Operation(summary = "取消点赞")
+    public Result decreaseLove(@RequestBody ActivityLove activityLove){
+        activityService.decreaseLove(activityLove);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/addCollect")
+    @Operation(summary = "收藏")
+    public Result addCollect(@RequestBody ActivityCollect activityCollect){
+        activityService.addCollect(activityCollect);
+        return ResultVOUtil.success();
+    }
+
+    /*
+     * 取消帖子点赞
+     */
+    @GetMapping("/decreaseCollect")
+    @Operation(summary = "取消收藏")
+    public Result decreaseCollect(@RequestBody ActivityCollect activityCollect){
+        activityService.decreaseCollect(activityCollect);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/findAllLoveByUserId")
+    @Operation(summary = "根据UserId查询所有点赞的帖子")
+    public Result<List<ActivityVo>> findAllLoveByUserId(String userId){
+        List<ActivityVo> activities = activityService.findAllLoveByUserId(userId);
+        return ResultVOUtil.success(activities);
+    }
+
+    @GetMapping("/findAllLikeActivityTitle/{activityTitle}")
+    @Operation(summary = "根据帖子标题模糊查询所有帖子")
+    public Result<List<ActivityQueryVo>> findAllLikeActivityTitle(@PathVariable String activityTitle) {
+        return ResultVOUtil.success(activityService.findAllLikeActivityTitle(activityTitle));
     }
 
     @GetMapping("/findActivityByActivityId/{activityId}")
-    public Result<Activity> findActivityByActivityId(@PathVariable String activityId){
-        return ResultVOUtil.success(activityService.findActivityByActivityId(activityId));
+    @Operation(summary = "根据帖子id查询帖子")
+    public Result<ActivityVo> findActivityByActivityId(@PathVariable String activityId){
+        return ResultVOUtil.success(activityService.findOneByActivityId(activityId));
     }
 
     @Autowired
-    public void setActivityService(ActivityService activityService) {
+    public void setEntertainmentService(ActivityService activityService) {
         this.activityService = activityService;
+    }
+    @Autowired
+    public void setFileUploadService(FileUploadService fileUploadService) {
+        this.fileUploadService = fileUploadService;
     }
 }

@@ -1,6 +1,7 @@
 package com.campuswindow.user.repository;
 
 import com.campuswindow.user.entity.User;
+import com.campuswindow.user.vo.ModifyInformationVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,11 @@ public interface UserRepository extends JpaRepository<User, String> {
     User findUserNameAndAvatarByUserId(String userId);
 
     User findUserNameAndAvatarAndSchoolByUserId(String userId);
+
+    @Query("update User set userName = ?2, gender = ?3, signature = ?4 where userId = ?1")
+    @Modifying
+    void updateInformationByUserId(String userId, String userName, int gender, String signature);
+
+    @Query("select new com.campuswindow.user.vo.ModifyInformationVo(userId, userName, gender, signature) from User where userId = ?1")
+    ModifyInformationVo findInformation(String userId);
 }

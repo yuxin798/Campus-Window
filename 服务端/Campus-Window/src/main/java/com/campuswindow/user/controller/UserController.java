@@ -2,12 +2,10 @@ package com.campuswindow.user.controller;
 
 
 import com.campuswindow.fileupload.FileUploadService;
-import com.campuswindow.user.dto.ChatUserDto;
-import com.campuswindow.user.dto.LoginDto;
-import com.campuswindow.user.dto.PasswordDto;
-import com.campuswindow.user.dto.RegisterDto;
+import com.campuswindow.user.dto.*;
 import com.campuswindow.user.entity.User;
 import com.campuswindow.user.service.UserService;
+import com.campuswindow.user.vo.ModifyInformationVo;
 import com.campuswindow.utils.MinioConstant;
 import com.campuswindow.utils.RedisConstant;
 import com.campuswindow.utils.ResultVOUtil;
@@ -143,6 +141,20 @@ public class UserController {
     public Result<ChatUserDto> findOne(String userId){
         ChatUserDto chatUserDto = userService.findChatUserByUserId(userId);
         return ResultVOUtil.success(chatUserDto);
+    }
+
+    @GetMapping("findInformation")
+    @Operation(summary = "查询个人信息")
+        public Result<ModifyInformationVo> findInformation(String userId){
+        ModifyInformationVo modifyInformationVo = userService.findInformation(userId);
+        return ResultVOUtil.success(modifyInformationVo);
+    }
+
+    @GetMapping("modifyInformation")
+    @Operation(summary = "修改个人信息")
+    public Result<?> modifyInformation(@RequestBody modifyInformationDto modifyInformationDto){
+        userService.modifyInformation(modifyInformationDto);
+        return ResultVOUtil.success();
     }
 
     @Autowired

@@ -33,6 +33,9 @@ public class ActivityImageService {
      * 用户发帖 保存图片或视频 type = 0 图片 type = 1 视频
      */
     public void save(List<String> images, String activityId, String userId, int type){
+        if (images == null){
+            return;
+        }
         for(String image : images){
             String imageId = UUID.randomUUID().toString().replace("-", "");
             ActivityImage activityImage = new ActivityImage(imageId, activityId, userId, image, type);

@@ -1,6 +1,7 @@
 package com.campuswindow.activity.comment.repository;
 
 import com.campuswindow.activity.comment.entity.Comment;
+import com.campuswindow.activity.comment.vo.CommentUserVo;
 import com.campuswindow.activity.comment.vo.CommentVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -25,4 +26,7 @@ public interface CommentRepository extends JpaRepository<Comment, String> {
     @Query(value = "update tbl_comment set love = love + ?2 where comment_id = ?1", nativeQuery = true)
     @Modifying
     void updateLove(String commentId, int i);
+
+    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentUserVo(c.commentId, c.activityId, a.activityTitle, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar) from Comment as c join Activity as a on c.activityId = a.activityId join User as u on c.userId = u.userId where c.userId = ?1 order by c.love desc, c.sendTime desc ")
+    List<CommentUserVo> findAllByUserId(String userId);
 }

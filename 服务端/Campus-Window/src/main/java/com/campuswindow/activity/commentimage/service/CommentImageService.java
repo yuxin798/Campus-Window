@@ -27,6 +27,9 @@ public class CommentImageService {
      * 保存评论图片或视频 type 0 评论图片 1 评论视频
      */
     public void save(List<String> images, String contentId, String userId, int type){
+        if (images == null){
+            return;
+        }
         for(String image : images){
             String imageId = UUID.randomUUID().toString().replace("-", "");
             CommentImage commentImage = new CommentImage(imageId, contentId, userId, image, type);

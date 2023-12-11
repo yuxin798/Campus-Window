@@ -29,6 +29,8 @@ public class User {
     private String avatar;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Timestamp createTime;
+    private int gender;
+    private String signature;
 
     public @interface Login {}
 }

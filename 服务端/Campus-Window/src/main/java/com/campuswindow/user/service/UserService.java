@@ -1,11 +1,9 @@
 package com.campuswindow.user.service;
 
-import com.campuswindow.user.dto.ChatUserDto;
-import com.campuswindow.user.dto.LoginDto;
-import com.campuswindow.user.dto.PasswordDto;
-import com.campuswindow.user.dto.RegisterDto;
+import com.campuswindow.user.dto.*;
 import com.campuswindow.user.entity.User;
 import com.campuswindow.user.repository.UserRepository;
+import com.campuswindow.user.vo.ModifyInformationVo;
 import com.campuswindow.utils.RedisConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -42,6 +40,7 @@ public class UserService {
         user.setPassword(registerDto.getPassword());
         user.setSchool(registerDto.getSchool());
         user.setUserName(registerDto.getUserName());
+        //设置默认头像 TODO
         user.setAvatar("D:\\images\\users\\default.jpg");
         user.setCreateTime(new Timestamp(System.currentTimeMillis()));
         return userRepository.save(user);
@@ -90,6 +89,10 @@ public class UserService {
         return userRepository.findLoginDtoByEmail(email);
     }
 
+    public void modifyInformation(modifyInformationDto modifyInformationDto) {
+        userRepository.updateInformationByUserId(modifyInformationDto.getUserId(), modifyInformationDto.getUserName(), modifyInformationDto.getGender(), modifyInformationDto.getSignature());
+    }
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -98,5 +101,9 @@ public class UserService {
     @Autowired
     public void setRedisTemplate(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
+    }
+
+    public ModifyInformationVo findInformation(String userId) {
+        return userRepository.findInformation(userId);
     }
 }
