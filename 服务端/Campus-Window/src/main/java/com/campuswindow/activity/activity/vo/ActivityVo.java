@@ -23,9 +23,11 @@ public class ActivityVo {
     private String avatar;
     private String school;
     private int love;
+    private int comment;
+    private int collect;
     private List<ActivityImage> activityImages;
 
-    public ActivityVo(String activityId, String activityTitle, String activityContent, Date date, String userId, String userName, String avatar, String school, int love) {
+    public ActivityVo(String activityId, String activityTitle, String activityContent, Date date, String userId, String userName, String avatar, String school, int love, int comment, int collect) {
         this.activityId = activityId;
         this.activityTitle = activityTitle;
         this.activityContent = activityContent;
@@ -35,5 +37,7 @@ public class ActivityVo {
         this.avatar = avatar;
         this.school = school;
         this.love = love;
+        this.comment = comment;
+        this.collect = collect;
     }
 }

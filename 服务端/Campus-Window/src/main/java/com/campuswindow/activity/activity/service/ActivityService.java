@@ -85,6 +85,12 @@ public class ActivityService {
         return activityVos;
     }
 
+    public List<ActivityVo> findAllCollectByUserId(String userId) {
+        List<ActivityVo> activityVos = activityRepository.findAllCollectByUserId(userId)
+                .stream().peek(e -> e.setActivityImages(activityImageService.findActivityImageByActivityId(e.getActivityId()))).collect(Collectors.toList());
+        return activityVos;
+    }
+
     public void addComment(String activityId) {
         activityRepository.updateComment(activityId, 1);
     }
