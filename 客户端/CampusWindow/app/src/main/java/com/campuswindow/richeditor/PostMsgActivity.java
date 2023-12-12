@@ -133,19 +133,19 @@ public class PostMsgActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_heading4).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setHeading(4);
-            }
-        });
-
-        findViewById(R.id.action_heading5).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setHeading(5);
-            }
-        });
+//        findViewById(R.id.action_heading4).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.setHeading(4);
+//            }
+//        });
+//
+//        findViewById(R.id.action_heading5).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.setHeading(5);
+//            }
+//        });
 
         findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
 
@@ -285,7 +285,7 @@ public class PostMsgActivity extends AppCompatActivity {
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(postMsgTitle.getText().toString()==null){
+                if(postMsgTitle.getText().toString().equals("")){
                     Toast.makeText(PostMsgActivity.this, "请输入标题！！！", Toast.LENGTH_SHORT).show();
                 } else if ("请选择……".equals(where)) {
                     Toast.makeText(PostMsgActivity.this, "请您选择要发送帖子的位置！！！", Toast.LENGTH_SHORT).show();
@@ -362,28 +362,27 @@ public class PostMsgActivity extends AppCompatActivity {
         System.out.println(activityContent);
         List<String> images = getMatchString("<img.*?>", activityContent);
         List<String> videos = getMatchString("<video.*?>", activityContent);
-        EntertainmentActivityDto entertainmentActivityDto = new EntertainmentActivityDto(postMsgTitle.getText().toString(), activityContent, UserConstant.USER_ID, images, videos);
+        EntertainmentActivityDto entertainmentActivityDto;
+        if("学术活动".equals(where)){
+            entertainmentActivityDto = new EntertainmentActivityDto(postMsgTitle.getText().toString(),
+                    activityContent, UserConstant.USER_ID, images, videos,0);
+        }else if("娱乐".equals(where)){
+            entertainmentActivityDto = new EntertainmentActivityDto(postMsgTitle.getText().toString(),
+                    activityContent, UserConstant.USER_ID, images, videos,1);
+        }else{
+            entertainmentActivityDto = new EntertainmentActivityDto(postMsgTitle.getText().toString(),
+                    activityContent, UserConstant.USER_ID, images, videos,2);
+        }
+
         Gson gson = new Gson();
         String json = gson.toJson(entertainmentActivityDto);
         Log.i("JSON",json);
         RequestBody requestBody = RequestBody.create(json, MediaType.parse("application/json; charset=utf-8"));
-        Request request;
-        if("学术活动".equals(where)){
-            request = new Request.Builder()
-                    .url(API.IP + API.LEARNING_SEND_ACTIVITY)
-                    .post(requestBody)
-                    .build();
-        }else if("娱乐".equals(where)){
-            request = new Request.Builder()
-                    .url(API.IP + API.ENTERTAINMENT_SEND_ACTIVITY)
-                    .post(requestBody)
-                    .build();
-        }else{
-            request = new Request.Builder()
-                    .url(API.IP + API.LUG_SEND_ACTIVITY)
-                    .post(requestBody)
-                    .build();
-        }
+        Request request = new Request.Builder()
+                .url(API.IP + API.ENTERTAINMENT_SEND_ACTIVITY)
+                .post(requestBody)
+                .build();
+
         try {
             Response response = okHttpClient.newCall(request).execute();
             Result result = gson.fromJson(response.body().string(), Result.class);

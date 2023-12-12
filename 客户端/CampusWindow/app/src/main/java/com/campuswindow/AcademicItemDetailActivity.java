@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +43,7 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,12 +70,12 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
-        btRuturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        btRuturn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
         /*评论功能*/
         tvComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +114,7 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mEditText.getText().toString().equals("")) {
-
+                    Toast.makeText(AcademicItemDetailActivity.this, "请输入想说的话", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     commentList.add(commentList.size(),new Comment(mEditText.getText().toString()));

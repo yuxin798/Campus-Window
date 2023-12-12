@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment {
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 switch(position){
                     case 0:
-                        tab.setText("学术活动");
+                        tab.setText("学习");
                         break;
                     case 1:
                         tab.setText("娱乐");

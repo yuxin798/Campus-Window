@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
+    android:descendantFocusability="blocksDescendants"
     tools:context=".LoginActivity">
 
     <ImageView
@@ -69,12 +70,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <RadioButton
-            android:id="@+id/login_radio_btn"
+<!--        <RadioButton-->
+<!--            android:id="@+id/login_radio_btn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="登录前，请先同意"-->
+<!--            android:checked="true"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="17dp"/>-->
+        <CheckBox
+            android:id="@+id/login_check_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="登录前，请先同意"
-            android:checked="true"
+            android:checked="false"
             android:textColor="@color/black"
             android:textSize="17dp"/>
         <TextView
@@ -84,6 +93,8 @@
             android:layout_height="wrap_content"
             android:text="用户隐私协议"
             android:textSize="17dp"/>
+
     </LinearLayout>
+
 
 </RelativeLayout>

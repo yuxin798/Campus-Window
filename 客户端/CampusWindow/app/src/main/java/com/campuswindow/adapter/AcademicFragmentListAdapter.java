@@ -29,6 +29,8 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
     private View view;
     private OnItemClickListener mOnItemClickListener;
     private ImageAdapter imageAdapter;
+
+
     private OnItemChildClickListener mOnItemChildClickListener;
 
 
@@ -42,7 +44,6 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         view =LayoutInflater.from(mContext).inflate(R.layout.index_academic_fragment_item,parent,false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
-
         return myViewHolder;
     }
 
@@ -60,13 +61,16 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
                 .circleCrop()
                 .into(holder.userImage);
         holder.postTitle.setText(academicList.get(position).getActivityTitle());
-        //
+
+        //加载图片:
         activityImages = new ArrayList<>();
         activityImages = academicList.get(position).getActivityImages();
         System.out.println("zhuangjm"+activityImages.size());
+
         imageAdapter = new ImageAdapter(activityImages,mContext);
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false));
         holder.recyclerView.setAdapter(imageAdapter);
+
         if(activityImages.size()>3){
             Glide.with(mContext)
                     .load(activityImages.get(3))

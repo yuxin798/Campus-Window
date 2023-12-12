@@ -9,13 +9,15 @@ public class EntertainmentActivityDto {
 
     private List<String> images;
     private List<String> videos;
+    private int type;
 
-    public EntertainmentActivityDto(String activityTitle, String activityContent, String userId, List<String> images, List<String> videos) {
+    public EntertainmentActivityDto(String activityTitle, String activityContent, String userId, List<String> images, List<String> videos, int type) {
         this.activityTitle = activityTitle;
         this.activityContent = activityContent;
         this.userId = userId;
         this.images = images;
         this.videos = videos;
+        this.type = type;
     }
 
     public EntertainmentActivityDto() {

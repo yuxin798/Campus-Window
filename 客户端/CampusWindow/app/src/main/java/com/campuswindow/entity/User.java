@@ -1,6 +1,7 @@
 package com.campuswindow.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class User implements Serializable {
     private String userId;
@@ -9,6 +10,9 @@ public class User implements Serializable {
     private String password;
     private String school;
     private String avatar;
+    private Timestamp createTime;
+    private int gender;
+    private String signature;
 
     public String getUserId() {
         return userId;
@@ -58,6 +62,30 @@ public class User implements Serializable {
         this.avatar = avatar;
     }
 
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -67,6 +95,9 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", school='" + school + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", createTime=" + createTime +
+                ", gender=" + gender +
+                ", signature='" + signature + '\'' +
                 '}';
     }
 }

@@ -23,7 +23,7 @@ public class AcademicService {
     public Result getAcademicList(){
         client = new OkHttpClient();
         request = new Request.Builder()
-                .url(API.SERVER_URL2 + "findAll")
+                .url(API.SERVER_URL2 + "findAllByType?type=0")
                 .get()
                 .build();
         call = client.newCall(request);

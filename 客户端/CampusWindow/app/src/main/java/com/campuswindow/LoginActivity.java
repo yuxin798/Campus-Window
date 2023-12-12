@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -27,16 +28,37 @@ public class LoginActivity extends AppCompatActivity {
     private MyListener myListener;
     private TextView lgUserTxt;
     private RadioButton lgRadioBtn;
+    private CheckBox lgCheckBtn;
     private Button login1;
+    boolean a;
+//    private VideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getViews();
-        Log.i("isChecked",lgRadioBtn.isChecked()+"");
+
         setListeners();
         setEditColor();
+//        videoView.setVideoURI(Uri.parse("http://192.168.144.132:9000/campus-bucket/activity/167dbc1d5c9e4f9c9ec11abd863bf3d5.mp4"));
+//        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mp) {
+//                mp.start();
+//            }
+//        });
+        lgCheckBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                a = lgCheckBtn.isChecked();
+            }
+        });
+        if(lgCheckBtn.isChecked()){
+            lgCheckBtn.setChecked(!a);
+        }else{
+            lgCheckBtn.setChecked(!a);
+        }
 
     }
 
@@ -71,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         MyListener myListener = new MyListener();
         btnReg.setOnClickListener(myListener);
         btnFgPwd.setOnClickListener(myListener);
-        lgRadioBtn.setOnClickListener(myListener);
+//        lgRadioBtn.setOnClickListener(myListener);
 
         login1.setOnClickListener(myListener);
     }
@@ -82,9 +104,13 @@ public class LoginActivity extends AppCompatActivity {
         btnReg = findViewById(R.id.btn_lg_register);
         btnFgPwd = findViewById(R.id.btn_lg_forget);
         lgUserTxt = findViewById(R.id.login_user_txt);
-        lgRadioBtn = findViewById(R.id.login_radio_btn);
+//        lgRadioBtn = findViewById(R.id.login_radio_btn);
+
+        lgCheckBtn = findViewById(R.id.login_check_btn);
 
         login1 = findViewById(R.id.btn_lg_login1);
+
+//        videoView = findViewById(R.id.login_video);
     }
 
     class MyListener implements View.OnClickListener{
@@ -104,10 +130,10 @@ public class LoginActivity extends AppCompatActivity {
                     //忘记事件：
                     userFgPwd();
                     break;
-                case R.id.login_radio_btn:
-                    Log.i("isChecked",lgRadioBtn.isChecked()+"");
-                    lgRadioBtn.setChecked(!lgRadioBtn.isChecked());
-                    break;
+//                case R.id.login_radio_btn:
+//                    Log.i("isChecked",lgRadioBtn.isChecked()+"");
+//                    lgRadioBtn.setChecked(!lgRadioBtn.isChecked());
+//                    break;
             }
         }
     }
@@ -121,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.i("email,pwd",email.toString()+""+pwd.toString());
         if(email.isEmpty()||pwd.isEmpty()){
             Toast.makeText(getApplicationContext(),"邮箱或密码不能为空",Toast.LENGTH_SHORT).show();
-        } else if(!lgRadioBtn.isChecked()){
+        } else if(!lgCheckBtn.isChecked()){
             //确认用户协议：
             confirmUserPrivacyAgreement();
         } else {
@@ -164,17 +190,16 @@ public class LoginActivity extends AppCompatActivity {
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("isChecked",lgRadioBtn.isChecked()+"");
-                lgRadioBtn.setChecked(true);
-
+                Log.i("isChecked",lgCheckBtn.isChecked()+"");
+                lgCheckBtn.setChecked(true);
                 dialog.dismiss();
             }
         });
         btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lgRadioBtn.setChecked(false);
-                Log.i("isChecked",lgRadioBtn.isChecked()+"");
+                lgCheckBtn.setChecked(false);
+                Log.i("isChecked",lgCheckBtn.isChecked()+"");
                 dialog.dismiss();
             }
         });

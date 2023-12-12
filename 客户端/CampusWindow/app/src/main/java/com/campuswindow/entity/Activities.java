@@ -14,6 +14,7 @@ public class Activities implements Serializable {
     private String school;
     private int love;
     private List<ActivityImage> activityImages;
+    private int type;
 
     public int getLove() {
         return love;
@@ -95,6 +96,14 @@ public class Activities implements Serializable {
         this.school = school;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "Activities{" +
@@ -108,6 +117,7 @@ public class Activities implements Serializable {
                 ", school='" + school + '\'' +
                 ", love=" + love +
                 ", activityImages=" + activityImages +
+                ", type=" + type +
                 '}';
     }
 }
