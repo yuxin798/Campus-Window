@@ -9,4 +9,7 @@ public interface ActivityCollectRepository extends JpaRepository<ActivityCollect
     @Query(value = "delete from ActivityCollect where userId =?1 and activityId =?2")
     @Modifying
     void deleteByUserIdAndActivityId(String userId, String activityId);
+
+    @Query(value = "select count(*) from ActivityCollect where userId =?1 and activityId =?2")
+    int findByUserIdAndActivityId(String userId, String activityId);
 }

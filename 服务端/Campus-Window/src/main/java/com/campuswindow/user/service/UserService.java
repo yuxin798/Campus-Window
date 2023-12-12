@@ -41,7 +41,7 @@ public class UserService {
         user.setSchool(registerDto.getSchool());
         user.setUserName(registerDto.getUserName());
         //设置默认头像 TODO
-        user.setAvatar("D:\\images\\users\\default.jpg");
+        user.setAvatar("http://192.168.144.132:9000/campus-bucket/users/default.jpg");
         user.setCreateTime(new Timestamp(System.currentTimeMillis()));
         return userRepository.save(user);
     }

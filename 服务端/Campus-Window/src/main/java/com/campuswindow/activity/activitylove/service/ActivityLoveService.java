@@ -26,4 +26,12 @@ public class ActivityLoveService {
     public void setActivityLoveRepository(ActivityLoveRepository activityLoveRepository) {
         this.activityLoveRepository = activityLoveRepository;
     }
+
+    public boolean findActivityLoveByUserIdAndActivityId(String userId, String activityId) {
+        if (activityLoveRepository.findByUserIdAndActivityId(userId, activityId) == 0) {
+            return false;
+        }
+        return true;
+    }
+
 }

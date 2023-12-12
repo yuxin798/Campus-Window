@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @PostMapping("/checkEmailCode")
-    @Operation(summary = "忘记密码发送验证码")
+    @Operation(summary = "忘记密码校验验证码")
     public Result<String> checkEmailCode(String code, String emailCodeKey){
         String checkCode = redisTemplate.opsForValue().get(RedisConstant.EMAIL_VALIDATE_CODE + emailCodeKey);
         if (!code.equals(checkCode)){
@@ -158,19 +158,11 @@ public class UserController {
     }
 
     @Autowired
-    public void setUserService(UserService userService) {
+
+    public UserController(UserService userService, JavaMailSender mailSender, StringRedisTemplate redisTemplate, FileUploadService fileUploadService) {
         this.userService = userService;
-    }
-    @Autowired
-    public void setMailSender(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-    }
-    @Autowired
-    public void setRedisTemplate(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
-    }
-    @Autowired
-    public void setFileUploadService(FileUploadService fileUploadService) {
         this.fileUploadService = fileUploadService;
     }
 }

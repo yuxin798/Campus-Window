@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface ChatListRepository extends JpaRepository<ChatList, String> {
@@ -38,11 +39,11 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
     @Modifying
     void updateOtherWindows(String linkId, String fromUserId);
 
-    @Query(value = "update chat_list set last_msg =?2 where link_id =?1", nativeQuery = true)
+    @Query(value = "update chat_list set last_msg =?2, last_mgs_time = ?3 where link_id =?1", nativeQuery = true)
     @Modifying
-    void updateLastMsg(String linkId, String content);
+    void updateLastMsgAndTime(String linkId, String content, Timestamp sendTime);
 
-    @Query(value = "select new com.campuswindow.chat.dto.ChatListDto(c.listId, c.linkId, c.fromUserId, c.toUserId,  u.userName, u.avatar, c.fromWindow, c.toWindow, c.lastMsg, c.unread, c.status) from ChatList as c join User as u on c.toUserId = u.userId where c.fromUserId = ?1 and (c.status = 1 or c.unread != 0)")
+    @Query(value = "select new com.campuswindow.chat.dto.ChatListDto(c.listId, c.linkId, c.fromUserId, c.toUserId,  u.userName, u.avatar, c.fromWindow, c.toWindow, c.lastMsg, c.lastMsgTime, c.unread, c.status) from ChatList as c join User as u on c.toUserId = u.userId where c.fromUserId = ?1 and (c.status = 1 or c.unread != 0)")
     List<ChatListDto> findAllByFromUserId(String fromUserId);
 
     @Query(value = "update chat_list set status = ?3 where from_user_id = ?1 and to_user_id = ?2",nativeQuery = true)

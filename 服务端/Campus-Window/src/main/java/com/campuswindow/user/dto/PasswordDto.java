@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class PasswordDto {
-    @NotNull(message = "用户Id不能为空")
+    @NotNull(message = "邮箱不能为空")
     private String email;
     @NotNull(message = "密码不能为空")
     private String password;

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +24,7 @@ public class ChatListDto {
     //接收者是否在窗口
     private int toWindow;
     private String lastMsg;
+    private Date lastMsgTime;
     //未读数 fromUser的未读数
     private int unread;
     //是否被删除

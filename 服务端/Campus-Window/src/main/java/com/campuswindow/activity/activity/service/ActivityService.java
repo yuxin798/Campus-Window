@@ -3,7 +3,6 @@ package com.campuswindow.activity.activity.service;
 import com.campuswindow.activity.activity.dto.ActivityDto;
 import com.campuswindow.activity.activity.entity.Activity;
 import com.campuswindow.activity.activity.repository.ActivityRepository;
-import com.campuswindow.activity.activity.vo.ActivityQueryVo;
 import com.campuswindow.activity.activity.vo.ActivityVo;
 import com.campuswindow.activity.activitycollect.entity.ActivityCollect;
 import com.campuswindow.activity.activitycollect.service.ActivityCollectService;
@@ -11,7 +10,6 @@ import com.campuswindow.activity.activityimage.entity.ActivityImage;
 import com.campuswindow.activity.activityimage.service.ActivityImageService;
 import com.campuswindow.activity.activitylove.entity.ActivityLove;
 import com.campuswindow.activity.activitylove.service.ActivityLoveService;
-import com.campuswindow.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +25,6 @@ import java.util.stream.Collectors;
 public class ActivityService {
 
     private ActivityRepository activityRepository;
-    private UserRepository userRepository;
     private ActivityImageService activityImageService;
     private ActivityLoveService activityLoveService;
     private ActivityCollectService activityCollectService;
@@ -52,14 +49,18 @@ public class ActivityService {
         activityImageService.deleteActivityImageByActivityId(activityId);
     }
 
-    public List<ActivityQueryVo> findAllLikeActivityTitle(String activityTitle){
+    public List<ActivityVo> findAllLikeActivityTitle(String activityTitle){
         return activityRepository.findAllLikeActivityTitle(activityTitle);
     }
 
-    public ActivityVo findOneByActivityId(String activityId) {
+    public ActivityVo findOneByActivityId(String userId, String activityId) {
         ActivityVo activityVo = activityRepository.findOneByActivityId(activityId);
         List<ActivityImage> images = activityImageService.findActivityImageByActivityId(activityId);
         activityVo.setActivityImages(images);
+        boolean isLoved = activityLoveService.findActivityLoveByUserIdAndActivityId(userId, activityId);
+        activityVo.setLoved(isLoved);
+        boolean isCollected = activityCollectService.findActivityCollectByUserIdAndActivityId(userId, activityId);
+        activityVo.setCollected(isCollected);
         return activityVo;
     }
 
@@ -73,9 +74,12 @@ public class ActivityService {
         activityLoveService.decreaseLove(activityLove);
     }
 
-    public List<ActivityVo> findAllByType(int type) {
+    public List<ActivityVo> findAllByType(String userId, int type) {
         List<ActivityVo> activityVos = activityRepository.findAllByTypeOderByDate(type)
-                .stream().peek(e -> e.setActivityImages(activityImageService.findActivityImageByActivityId(e.getActivityId()))).collect(Collectors.toList());
+                .stream()
+                .peek(e-> e.setLoved(activityLoveService.findActivityLoveByUserIdAndActivityId(userId, e.getActivityId())))
+                .peek(e -> e.setCollected(activityCollectService.findActivityCollectByUserIdAndActivityId(userId, e.getActivityId())))
+                .peek(e -> e.setActivityImages(activityImageService.findActivityImageByActivityId(e.getActivityId()))).collect(Collectors.toList());
         return activityVos;
     }
 
@@ -110,23 +114,10 @@ public class ActivityService {
     }
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-    @Autowired
-    public void setActivityImageService(ActivityImageService activityImageService) {
-        this.activityImageService = activityImageService;
-    }
-    @Autowired
-    public void setActivityLoveService(ActivityLoveService activityLoveService) {
-        this.activityLoveService = activityLoveService;
-    }
-    @Autowired
-    public void setActivityRepository(ActivityRepository activityRepository) {
+    public ActivityService(ActivityRepository activityRepository, ActivityImageService activityImageService, ActivityLoveService activityLoveService, ActivityCollectService activityCollectService) {
         this.activityRepository = activityRepository;
-    }
-    @Autowired
-    public void setActivityCollectService(ActivityCollectService activityCollectService) {
+        this.activityImageService = activityImageService;
+        this.activityLoveService = activityLoveService;
         this.activityCollectService = activityCollectService;
     }
 }

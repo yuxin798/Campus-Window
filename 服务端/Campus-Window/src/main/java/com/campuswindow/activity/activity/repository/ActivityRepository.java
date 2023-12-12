@@ -1,7 +1,6 @@
 package com.campuswindow.activity.activity.repository;
 
 import com.campuswindow.activity.activity.entity.Activity;
-import com.campuswindow.activity.activity.vo.ActivityQueryVo;
 import com.campuswindow.activity.activity.vo.ActivityVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -21,10 +20,12 @@ public interface ActivityRepository extends JpaRepository<Activity, String> {
     @Query(value = "select new com.campuswindow.activity.activity.vo.ActivityVo(e.activityId, e.activityTitle, e.activityContent, e.date, e.userId, u.userName, u.avatar, u.school, e.love, e.comment, e.collect) from Activity as e join User as u on e.userId = u.userId order by e.date desc ")
     List<ActivityVo> findAllOderByDate();
 
-    @Query(value = "select new com.campuswindow.activity.activity.vo.ActivityQueryVo(e.activityId, e.activityTitle) " +
+    @Query(value = "select new com.campuswindow.activity.activity.vo.ActivityVo(e.activityId, e.activityTitle, e.activityContent, e.date, e.userId, u.userName, u.avatar, u.school, e.love, e.comment, e.collect) " +
             "from Activity as e " +
+            "join User as u " +
+            "on e.userId = u.userId " +
             "where e.activityTitle like %?1%")
-    List<ActivityQueryVo> findAllLikeActivityTitle(String activityTitle);
+    List<ActivityVo> findAllLikeActivityTitle(String activityTitle);
 
     @Query(value = "select new com.campuswindow.activity.activity.vo.ActivityVo(e.activityId, e.activityTitle, e.activityContent, e.date, e.userId, u.userName, u.avatar, u.school, e.love, e.comment, e.collect) from Activity as e join User as u on e.userId = u.userId where e.activityId = ?1")
     ActivityVo findOneByActivityId(String activityId);

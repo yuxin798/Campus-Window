@@ -4,7 +4,6 @@ import com.campuswindow.activity.activitycollect.entity.ActivityCollect;
 import com.campuswindow.activity.activitylove.entity.ActivityLove;
 import com.campuswindow.activity.activity.dto.ActivityDto;
 import com.campuswindow.activity.activity.service.ActivityService;
-import com.campuswindow.activity.activity.vo.ActivityQueryVo;
 import com.campuswindow.activity.activity.vo.ActivityVo;
 import com.campuswindow.fileupload.FileUploadService;
 import com.campuswindow.utils.ResultVOUtil;
@@ -30,8 +29,8 @@ public class ActivityController {
      */
     @GetMapping("/findAllByType")
     @Operation(summary = "根据发帖类型查询所有帖子")
-    public Result<?> findAllByType(int type){
-        List<ActivityVo> activities = activityService.findAllByType(type);
+    public Result<?> findAllByType(String userId, int type){
+        List<ActivityVo> activities = activityService.findAllByType(userId, type);
         return ResultVOUtil.success(activities);
     }
 
@@ -121,14 +120,14 @@ public class ActivityController {
 
     @GetMapping("/findAllLikeActivityTitle/{activityTitle}")
     @Operation(summary = "根据帖子标题模糊查询所有帖子")
-    public Result<List<ActivityQueryVo>> findAllLikeActivityTitle(@PathVariable String activityTitle) {
+    public Result<List<ActivityVo>> findAllLikeActivityTitle(@PathVariable String activityTitle) {
         return ResultVOUtil.success(activityService.findAllLikeActivityTitle(activityTitle));
     }
 
-    @GetMapping("/findActivityByActivityId/{activityId}")
+    @GetMapping("/findActivityByActivityId/{userId}/{activityId}")
     @Operation(summary = "根据帖子id查询帖子")
-    public Result<ActivityVo> findActivityByActivityId(@PathVariable String activityId){
-        return ResultVOUtil.success(activityService.findOneByActivityId(activityId));
+    public Result<ActivityVo> findActivityByActivityId(@PathVariable("userId") String userId, @PathVariable("activityId") String activityId){
+        return ResultVOUtil.success(activityService.findOneByActivityId(userId, activityId));
     }
 
     @Autowired

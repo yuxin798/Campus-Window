@@ -26,4 +26,11 @@ public class ActivityCollectService {
     public void setActivityCollectRepository(ActivityCollectRepository activityCollectRepository) {
         this.activityCollectRepository = activityCollectRepository;
     }
+
+    public boolean findActivityCollectByUserIdAndActivityId(String userId, String activityId) {
+        if (activityCollectRepository.findByUserIdAndActivityId(userId, activityId) == 0) {
+            return false;
+        }
+        return true;
+    }
 }

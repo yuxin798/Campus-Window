@@ -25,6 +25,8 @@ public class ActivityVo {
     private int love;
     private int comment;
     private int collect;
+    private boolean isLoved;
+    private boolean isCollected;
     private List<ActivityImage> activityImages;
 
     public ActivityVo(String activityId, String activityTitle, String activityContent, Date date, String userId, String userName, String avatar, String school, int love, int comment, int collect) {
