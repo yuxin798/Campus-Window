@@ -26,6 +26,7 @@ public class CommentVo {
     private Date sendTime;
     private String userName;
     private String avatar;
+    private boolean isLoved;
     private List<CommentImage> commentImages;
 
     public CommentVo(String commentId, String activityId, String userId, String content, int love, Date sendTime, String userName, String avatar) {

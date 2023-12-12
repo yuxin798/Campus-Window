@@ -67,7 +67,7 @@ public class ActivityController {
     /*
      * 帖子点赞
      */
-    @GetMapping("/addLove")
+    @PostMapping("/addLove")
     @Operation(summary = "点赞")
     public Result<?> addLove(@RequestBody ActivityLove activityLove){
         activityService.addLove(activityLove);
@@ -77,7 +77,7 @@ public class ActivityController {
     /*
      * 取消帖子点赞
      */
-    @GetMapping("/decreaseLove")
+    @PostMapping("/decreaseLove")
     @Operation(summary = "取消点赞")
     public Result<?> decreaseLove(@RequestBody ActivityLove activityLove){
         activityService.decreaseLove(activityLove);
@@ -87,7 +87,7 @@ public class ActivityController {
     /*
      * 收藏帖子
      */
-    @GetMapping("/addCollect")
+    @PostMapping("/addCollect")
     @Operation(summary = "收藏")
     public Result<?> addCollect(@RequestBody ActivityCollect activityCollect){
         activityService.addCollect(activityCollect);
@@ -97,7 +97,7 @@ public class ActivityController {
     /*
      * 取消收藏帖子
      */
-    @GetMapping("/decreaseCollect")
+    @PostMapping("/decreaseCollect")
     @Operation(summary = "取消收藏")
     public Result<?> decreaseCollect(@RequestBody ActivityCollect activityCollect){
         activityService.decreaseCollect(activityCollect);

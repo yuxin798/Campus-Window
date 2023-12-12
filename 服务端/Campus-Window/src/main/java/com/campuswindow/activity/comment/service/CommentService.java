@@ -7,6 +7,8 @@ import com.campuswindow.activity.comment.repository.CommentRepository;
 import com.campuswindow.activity.comment.vo.CommentUserVo;
 import com.campuswindow.activity.comment.vo.CommentVo;
 import com.campuswindow.activity.commentimage.service.CommentImageService;
+import com.campuswindow.activity.commentlove.entity.CommentLove;
+import com.campuswindow.activity.commentlove.service.CommentLoveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,7 @@ public class CommentService {
     private CommentRepository commentRepository;
     private CommentImageService commentImageService;
     private ActivityService activityService;
+    private CommentLoveService commentLoveService;
 
     /*
      * 发表评论，同时将图片或视频网络地址保存到数据库中
@@ -48,23 +51,27 @@ public class CommentService {
     /*
      * 根据帖子Id查询所有评论，包含图片和视频网络地址，并根据点赞数和发表事件降序排序
      */
-    public List<CommentVo> findAllCommentsByActivityId(String activityId) {
+    public List<CommentVo> findAllCommentsByActivityId(String userId, String activityId) {
         return commentRepository.findAllByActivityId(activityId)
-                .stream().peek(e -> e.setCommentImages(commentImageService.findCommentImageByCommentId(e.getCommentId()))).collect(Collectors.toList());
+                .stream()
+                .peek(e -> e.setLoved(commentLoveService.findCommentLoveByUserIdAndCommentId(userId, e.getCommentId())))
+                .peek(e -> e.setCommentImages(commentImageService.findCommentImageByCommentId(e.getCommentId()))).collect(Collectors.toList());
     }
 
     /*
      * 点赞
      */
-    public void addLove(String commentId) {
-        commentRepository.updateLove(commentId, 1);
+    public void addLove(CommentLove commentLove) {
+        commentRepository.updateLove(commentLove.getCommentId(), 1);
+        commentLoveService.addLove(commentLove);
     }
 
     /*
      * 取消点赞
      */
-    public void decreaseLove(String commentId) {
-        commentRepository.updateLove(commentId, -1);
+    public void decreaseLove(CommentLove commentLove) {
+        commentRepository.updateLove(commentLove.getCommentId(), -1);
+        commentLoveService.decreaseLove(commentLove);
     }
 
     public List<CommentUserVo> findAllComments(String userId) {
@@ -83,5 +90,9 @@ public class CommentService {
     @Autowired
     public void setActivityService(ActivityService activityService) {
         this.activityService = activityService;
+    }
+    @Autowired
+    public void setCommentLoveService(CommentLoveService commentLoveService) {
+        this.commentLoveService = commentLoveService;
     }
 }

@@ -150,7 +150,7 @@ public class UserController {
         return ResultVOUtil.success(modifyInformationVo);
     }
 
-    @GetMapping("modifyInformation")
+    @PostMapping("modifyInformation")
     @Operation(summary = "修改个人信息")
     public Result<?> modifyInformation(@RequestBody modifyInformationDto modifyInformationDto){
         userService.modifyInformation(modifyInformationDto);
@@ -158,7 +158,6 @@ public class UserController {
     }
 
     @Autowired
-
     public UserController(UserService userService, JavaMailSender mailSender, StringRedisTemplate redisTemplate, FileUploadService fileUploadService) {
         this.userService = userService;
         this.mailSender = mailSender;

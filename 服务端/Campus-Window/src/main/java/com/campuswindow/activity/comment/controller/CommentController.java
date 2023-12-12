@@ -4,15 +4,13 @@ import com.campuswindow.activity.comment.dto.CommentDto;
 import com.campuswindow.activity.comment.service.CommentService;
 import com.campuswindow.activity.comment.vo.CommentUserVo;
 import com.campuswindow.activity.comment.vo.CommentVo;
+import com.campuswindow.activity.commentlove.entity.CommentLove;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class CommentController {
     /*
      * 发表评论，同时将上传的图片或视频保存到数据库
      */
-    @GetMapping("/addComment")
+    @PostMapping("/addComment")
     @Operation(summary = "发表评论")
     public Result<?> addComment(@RequestBody CommentDto commentDto){
         commentService.addComment(commentDto);
@@ -46,34 +44,34 @@ public class CommentController {
     /*
      * 根据帖子Id查询所有评论
      */
-    @GetMapping("findAllCommentsByActivityId")
+    @GetMapping("/findAllCommentsByActivityId")
     @Operation(summary = "根据帖子Id查询所有评论")
-    public Result<List<CommentVo>> findAllCommentsByActivityId(String activityId){
-        List<CommentVo> comments= commentService.findAllCommentsByActivityId(activityId);
+    public Result<List<CommentVo>> findAllCommentsByActivityId(String userId, String activityId){
+        List<CommentVo> comments= commentService.findAllCommentsByActivityId(userId, activityId);
         return ResultVOUtil.success(comments);
     }
 
     /*
      * 点赞
      */
-    @GetMapping("/addLove")
+    @PostMapping("/addLove")
     @Operation(summary = "点赞")
-    public Result<?> addLove(String commentId){
-        commentService.addLove(commentId);
+    public Result<?> addLove(@RequestBody CommentLove commentLove){
+        commentService.addLove(commentLove);
         return ResultVOUtil.success();
     }
 
     /*
      * 取消点赞
      */
-    @GetMapping("/decreaseLove")
+    @PostMapping("/decreaseLove")
     @Operation(summary = "取消点赞")
-    public Result<?> decreaseLove(String commentId){
-        commentService.decreaseLove(commentId);
+    public Result<?> decreaseLove(@RequestBody CommentLove commentLove){
+        commentService.decreaseLove(commentLove);
         return ResultVOUtil.success();
     }
 
-    @GetMapping("findAllComments")
+    @GetMapping("/findAllComments")
     @Operation(summary = "根据用户Id查询所有评论")
     public Result<List<CommentUserVo>> findAllComments(String userId){
         List<CommentUserVo> commentUserVos = commentService.findAllComments(userId);
