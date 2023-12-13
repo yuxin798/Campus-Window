@@ -12,4 +12,5 @@ public class ModifyInformationVo {
     private String userName;
     private int gender;
     private String signature;
+    private String avatar;
 }

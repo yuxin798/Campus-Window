@@ -3,10 +3,14 @@ package com.campuswindow.service.home;
 import android.util.Log;
 
 import com.campuswindow.Result;
+import com.campuswindow.constant.UserConstant;
+import com.campuswindow.entity.Activities;
 import com.campuswindow.server.API;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -23,14 +27,14 @@ public class AcademicService {
     public Result getAcademicList(){
         client = new OkHttpClient();
         request = new Request.Builder()
-                .url(API.SERVER_URL2 + "findAllByType?type=0")
+                .url(API.ACTIVITY + "findAllByType?type=0&userId="+ UserConstant.USER_ID)
                 .get()
                 .build();
         call = client.newCall(request);
         try {
             response = call.execute();
             Gson gson = new Gson();
-            Result result = gson.fromJson(response.body().string(),Result.class);
+            Result result = gson.fromJson(response.body().string(), new TypeToken<Result<List<Activities>>>() {}.getType());
             Log.i("result",result.toString());
             return result;
         } catch (IOException e) {

@@ -41,18 +41,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String pwd2 = edtPwd2.getText().toString().trim();
                 RegisterDto user = new RegisterDto(name, email, pwd, school, userCode, emailCodeKey);
 
-//                User user = new User();
-//                user.setUserName(name);
-//                user.setEmail(email);
-//                user.setPassword(pwd);
-//                user.setSchool(school);
-
-//                Log.i("user1:",user.toString());
-
                 //TODO Android端：提示邮箱是否正确
                 boolean a = !userCode.isEmpty();
                 boolean b = !pwd.isEmpty() && pwd.equals(pwd2);
-//                Log.i("code:",""+code);
                 Log.i("a&b:",""+a+b);
                 if(register!=null && a && b) {
                     new Thread(new Runnable() {
@@ -60,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
                         public void run() {
                             Log.i("user2:",user.toString());
                             register = registerService.register(user);
-                            if (register.getMsg().equals("邮箱已存在")){
+                            if ("邮箱已存在".equals(register.getMsg())){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -100,7 +91,6 @@ public class RegisterActivity extends AppCompatActivity {
                     public void run() {
                         register = registerService.verify(user);
                         Log.i("register:",register.toString());
-//                        emailCodeKey = ((Double)register.getData()).intValue()+"" ;
                         emailCodeKey = (String)register.getData();
                     }
                 }).start();
@@ -126,39 +116,4 @@ public class RegisterActivity extends AppCompatActivity {
         btnReNo = findViewById(R.id.btn_re_no);
         btnSendCode = findViewById(R.id.btn_re_send);
     }
-
-
-    //检验密码的合理性
-//    public boolean isPasswordValids(String password) {
-//        // 密码长度必须在6到15位之间
-//        if (password.length() < 6 || password.length() > 15) {
-//            return false;
-//        }
-//
-//        // 密码必须包含至少一个大写字母、一个小写字母和一个数字
-//        boolean hasUpperCase = false;
-//        boolean hasLowerCase = false;
-//        boolean hasDigit = false;
-//
-//        for (char ch : password.toCharArray()) {
-//            if (Character.isUpperCase(ch)) {
-//                hasUpperCase = true;
-//            } else if (Character.isLowerCase(ch)) {
-//                hasLowerCase = true;
-//            } else if (Character.isDigit(ch)) {
-//                hasDigit = true;
-//            }
-//        }
-//
-//        return hasUpperCase && hasLowerCase && hasDigit;
-//    }
-
-    //要求密码必须包含至少一个数字、一个小写字母、一个大写字母、一个特殊字符（@#$%^&+=），并且长度至少为8个字符。
-//    private static final String PASSWORD_PATTERN =
-//            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-//
-//    public static boolean isPasswordValid(String password) {
-//        Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
-//        return pattern.matcher(password).matches();
-//    }
 }

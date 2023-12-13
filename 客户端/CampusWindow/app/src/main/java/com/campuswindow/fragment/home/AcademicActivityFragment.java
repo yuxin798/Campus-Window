@@ -24,6 +24,7 @@ import com.campuswindow.entity.Activities;
 import com.campuswindow.service.home.AcademicService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class AcademicActivityFragment extends Fragment {
         View page = inflater.inflate(R.layout.index_academic_fragment,null);
         //初始化页面
         initPage(page);
+
         //获取数据源
         getAcademicList();
 //        listViewListenerMethod();
@@ -66,15 +68,15 @@ public class AcademicActivityFragment extends Fragment {
 //                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 Gson gson = new Gson();
                 Type type = new TypeToken<ArrayList<Activities>>(){}.getType();
-
-                academicList = gson.fromJson(gson.toJson(result.getData()), type);
-                runOnMainThread();
+                academicList.addAll(gson.fromJson(gson.toJson(result.getData()), type));
                 Log.i("academicList:",academicList.toString());
                 Log.i("academicList:",academicList.toString().isEmpty()+"");
+                runOnMainThread();
             }
         }).start();
     }
-    public void runOnMainThread() {
+
+    public void runOnMainThread () {
         // 在主线程上执行一段代码
         handler.post(new Runnable() {
             @Override
@@ -83,6 +85,7 @@ public class AcademicActivityFragment extends Fragment {
                 academicFragmentListAdapter = new AcademicFragmentListAdapter(academicList,getContext());
                 academicRe.setAdapter(academicFragmentListAdapter);
                 academicRe.setLayoutManager(new LinearLayoutManager(getContext()));
+                academicFragmentListAdapter.setAcademicList(academicList);
                 System.out.println("66666666666"+academicList.size());
                 academicFragmentListAdapter.setOnItemClickListener(new AcademicFragmentListAdapter.OnItemClickListener() {
                     @Override
@@ -92,7 +95,6 @@ public class AcademicActivityFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
-
             }
         });
     }

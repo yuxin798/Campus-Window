@@ -33,7 +33,7 @@ public class RegisterService {
         );
         request = new Request.Builder()
                 .post(body)
-                .url(API.SERVER_URL + "register")
+                .url(API.USER + "register")
                 .build();
         call = client.newCall(request);
         try {
@@ -52,15 +52,8 @@ public class RegisterService {
 
     public Result verify(User user) {
         client = new OkHttpClient();
-//        String emailJson = new Gson().toJson(user);
-//        RequestBody body = RequestBody.create(
-//                MediaType.parse("application/json;charset=utf-8"),
-//                emailJson
-//        );
-        //sendEmailForUpdatePassword
-
         request = new Request.Builder()
-                .url(API.SERVER_URL+"sendEmailCode?to=" + user.getEmail())
+                .url(API.USER+"sendEmailCode?to=" + user.getEmail())
                 .get()
                 .build();
         call = client.newCall(request);
@@ -69,7 +62,6 @@ public class RegisterService {
             //接收验证码：
             Gson gson = new Gson();
             Result result = gson.fromJson(response.body().string(), Result.class);
-
             Log.i("result",result.toString());
             return result;
         } catch (IOException e) {

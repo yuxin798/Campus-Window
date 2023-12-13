@@ -66,15 +66,14 @@
                                         android:layout_marginLeft="20dp"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="北冥渔"
                                         android:textStyle="bold"
                                         android:textSize="30dp"/>
                                     <TextView
                                         android:id="@+id/mine_fg_label"
                                         android:layout_marginTop="5dp"
+                                        android:layout_marginLeft="6dp"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:text="个性签名:严以待人，宽以待己！"
                                         android:textSize="20dp"/>
                                     <LinearLayout
                                         android:paddingLeft="15dp"
@@ -163,23 +162,22 @@
                             </LinearLayout>
 
                             <!--                        这是头像-->
-<!--                            <ImageView-->
+                            <ImageView
+                                android:id="@+id/mine_img"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginLeft="30dp"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp" />
+<!--                            <com.shehuan.niv.NiceImageView-->
 <!--                                android:id="@+id/mine_img"-->
 <!--                                android:layout_gravity="center_vertical"-->
 <!--                                android:layout_marginTop="20dp"-->
 <!--                                android:layout_marginLeft="30dp"-->
 <!--                                android:src="@mipmap/ikun"-->
 <!--                                android:layout_width="100dp"-->
-<!--                                android:layout_height="100dp" />-->
-                            <com.shehuan.niv.NiceImageView
-                                android:id="@+id/mine_img"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginTop="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:src="@mipmap/ikun"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                app:is_circle="true"/>
+<!--                                android:layout_height="100dp"-->
+<!--                                app:is_circle="true"/>-->
 
 <!--                            这是导航按钮-->
                             <ImageView

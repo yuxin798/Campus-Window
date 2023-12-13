@@ -29,7 +29,7 @@ public class ActivityController {
      */
     @GetMapping("/findAllByType")
     @Operation(summary = "根据发帖类型查询所有帖子")
-    public Result<?> findAllByType(String userId, int type){
+    public Result<List<ActivityVo>> findAllByType(String userId, int type){
         List<ActivityVo> activities = activityService.findAllByType(userId, type);
         return ResultVOUtil.success(activities);
     }

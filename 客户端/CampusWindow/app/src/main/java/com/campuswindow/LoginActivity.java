@@ -41,13 +41,6 @@ public class LoginActivity extends AppCompatActivity {
 
         setListeners();
         setEditColor();
-//        videoView.setVideoURI(Uri.parse("http://192.168.144.132:9000/campus-bucket/activity/167dbc1d5c9e4f9c9ec11abd863bf3d5.mp4"));
-//        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//            @Override
-//            public void onPrepared(MediaPlayer mp) {
-//                mp.start();
-//            }
-//        });
         lgCheckBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,13 +97,8 @@ public class LoginActivity extends AppCompatActivity {
         btnReg = findViewById(R.id.btn_lg_register);
         btnFgPwd = findViewById(R.id.btn_lg_forget);
         lgUserTxt = findViewById(R.id.login_user_txt);
-//        lgRadioBtn = findViewById(R.id.login_radio_btn);
-
         lgCheckBtn = findViewById(R.id.login_check_btn);
-
         login1 = findViewById(R.id.btn_lg_login1);
-
-//        videoView = findViewById(R.id.login_video);
     }
 
     class MyListener implements View.OnClickListener{
@@ -119,8 +107,6 @@ public class LoginActivity extends AppCompatActivity {
             switch(v.getId()){
                 case R.id.btn_lg_login1:
                     userLogin();
-//                    Intent intent = new Intent(LoginActivity.this, NewActivity.class);
-//                    startActivity(intent);
                     break;
                 case R.id.btn_lg_register:
                     //注册事件：
@@ -130,21 +116,15 @@ public class LoginActivity extends AppCompatActivity {
                     //忘记事件：
                     userFgPwd();
                     break;
-//                case R.id.login_radio_btn:
-//                    Log.i("isChecked",lgRadioBtn.isChecked()+"");
-//                    lgRadioBtn.setChecked(!lgRadioBtn.isChecked());
-//                    break;
             }
         }
     }
-
-
 
     //登录事件：
     private void userLogin() {
         String email = edtEmail.getText().toString().trim();
         String pwd = edtPwd.getText().toString().trim();
-        Log.i("email,pwd",email.toString()+""+pwd.toString());
+        Log.i("email,pwd",email+pwd);
         if(email.isEmpty()||pwd.isEmpty()){
             Toast.makeText(getApplicationContext(),"邮箱或密码不能为空",Toast.LENGTH_SHORT).show();
         } else if(!lgCheckBtn.isChecked()){
@@ -160,7 +140,6 @@ public class LoginActivity extends AppCompatActivity {
                         String userId = login.getData().toString();
                         UserConstant.USER_ID = userId;
                         Intent intent = new Intent(LoginActivity.this, NewActivity.class);
-//                        intent.putExtra("userId",userId);
                         startActivity(intent);
                     }else{
                         runOnUiThread(new Runnable() {

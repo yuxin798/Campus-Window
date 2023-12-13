@@ -3,13 +3,12 @@ package com.campuswindow.fragment.index;
 import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -32,14 +32,17 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.campuswindow.EditUserDataActivity;
 import com.campuswindow.R;
+import com.campuswindow.Result;
 import com.campuswindow.adapter.MineAdapter;
+import com.campuswindow.entity.User;
 import com.campuswindow.fragment.mine.CollectFragment;
 import com.campuswindow.fragment.mine.CommentFragment;
 import com.campuswindow.fragment.mine.IssueFragment;
+import com.campuswindow.service.index.SearchOneSelfService;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.shehuan.niv.NiceImageView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +59,14 @@ public class MineFragment extends Fragment {
     private Uri imageUri;
     private Button editData;
     private TextView name,label;
-    private NiceImageView imgHead;
+    private ImageView imgHead;
+    private User user;
 
+    private Handler handler;
+
+    public MineFragment() {
+        handler = new Handler(Looper.getMainLooper());
+    }
 
 
     @Nullable
@@ -66,6 +75,9 @@ public class MineFragment extends Fragment {
         View page = inflater.inflate(R.layout.activity_mine_fragment,null);
         initPages();
         getViews(page);
+
+        getUserMsg();
+
         createLauncher();
 
         setBtnlistener();//设置按钮事件
@@ -80,6 +92,36 @@ public class MineFragment extends Fragment {
         return page;
     }
 
+    private void getUserMsg() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SearchOneSelfService service = new SearchOneSelfService();
+                Result result = service.getUserData();
+                System.out.println(result+"66666");
+                Gson gson = new Gson();
+                user = gson.fromJson(gson.toJson(result.getData()),User.class);
+                runOnMainThread();
+            }
+        }).start();
+    }
+
+    private void runOnMainThread() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                //初始化头像
+                Glide.with(requireActivity())
+                        .load(user.getAvatar())
+                        .circleCrop()
+                        .into(imgHead);
+                //初始化名称
+                name.setText(user.getUserName());
+                //初始化
+                label.setText(user.getSignature());
+            }
+        });
+    }
 
 
     /**
@@ -151,8 +193,9 @@ public class MineFragment extends Fragment {
                 String userName = name.getText().toString();
                 String userLabel = label.getText().toString();
                 Intent intent = new Intent(getActivity(), EditUserDataActivity.class);
-                intent.putExtra("name",userName);
-                intent.putExtra("label",userLabel);
+//                intent.putExtra("name",userName);
+//                intent.putExtra("label",userLabel);
+                intent.putExtra("user",user);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }

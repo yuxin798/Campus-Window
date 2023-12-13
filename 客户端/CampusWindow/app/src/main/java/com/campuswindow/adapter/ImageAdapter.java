@@ -1,14 +1,11 @@
 package com.campuswindow.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.MediaController;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +16,8 @@ import com.campuswindow.entity.ActivityImage;
 import com.campuswindow.entity.CommentImage;
 
 import java.util.List;
+
+import jp.wasabeef.richeditor.RichEditor;
 
 
 public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -102,20 +101,37 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             // 处理图片的ViewHolder
             ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
             // 加载图片到ImageView
-            Glide.with(imageViewHolder.imageView.getContext())
-                    .load(activityImages.get(position).getImage())
-                    .into(imageViewHolder.imageView);
+            if(activityImages.size()==1){
+//                WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+//                DisplayMetrics displayMetrics = new DisplayMetrics();
+//                wm.getDefaultDisplay().getMetrics(displayMetrics);
+//                int width = displayMetrics.widthPixels;
+//                int height = displayMetrics.heightPixels;
+                Glide.with(imageViewHolder.imageView.getContext())
+                        .load(activityImages.get(position).getImage())
+                        .override(30, 30)
+                        .into(imageViewHolder.imageView);
+            }else {
+                Glide.with(imageViewHolder.imageView.getContext())
+                        .load(activityImages.get(position).getImage())
+                        .into(imageViewHolder.imageView);
+            }
 
         } else if (holder instanceof VideoViewHolder) {
             // 处理视频的ViewHolder
             VideoViewHolder videoViewHolder = (VideoViewHolder) holder;
-            // 设置视频播放路径
-            videoViewHolder.videoView.setVideoURI(Uri.parse(activityImages.get(position).getImage()));
-            // 开始播放视频
-            MediaController mediaController = new MediaController(mContext);
-            videoViewHolder.videoView.setMediaController(mediaController);
+//            // 设置视频播放路径
+//            videoViewHolder.videoView.setVideoURI(Uri.parse(activityImages.get(position).getImage()));
+//            // 开始播放视频
+//            MediaController mediaController = new MediaController(mContext);
+//            videoViewHolder.videoView.setMediaController(mediaController);
 //            videoViewHolder.videoView.seekTo(1);
-            videoViewHolder.videoView.requestFocus();
+//            videoViewHolder.videoView.requestFocus();
+//            videoViewHolder.videoView.start();
+
+            videoViewHolder.richEditor.setEditorHeight(100);
+            videoViewHolder.richEditor.setPadding(10,10,10,10);
+            videoViewHolder.richEditor.setHtml("<video src=\"" + activityImages.get(position).getImage()  + "#t=0.01\" preload=“metadata” " + "\" style=\"max-width:100%\" controls=\"\"></video><br>");
         }
     }
 
@@ -152,7 +168,6 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //    }
 
 
-
     static class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 
@@ -163,11 +178,12 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     static class VideoViewHolder extends RecyclerView.ViewHolder {
-        VideoView videoView;
-
+//        VideoView videoView;
+        RichEditor richEditor;
         VideoViewHolder(View itemView) {
             super(itemView);
-            videoView = itemView.findViewById(R.id.post_video);
+//            videoView = itemView.findViewById(R.id.post_video);
+            richEditor = itemView.findViewById(R.id.post_video);
         }
     }
 }

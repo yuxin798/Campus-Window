@@ -37,19 +37,19 @@
         android:background="@drawable/shape_10dp_all_corners"
         android:orientation="vertical"
         android:padding="20dp">
-<!--        <ImageView-->
-<!--            android:id="@+id/edit_user_img"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@mipmap/ikun"/>-->
-        <com.shehuan.niv.NiceImageView
+        <ImageView
             android:id="@+id/edit_user_img"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ikun"
-            app:is_circle="true"/>
+            android:src="@mipmap/ikun"/>
+<!--        <com.shehuan.niv.NiceImageView-->
+<!--            android:id="@+id/edit_user_img"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@mipmap/ikun"-->
+<!--            app:is_circle="true"/>-->
         <LinearLayout
             android:layout_marginTop="25dp"
             android:layout_width="match_parent"

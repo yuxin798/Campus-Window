@@ -23,7 +23,7 @@ public class AmusementService {
     public Result getAmusementList(){
         client = new OkHttpClient();
         request = new Request.Builder()
-                .url(API.SERVER_URL3 + "findAllByType?type=1")
+                .url(API.ACTIVITY + "findAllByType?type=1")
                 .get()
                 .build();
         call = client.newCall(request);

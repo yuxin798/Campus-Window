@@ -6,6 +6,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -82,6 +84,19 @@ public class LugFragmentListAdapter extends RecyclerView.Adapter<LugFragmentList
                 }
             }
         });
+        holder.cbthumbsup.setOnCheckedChangeListener((view, isChecked) -> {
+            Activities academicActivity = lugList.get(position);
+            if(isChecked){
+                academicActivity.setLove(academicActivity.getLove() + 1);
+            } else {
+                lugList.get(position).setLove(lugList.get(position).getLove() - 1);
+                if (academicActivity.getLove() == 0) {
+                    holder.thumbsupNum.setText("推荐");
+                    return;
+                }
+            }
+            holder.thumbsupNum.setText("" + academicActivity.getLove());
+        });
     }
 
     @Override
@@ -90,11 +105,12 @@ public class LugFragmentListAdapter extends RecyclerView.Adapter<LugFragmentList
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        private TextView userName,overText;
-        private TextView postTime;
+        private TextView userName, overText,  postTitle, postTime;
+        private TextView thumbsupNum, commentsNum, collectNum;
         private ImageView userImage ,overImage;
-        private TextView postTitle;
         private RecyclerView recyclerView;
+        private Button cbComments;
+        private CheckBox cbthumbsup,  cbCollect;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             userName = itemView.findViewById(R.id.user_name);
@@ -104,7 +120,15 @@ public class LugFragmentListAdapter extends RecyclerView.Adapter<LugFragmentList
             recyclerView = itemView.findViewById(R.id.rcv_image);
             overText = itemView.findViewById(R.id.tv_overmuch);
             overImage =itemView.findViewById(R.id.iv_overmuch);
+            //
+            cbthumbsup = itemView.findViewById(R.id.bt_thumbsup_post);
+            cbComments = itemView.findViewById(R.id.bt_comments_post);
+            cbCollect =  itemView.findViewById(R.id.bt_collect_post);
+            thumbsupNum = itemView.findViewById(R.id.thumbsup_num_post);
+            commentsNum = itemView.findViewById(R.id.comments_num_post);
+            collectNum = itemView.findViewById(R.id.collect_num_post);
         }
+
     }
 
     //点击事件接口

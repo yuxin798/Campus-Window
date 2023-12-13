@@ -1,9 +1,11 @@
 package com.campuswindow.fragment.index;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.campuswindow.R;
+import com.campuswindow.SearchPostActivity;
 import com.campuswindow.adapter.HomeAdapter;
 import com.campuswindow.fragment.home.AcademicActivityFragment;
 import com.campuswindow.fragment.home.AmusementFragment;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+    private Button search;
     private TabLayout indexFgTab;
     private ViewPager2 indexFgVp2;
     private List<Fragment> fragments;
@@ -37,6 +41,15 @@ public class HomeFragment extends Fragment {
         indexFgVp2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         indexFgVp2.setAdapter(homeAdapter);
         defineMediator();
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SearchPostActivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
         return page;
     }
 
@@ -70,5 +83,6 @@ public class HomeFragment extends Fragment {
     private void getViews(View page) {
         indexFgTab = page.findViewById(R.id.index_fg_tbl);
         indexFgVp2 = page.findViewById(R.id.index_fg_vp2);
+        search = page.findViewById(R.id.home_search);
     }
 }

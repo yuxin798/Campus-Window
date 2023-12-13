@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:descendantFocusability="blocksDescendants"
     tools:context=".LoginActivity">
 
     <ImageView
+        android:layout_marginTop="50dp"
         android:id="@+id/login_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,28 +42,30 @@
         android:drawableLeft="@mipmap/pwd"
         android:layout_below="@+id/edt_lg_email"
         android:inputType="numberPassword"/>
-
+    <Button
+        android:id="@+id/btn_lg_forget"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="忘记密码?"
+        android:textSize="20dp"
+        android:background="@color/white"
+        android:layout_below="@+id/edt_lg_pwd"/>
     <Button
         android:id="@+id/btn_lg_login1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="登录"
-        android:textSize="20dp"
-        android:layout_below="@id/edt_lg_pwd"/>
+        android:textSize="25dp"
+        android:layout_below="@id/btn_lg_forget"/>
     <Button
         android:id="@+id/btn_lg_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="注册"
-        android:textSize="20dp"
+        android:textSize="25dp"
         android:layout_below="@id/btn_lg_login1"/>
-    <Button
-        android:id="@+id/btn_lg_forget"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="忘记密码"
-        android:textSize="20dp"
-        android:layout_below="@+id/btn_lg_register"/>
+
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:gravity="center"
