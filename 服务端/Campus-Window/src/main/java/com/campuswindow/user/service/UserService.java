@@ -106,4 +106,8 @@ public class UserService {
     public ModifyInformationVo findInformation(String userId) {
         return userRepository.findInformation(userId);
     }
+
+    public String findSchool(String userId) {
+        return userRepository.findSchoolByUserId(userId);
+    }
 }

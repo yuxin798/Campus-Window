@@ -10,6 +10,7 @@ import com.campuswindow.activity.activityimage.entity.ActivityImage;
 import com.campuswindow.activity.activityimage.service.ActivityImageService;
 import com.campuswindow.activity.activitylove.entity.ActivityLove;
 import com.campuswindow.activity.activitylove.service.ActivityLoveService;
+import com.campuswindow.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +29,13 @@ public class ActivityService {
     private ActivityImageService activityImageService;
     private ActivityLoveService activityLoveService;
     private ActivityCollectService activityCollectService;
+    private UserService userService;
 
     public Activity sendActivity(ActivityDto activityDto) throws ParseException {
         String activityId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp sendTime = new Timestamp(System.currentTimeMillis());
-        Activity activity = new Activity(activityId, activityDto.getActivityTitle(), activityDto.getActivityContent(), sendTime, activityDto.getUserId(), 0, 0, 0, activityDto.getType());
+        String school = userService.findSchool(activityDto.getUserId());
+        Activity activity = new Activity(activityId, activityDto.getActivityTitle(), activityDto.getActivityContent(), sendTime, activityDto.getUserId(), school, 0, 0, 0, activityDto.getType());
         Activity save = activityRepository.save(activity);
         activityImageService.save(activityDto.getImages(), activityId, activityDto.getUserId(), 0);
         activityImageService.save(activityDto.getVideos(), activityId, activityDto.getUserId(), 1);
@@ -75,7 +78,8 @@ public class ActivityService {
     }
 
     public List<ActivityVo> findAllByType(String userId, int type) {
-        List<ActivityVo> activityVos = activityRepository.findAllByTypeOderByDate(type)
+        String school = userService.findSchool(userId);
+        List<ActivityVo> activityVos = activityRepository.findAllByTypeOderByDate(school, type)
                 .stream()
                 .peek(e-> e.setLoved(activityLoveService.findActivityLoveByUserIdAndActivityId(userId, e.getActivityId())))
                 .peek(e -> e.setCollected(activityCollectService.findActivityCollectByUserIdAndActivityId(userId, e.getActivityId())))
@@ -114,10 +118,11 @@ public class ActivityService {
     }
 
     @Autowired
-    public ActivityService(ActivityRepository activityRepository, ActivityImageService activityImageService, ActivityLoveService activityLoveService, ActivityCollectService activityCollectService) {
+    public ActivityService(ActivityRepository activityRepository, ActivityImageService activityImageService, ActivityLoveService activityLoveService, ActivityCollectService activityCollectService, UserService userService) {
         this.activityRepository = activityRepository;
         this.activityImageService = activityImageService;
         this.activityLoveService = activityLoveService;
         this.activityCollectService = activityCollectService;
+        this.userService = userService;
     }
 }

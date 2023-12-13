@@ -30,8 +30,8 @@ public interface ActivityRepository extends JpaRepository<Activity, String> {
     @Query(value = "select new com.campuswindow.activity.activity.vo.ActivityVo(e.activityId, e.activityTitle, e.activityContent, e.date, e.userId, u.userName, u.avatar, u.school, e.love, e.comment, e.collect) from Activity as e join User as u on e.userId = u.userId where e.activityId = ?1")
     ActivityVo findOneByActivityId(String activityId);
 
-    @Query(value = "select new com.campuswindow.activity.activity.vo.ActivityVo(e.activityId, e.activityTitle, e.activityContent, e.date, e.userId, u.userName, u.avatar, u.school, e.love, e.comment, e.collect) from Activity as e join User as u on e.userId = u.userId where e.type = ?1 order by e.date desc ")
-    List<ActivityVo> findAllByTypeOderByDate(int type);
+    @Query(value = "select new com.campuswindow.activity.activity.vo.ActivityVo(e.activityId, e.activityTitle, e.activityContent, e.date, e.userId, u.userName, u.avatar, u.school, e.love, e.comment, e.collect) from Activity as e join User as u on e.userId = u.userId where e.school = ?1 and e.type = ?2 order by e.date desc ")
+    List<ActivityVo> findAllByTypeOderByDate(String school, int type);
 
     @Query(value = "update Activity set collect = collect + ?2 where activityId = ?1")
     @Modifying

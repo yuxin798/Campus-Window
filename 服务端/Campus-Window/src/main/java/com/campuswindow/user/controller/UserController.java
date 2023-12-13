@@ -142,6 +142,13 @@ public class UserController {
         ChatUserDto chatUserDto = userService.findChatUserByUserId(userId);
         return ResultVOUtil.success(chatUserDto);
     }
+    @GetMapping("/findSchool")
+    @Operation(summary = "根据用户Id查询用户所在学校")
+    public Result<String> findSchool(String userId){
+        String school = userService.findSchool(userId);
+        return ResultVOUtil.success(school);
+    }
+
 
     @GetMapping("findInformation")
     @Operation(summary = "查询个人信息")
