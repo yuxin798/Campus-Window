@@ -43,6 +43,9 @@
     <TextView
         android:id="@+id/detailed_title"
         android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         />
@@ -54,34 +57,59 @@
         android:id="@+id/rv_popup"
         android:layout_width="match_parent"
         android:layout_height="100dp"/>
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/ll_dibu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:orientation="horizontal">
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true">
+
         <TextView
-            android:background="@drawable/edit_background"
             android:id="@+id/et_comments"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:gravity="left"/>
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:background="@drawable/edit_background" />
+
+        <CheckBox
+            android:layout_toRightOf="@+id/et_comments"
+            android:id="@+id/bt_thumbsup"
+            android:layout_width="45dp"
+            android:layout_height="35dp"
+            android:button="@null"
+            android:background="@drawable/selector_like"/>
+        <TextView
+            android:layout_alignLeft="@+id/bt_thumbsup"
+            android:layout_below="@+id/bt_thumbsup"
+            android:id="@+id/thumbsup_num"
+            android:layout_width="45dp"
+            android:layout_height="15dp"/>
         <Button
-            android:id="@+id/dbt_thumbsup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:text="点赞"/>
-        <Button
-            android:id="@+id/dbt_comments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:text="评论"/>
-        <Button
-            android:id="@+id/dbt_forward"
-            android:background="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="转发"/>
-    </LinearLayout>
+            android:layout_marginLeft="280dp"
+            android:id="@+id/bt_comments"
+
+            android:layout_width="45dp"
+            android:layout_height="35dp"
+            android:background="@drawable/comment"
+            />
+        <TextView
+            android:layout_alignLeft="@+id/bt_comments"
+            android:layout_below="@+id/bt_thumbsup"
+            android:id="@+id/comments_num"
+            android:layout_width="45dp"
+            android:layout_height="15dp"/>
+        <CheckBox
+
+            android:layout_alignParentRight="true"
+            android:background="@drawable/collect1"
+            android:id="@+id/bt_collect_detailed"
+            android:layout_width="45dp"
+            android:layout_height="35dp"
+            android:button="@null"
+            />
+        <TextView
+            android:layout_alignLeft="@+id/bt_collect_detailed"
+            android:layout_below="@+id/bt_collect_detailed"
+            android:id="@+id/forword_num"
+            android:layout_width="45dp"
+            android:layout_height="15dp"/>
+    </RelativeLayout>
 </LinearLayout>

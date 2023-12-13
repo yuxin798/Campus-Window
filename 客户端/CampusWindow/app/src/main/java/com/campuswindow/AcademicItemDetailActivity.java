@@ -8,6 +8,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -34,15 +36,15 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
     private TextView postTime,userName,postTitle,tvComment;
     private RichEditor richEditor;
     private Activities entertainmentActivity;
-    private Button btRuturn ,btThumbsUp ,btComments ,btForword;
+    private Button btRuturn ,btComments ;
     private CommentRecyclerViewAdapter commentRecyclerViewAdapter;
     private List<Comment> commentList = new ArrayList<>();
     //标记点赞button的状态
     private int flag = 0;
     private PopupWindow mPopWindow;
     private RecyclerView recyclerView;
-
-
+    private TextView thumbsupNum,commentsNum,collectNum;
+    private CheckBox cbThumbsup,cbCollect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,12 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
         //postTime.setText(entertainmentActivity.getDate().toString());
         postTitle.setText(entertainmentActivity.getActivityTitle());
         richEditor.setHtml(entertainmentActivity.getActivityContent());
+        if(entertainmentActivity.getLove()==0){
+            thumbsupNum.setText("推荐");
+        }else {
+            thumbsupNum.setText(""+entertainmentActivity.getLove());
+        }
+        cbThumbsup.setChecked(entertainmentActivity.isLoved());
         commentRecyclerViewAdapter = new CommentRecyclerViewAdapter(commentList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(commentRecyclerViewAdapter);
@@ -70,12 +78,24 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
-//        btRuturn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
+
+        cbThumbsup.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    entertainmentActivity.setLove(entertainmentActivity.getLove() + 1);
+                    entertainmentActivity.setLoved(isChecked);
+                } else {
+                    entertainmentActivity.setLove(entertainmentActivity.getLove() - 1);
+                    entertainmentActivity.setLoved(isChecked);
+                    if (entertainmentActivity.getLove() == 0) {
+                        thumbsupNum.setText("推荐");
+                        return;
+                    }
+                }
+               thumbsupNum.setText("" + entertainmentActivity.getLove());
+            }
+        });
         /*评论功能*/
         tvComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,9 +113,14 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
         postTitle = findViewById(R.id.detailed_title);
         richEditor =findViewById(R.id.detailed_re);
         btRuturn = findViewById(R.id.bt_return);
-        btThumbsUp = findViewById(R.id.dbt_thumbsup);
         tvComment = findViewById(R.id.et_comments);
         recyclerView =findViewById(R.id.rv_popup);
+        cbThumbsup = findViewById(R.id.bt_thumbsup);
+        btComments = findViewById(R.id.bt_comments);
+        cbCollect = findViewById(R.id.bt_collect_detailed);
+        thumbsupNum = findViewById(R.id.thumbsup_num);
+        commentsNum = findViewById(R.id.comments_num);
+        collectNum = findViewById(R.id.comments_num);
     }
 
     //写评论弹窗

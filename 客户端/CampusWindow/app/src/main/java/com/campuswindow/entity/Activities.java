@@ -15,6 +15,10 @@ public class Activities implements Serializable {
     private int love;
     private List<ActivityImage> activityImages;
     private int type;
+    private int comment;
+    private int collect;
+    private boolean loved;
+    private boolean isCollected;
 
     public int getLove() {
         return love;
@@ -104,6 +108,38 @@ public class Activities implements Serializable {
         this.type = type;
     }
 
+    public int getComment() {
+        return comment;
+    }
+
+    public void setComment(int comment) {
+        this.comment = comment;
+    }
+
+    public int getCollect() {
+        return collect;
+    }
+
+    public void setCollect(int collect) {
+        this.collect = collect;
+    }
+
+    public boolean isLoved() {
+        return loved;
+    }
+
+    public void setLoved(boolean loved) {
+        this.loved = loved;
+    }
+
+    public boolean isCollected() {
+        return isCollected;
+    }
+
+    public void setCollected(boolean collected) {
+        isCollected = collected;
+    }
+
     @Override
     public String toString() {
         return "Activities{" +
@@ -118,6 +154,10 @@ public class Activities implements Serializable {
                 ", love=" + love +
                 ", activityImages=" + activityImages +
                 ", type=" + type +
+                ", comment=" + comment +
+                ", collect=" + collect +
+                ", isLoved=" + loved +
+                ", isCollected=" + isCollected +
                 '}';
     }
 }

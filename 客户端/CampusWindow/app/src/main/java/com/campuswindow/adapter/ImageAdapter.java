@@ -114,7 +114,7 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             // 开始播放视频
             MediaController mediaController = new MediaController(mContext);
             videoViewHolder.videoView.setMediaController(mediaController);
-//            videoViewHolder.videoView.seekTo(1);
+            videoViewHolder.videoView.seekTo(1);
             videoViewHolder.videoView.requestFocus();
         }
     }

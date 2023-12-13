@@ -2,10 +2,14 @@ package com.campuswindow.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,11 +19,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.campuswindow.R;
+import com.campuswindow.Result;
+import com.campuswindow.constant.UserConstant;
 import com.campuswindow.entity.Activities;
 import com.campuswindow.entity.ActivityImage;
+import com.campuswindow.entity.ActivityLove;
+import com.campuswindow.richeditor.API;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFragmentListAdapter.MyViewHolder> {
     private List<Activities> academicList;
@@ -29,10 +45,15 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
     private View view;
     private OnItemClickListener mOnItemClickListener;
     private ImageAdapter imageAdapter;
+    private Result result;
 
 
     private OnItemChildClickListener mOnItemChildClickListener;
+    private Handler handler;
 
+    public AcademicFragmentListAdapter() {
+        handler = new Handler(Looper.getMainLooper());
+    }
 
     public AcademicFragmentListAdapter(List<Activities> academicList, Context mContext) {
         this.academicList = academicList;
@@ -68,6 +89,11 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
         System.out.println("zhuangjm"+activityImages.size());
 
         imageAdapter = new ImageAdapter(activityImages,mContext);
+
+        //
+        System.out.println("55555555555555555"+academicList.get(position).isLoved());
+        holder.cbthumbsup.setChecked(academicList.get(position).isLoved());
+
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false));
         holder.recyclerView.setAdapter(imageAdapter);
 
@@ -88,7 +114,72 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
             }
         });
 
+        holder.cbthumbsup.setOnCheckedChangeListener((view, isChecked) -> {
+            Activities academicActivity = academicList.get(position);
+            if(isChecked){
+                academicActivity.setLove(academicActivity.getLove() + 1);
+                holder.cbthumbsup.setChecked(isChecked);
+                academicActivity.setLoved(isChecked);
+                ActivityLove activityLove = new ActivityLove(UserConstant.USER_ID,academicActivity.getActivityId());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8")
+                                ,new Gson().toJson(activityLove));
+                        Request request = new Request.Builder()
+                                .url(API.IP+API.ADD_LOVE_ACTIVITY)
+                                .post(body).build();
+                        try {
+                            Response execute = client.newCall(request).execute();
+                            Response response = client.newCall(request).execute();
+                            String string = response.body().string();
+                            Result result = new Gson().fromJson(string, Result.class);
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }).start();
+            } else {
+                academicList.get(position).setLove(academicList.get(position).getLove() - 1);
+                holder.cbthumbsup.setChecked(isChecked);
+                academicActivity.setLoved(isChecked);
+                ActivityLove activityLove = new ActivityLove(UserConstant.USER_ID,academicActivity.getActivityId());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8")
+                                ,new Gson().toJson(activityLove));
+                        Request request = new Request.Builder()
+                                .url(API.IP+API.DECREASE_LOVE_ACTIVITY)
+                                .post(body).build();
+                        try {
+                            Response execute = client.newCall(request).execute();
+                            Response response = client.newCall(request).execute();
+                            String string = response.body().string();
+                             Result result = new Gson().fromJson(string, Result.class);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }).start();
+                if (academicActivity.getLove() == 0) {
+                    holder.thumbsupNum.setText("推荐");
+                    return;
+                }
+            }
+//            Gson gson = new Gson();
+//            Activities activities = gson.fromJson(gson.toJson(result.getData()),Activities.class);
+//            academicList.get(position).setLoved(activities.isLoved());
+//            holder.thumbsupNum.setText("" + academicActivity.getLove());
+//            holder.cbthumbsup.setChecked(activities.isLoved());
+        });
+
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -96,11 +187,12 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        private TextView userName,overText;
-        private TextView postTime;
+        private TextView userName, overText,  postTitle, postTime;
+        private TextView thumbsupNum, commentsNum, collectNum;
         private ImageView userImage ,overImage;
-        private TextView postTitle;
         private RecyclerView recyclerView;
+        private Button cbComments;
+        private CheckBox cbthumbsup,  cbCollect;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             userName = itemView.findViewById(R.id.user_name);
@@ -110,6 +202,13 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
             recyclerView = itemView.findViewById(R.id.rcv_image);
             overText = itemView.findViewById(R.id.tv_overmuch);
             overImage =itemView.findViewById(R.id.iv_overmuch);
+            //
+            cbthumbsup = itemView.findViewById(R.id.bt_thumbsup_post);
+            cbComments = itemView.findViewById(R.id.bt_comments_post);
+            cbCollect =  itemView.findViewById(R.id.bt_collect_post);
+            thumbsupNum = itemView.findViewById(R.id.thumbsup_num_post);
+            commentsNum = itemView.findViewById(R.id.comments_num_post);
+            collectNum = itemView.findViewById(R.id.collect_num_post);
         }
     }
 
@@ -127,5 +226,29 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
     }
     public void setmOnItemChildClickListener(OnItemChildClickListener mOnItemChildClickListener) {
         this.mOnItemChildClickListener = mOnItemChildClickListener;
+    }
+
+    public List<Activities> getAcademicList() {
+        return academicList;
+    }
+
+    public void setAcademicList(List<Activities> academicList) {
+        this.academicList = academicList;
+    }
+
+    public List<ActivityImage> getActivityImages() {
+        return activityImages;
+    }
+
+    public void setActivityImages(List<ActivityImage> activityImages) {
+        this.activityImages = activityImages;
+    }
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
     }
 }

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
+    android:descendantFocusability="blocksDescendants"
     android:padding="5dp">
 
     <LinearLayout
@@ -19,13 +20,20 @@
                 android:layout_height="wrap_content"
                 android:text="河北师范大学"
                 android:textSize="25dp"/>
-            <EditText
+            <Button
+                android:id="@+id/home_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
                 android:textSize="25dp"
+                android:background="@drawable/shape_10dp_all_corners"
+                android:text="搜索"
+                android:gravity="left"
                 android:drawableLeft="@drawable/search3" />
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/gray"/>
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/index_fg_tbl"
             android:layout_width="match_parent"

@@ -379,7 +379,7 @@ public class PostMsgActivity extends AppCompatActivity {
         Log.i("JSON",json);
         RequestBody requestBody = RequestBody.create(json, MediaType.parse("application/json; charset=utf-8"));
         Request request = new Request.Builder()
-                .url(API.IP + API.ENTERTAINMENT_SEND_ACTIVITY)
+                .url(API.IP + API.SEND_ACTIVITY)
                 .post(requestBody)
                 .build();
 

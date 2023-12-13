@@ -1,7 +1,6 @@
 package com.campuswindow;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,29 +9,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.campuswindow.constant.UserConstant;
+import com.campuswindow.entity.ModifyInformationDto;
+import com.campuswindow.entity.User;
+import com.campuswindow.service.index.ModifyUserDataService;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.shehuan.niv.NiceImageView;
 
-public class EditUserDataActivity extends AppCompatActivity {
+public class EditUserDataActivity extends Activity {
     private Button backBtn;
-    private NiceImageView imgHeader;
+    private ImageView imgHeader;
     private TextView name,sex,num;
     private EditText label;
     private Button save;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_data);
         findViews();
+        user = (User) getIntent().getSerializableExtra("user");
         initViewsValue();
         setListenerMethods();
 //        name.setText(getIntent().getStringExtra("setName"));
@@ -42,8 +44,9 @@ public class EditUserDataActivity extends AppCompatActivity {
     }
 
     private void initViewsValue() {
-        name.setText(getIntent().getStringExtra("name"));
-        label.setText(getIntent().getStringExtra("label"));
+        name.setText(user.getUserName());
+        label.setText(user.getSignature());
+//        sex.setText(user.getGender());
     }
 
     private void setListenerMethods() {
@@ -84,14 +87,17 @@ public class EditUserDataActivity extends AppCompatActivity {
 
                             case R.id.bottom_sheet_rb1:
                                 Toast.makeText(EditUserDataActivity.this, "你选择了"+rb1.getText().toString(), Toast.LENGTH_SHORT).show();
+                                sex.setText(rb1.getText().toString());
                                 bottomSheetDialog.dismiss();
                                 break;
                             case R.id.bottom_sheet_rb2:
                                 Toast.makeText(EditUserDataActivity.this, "你选择了"+rb2.getText().toString(), Toast.LENGTH_SHORT).show();
+                                sex.setText(rb2.getText().toString());
                                 bottomSheetDialog.dismiss();
                                 break;
                             case R.id.bottom_sheet_rb3:
                                 Toast.makeText(EditUserDataActivity.this, "你选择了"+rb3.getText().toString(), Toast.LENGTH_SHORT).show();
+                                sex.setText(rb3.getText().toString());
                                 bottomSheetDialog.dismiss();
                                 break;
                         }
@@ -127,7 +133,35 @@ public class EditUserDataActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String mName = name.getText().toString();
+                        int gender;
+                        if("男".equals(sex.getText().toString())){
+                            gender = 0;
+                        } else if ("女".equals(sex.getText().toString())) {
+                            gender = 1;
+                        }else{
+                            gender = 3;
+                        }
+                        String mLabel = label.getText().toString();
+                        ModifyInformationDto modifyInformationDto = new ModifyInformationDto(UserConstant.USER_ID,mName,gender,mLabel);
+                        ModifyUserDataService service = new ModifyUserDataService();
+                        Result result = service.getUserData(modifyInformationDto);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if("成功".equals(result.getMsg())){
+                                    Toast.makeText(EditUserDataActivity.this, "信息修改成功", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }else{
+                                    Toast.makeText(EditUserDataActivity.this, "信息修改失败", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }).start();
             }
         });
     }

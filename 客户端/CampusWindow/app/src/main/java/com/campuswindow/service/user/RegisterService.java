@@ -69,7 +69,6 @@ public class RegisterService {
             //接收验证码：
             Gson gson = new Gson();
             Result result = gson.fromJson(response.body().string(), Result.class);
-
             Log.i("result",result.toString());
             return result;
         } catch (IOException e) {
