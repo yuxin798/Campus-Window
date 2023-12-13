@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchPostActivity">
+    <Button
+        android:id="@+id/search_post_btn"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/return4"/>
+    <EditText
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/search_post_btn"
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:textSize="25dp"
+        android:hint="搜索"
+        android:drawableLeft="@drawable/search3" />
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/search"
+        android:id="@+id/search_post_view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/gray"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/search_post_view"
+        android:id="@+id/search_post_re"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>
