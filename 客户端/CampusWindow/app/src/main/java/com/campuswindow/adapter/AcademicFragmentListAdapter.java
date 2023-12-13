@@ -24,7 +24,7 @@ import com.campuswindow.constant.UserConstant;
 import com.campuswindow.entity.Activities;
 import com.campuswindow.entity.ActivityImage;
 import com.campuswindow.entity.ActivityLove;
-import com.campuswindow.richeditor.API;
+import com.campuswindow.server.API;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -128,7 +128,7 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
                         RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8")
                                 ,new Gson().toJson(activityLove));
                         Request request = new Request.Builder()
-                                .url(API.IP+API.ADD_LOVE_ACTIVITY)
+                                .url(API.SERVER_URL+API.ADD_LOVE_ACTIVITY)
                                 .post(body).build();
                         try {
                             Response execute = client.newCall(request).execute();
@@ -153,7 +153,7 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
                         RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8")
                                 ,new Gson().toJson(activityLove));
                         Request request = new Request.Builder()
-                                .url(API.IP+API.DECREASE_LOVE_ACTIVITY)
+                                .url(API.SERVER_URL+API.DECREASE_LOVE_ACTIVITY)
                                 .post(body).build();
                         try {
                             Response execute = client.newCall(request).execute();

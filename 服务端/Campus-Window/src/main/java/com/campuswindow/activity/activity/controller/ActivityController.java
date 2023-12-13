@@ -29,7 +29,7 @@ public class ActivityController {
      */
     @GetMapping("/findAllByType")
     @Operation(summary = "根据发帖类型查询所有帖子")
-    public Result<?> findAllByType(String userId, int type){
+    public Result<List<ActivityVo>> findAllByType(String userId, int type){
         List<ActivityVo> activities = activityService.findAllByType(userId, type);
         return ResultVOUtil.success(activities);
     }
@@ -118,9 +118,9 @@ public class ActivityController {
         return ResultVOUtil.success(activities);
     }
 
-    @GetMapping("/findAllLikeActivityTitle/{activityTitle}")
+    @GetMapping("/findAllLikeActivityTitle")
     @Operation(summary = "根据帖子标题模糊查询所有帖子")
-    public Result<List<ActivityVo>> findAllLikeActivityTitle(@PathVariable String activityTitle) {
+    public Result<List<ActivityVo>> findAllLikeActivityTitle(String activityTitle) {
         return ResultVOUtil.success(activityService.findAllLikeActivityTitle(activityTitle));
     }
 

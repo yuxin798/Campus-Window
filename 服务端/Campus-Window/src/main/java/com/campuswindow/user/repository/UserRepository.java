@@ -31,6 +31,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Modifying
     void updateInformationByUserId(String userId, String userName, int gender, String signature);
 
-    @Query("select new com.campuswindow.user.vo.ModifyInformationVo(userId, userName, gender, signature) from User where userId = ?1")
+    @Query("select new com.campuswindow.user.vo.ModifyInformationVo(userId, userName, gender, signature,avatar) from User where userId = ?1")
     ModifyInformationVo findInformation(String userId);
 }

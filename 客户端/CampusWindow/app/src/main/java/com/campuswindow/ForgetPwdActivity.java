@@ -72,7 +72,7 @@ public class ForgetPwdActivity extends AppCompatActivity {
                                     .build();
 
                             Request request = new Request.Builder()
-                                    .url(API.SERVER_URL + "checkEmailCode")//请求的url
+                                    .url(API.USER + "checkEmailCode")//请求的url
                                     .post(formBody)
                                     .build();
 

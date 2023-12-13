@@ -27,6 +27,7 @@ import com.campuswindow.NewActivity;
 import com.campuswindow.R;
 import com.campuswindow.Result;
 import com.campuswindow.constant.UserConstant;
+import com.campuswindow.server.API;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -52,7 +53,6 @@ public class PostMsgActivity extends AppCompatActivity {
     private OkHttpClient okHttpClient = new OkHttpClient();
     private EditText postMsgTitle;
     private Spinner spin;
-    private String[] subject;
     private String where;
     private Button backBtn;
 
@@ -351,13 +351,6 @@ public class PostMsgActivity extends AppCompatActivity {
 
 
     private void sendActivity() {
-//        EntertainmentActivityDto entertainmentActivityDto = new EntertainmentActivityDto();
-//        entertainmentActivityDto.setActivityContent(mEditor.getHtml());
-//        Log.i("mPreView",mEditor.getHtml());
-//        entertainmentActivityDto.setActivityTitle(postMsgTitle.getText().toString());
-//        Log.i("postMsgTitle",postMsgTitle.getText().toString());
-//        entertainmentActivityDto.setUserId(getIntent().getStringExtra("userId"));
-
         String activityContent = mEditor.getHtml();
         System.out.println(activityContent);
         List<String> images = getMatchString("<img.*?>", activityContent);
@@ -379,7 +372,7 @@ public class PostMsgActivity extends AppCompatActivity {
         Log.i("JSON",json);
         RequestBody requestBody = RequestBody.create(json, MediaType.parse("application/json; charset=utf-8"));
         Request request = new Request.Builder()
-                .url(API.IP + API.SEND_ACTIVITY)
+                .url(API.SERVER_URL + API.SEND_ACTIVITY)
                 .post(requestBody)
                 .build();
 
@@ -460,7 +453,7 @@ public class PostMsgActivity extends AppCompatActivity {
         Request.Builder builder = new Request.Builder();
         Request request = builder
                 .post(requestBody)
-                .url(API.IP + api)
+                .url(API.SERVER_URL + api)
                 .build();
         Call call = okHttpClient.newCall(request);
         try {

@@ -25,15 +25,9 @@ public class ResetPwdService {
 
     public Result verify(User user) {
         client = new OkHttpClient();
-//        String emailJson = new Gson().toJson(user);
-//        RequestBody body = RequestBody.create(
-//                MediaType.parse("application/json;charset=utf-8"),
-//                emailJson
-//        );
-        //sendEmailForUpdatePassword
 
         request = new Request.Builder()
-                .url(API.SERVER_URL+"sendEmailForUpdatePassword?to=" + user.getEmail())
+                .url(API.USER+"sendEmailForUpdatePassword?to=" + user.getEmail())
                 .get()
                 .build();
         call = client.newCall(request);
@@ -54,7 +48,7 @@ public class ResetPwdService {
         client = new OkHttpClient();
         String  userJson = new Gson().toJson(passwordDto);
         request = new Request.Builder()
-                .url(API.SERVER_URL + "updatePassword")
+                .url(API.USER + "updatePassword")
                 .post(RequestBody.create(
                         MediaType.parse("application/json;charset=utf-8"),
                         userJson)

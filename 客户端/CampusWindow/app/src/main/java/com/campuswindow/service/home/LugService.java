@@ -23,7 +23,7 @@ public class LugService {
     public Result getLugList(){
         client = new OkHttpClient();
         request = new Request.Builder()
-                .url(API.SERVER_URL2 + "findAllByType?type=2")
+                .url(API.ACTIVITY + "findAllByType?type=2")
                 .get()
                 .build();
         call = client.newCall(request);
