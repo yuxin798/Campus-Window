@@ -3,7 +3,7 @@ package com.campuswindow.user.dto;
 import lombok.Data;
 
 @Data
-public class modifyInformationDto {
+public class ModifyInformationDto {
     private String userId;
     private String userName;
     private int gender;

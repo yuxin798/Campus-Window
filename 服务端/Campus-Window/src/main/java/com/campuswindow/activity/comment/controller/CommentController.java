@@ -1,6 +1,7 @@
 package com.campuswindow.activity.comment.controller;
 
 import com.campuswindow.activity.comment.dto.CommentDto;
+import com.campuswindow.activity.comment.dto.ReplyCommentDto;
 import com.campuswindow.activity.comment.service.CommentService;
 import com.campuswindow.activity.comment.vo.CommentUserVo;
 import com.campuswindow.activity.comment.vo.CommentVo;
@@ -28,6 +29,13 @@ public class CommentController {
     @Operation(summary = "发表评论")
     public Result<?> addComment(@RequestBody CommentDto commentDto){
         commentService.addComment(commentDto);
+        return ResultVOUtil.success();
+    }
+
+    @PostMapping("/replyComment")
+    @Operation(summary = "回复评论")
+    public Result<?> addComment(@RequestBody ReplyCommentDto replyCommentDto){
+        commentService.addReplyComment(replyCommentDto);
         return ResultVOUtil.success();
     }
 

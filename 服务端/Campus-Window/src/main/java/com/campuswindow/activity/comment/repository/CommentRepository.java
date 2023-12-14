@@ -17,7 +17,7 @@ public interface CommentRepository extends JpaRepository<Comment, String> {
     /*
      * 根据帖子Id查询所有评论，先根据点赞数降序排序，再根据发帖时间降序排序
      */
-    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentVo(c.commentId, c.activityId, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar) from Comment as c join User as u on c.userId = u.userId where c.activityId = ?1 order by c.love desc, c.sendTime desc ")
+    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentVo(c.commentId, c.activityId, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar) from Comment as c join User as u on c.userId = u.userId where c.activityId = ?1 and c.parentId = null order by c.love desc, c.sendTime desc ")
     List<CommentVo> findAllByActivityId(String activityId);
 
     /*
@@ -29,4 +29,7 @@ public interface CommentRepository extends JpaRepository<Comment, String> {
 
     @Query(value = "select new com.campuswindow.activity.comment.vo.CommentUserVo(c.commentId, c.activityId, a.activityTitle, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar) from Comment as c join Activity as a on c.activityId = a.activityId join User as u on c.userId = u.userId where c.userId = ?1 order by c.love desc, c.sendTime desc ")
     List<CommentUserVo> findAllByUserId(String userId);
+
+    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentVo(c.commentId, c.activityId, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar) from Comment as c join User as u on c.userId = u.userId where c.parentId = ?1")
+    List<CommentVo> findAllByParentId(String commentId);
 }

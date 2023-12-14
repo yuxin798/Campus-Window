@@ -159,7 +159,7 @@ public class UserController {
 
     @PostMapping("modifyInformation")
     @Operation(summary = "修改个人信息")
-    public Result<?> modifyInformation(@RequestBody modifyInformationDto modifyInformationDto){
+    public Result<?> modifyInformation(@RequestBody ModifyInformationDto modifyInformationDto){
         userService.modifyInformation(modifyInformationDto);
         return ResultVOUtil.success();
     }

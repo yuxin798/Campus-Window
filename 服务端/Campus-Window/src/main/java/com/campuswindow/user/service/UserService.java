@@ -89,7 +89,7 @@ public class UserService {
         return userRepository.findLoginDtoByEmail(email);
     }
 
-    public void modifyInformation(modifyInformationDto modifyInformationDto) {
+    public void modifyInformation(ModifyInformationDto modifyInformationDto) {
         userRepository.updateInformationByUserId(modifyInformationDto.getUserId(), modifyInformationDto.getUserName(), modifyInformationDto.getGender(), modifyInformationDto.getSignature());
     }
 

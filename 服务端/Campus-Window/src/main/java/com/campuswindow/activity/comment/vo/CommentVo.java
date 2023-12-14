@@ -27,7 +27,11 @@ public class CommentVo {
     private String userName;
     private String avatar;
     private boolean isLoved;
+    private String toUserId;
+    private String toUserName;
+    private String toUserAvatar;
     private List<CommentImage> commentImages;
+    private List<CommentVo> replyComments;
 
     public CommentVo(String commentId, String activityId, String userId, String content, int love, Date sendTime, String userName, String avatar) {
         this.commentId = commentId;

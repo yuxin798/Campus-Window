@@ -29,8 +29,8 @@ public class SchoolController {
         return ResultVOUtil.success(schools);
     }
 
-    @GetMapping("/findOne")
-    @Operation(summary = "根据学校名字查询学校")
+    @GetMapping("/findSchoolByUserId")
+    @Operation(summary = "根据userId查询学校")
     public Result<School> findOne(String userId){
         School school = service.findOne(userId);
         return ResultVOUtil.success(school);
