@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface OnItemClickListener {
     void onItemClick(List<Activities> activitiesList, View view, int position);
+
 }

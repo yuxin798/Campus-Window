@@ -33,10 +33,14 @@ android {
 
 dependencies {
 
+    implementation 'io.github.youth5201314:banner:2.2.2'
+
+    implementation 'com.alibaba:fastjson:1.2.10'
+
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'jp.wasabeef:richeditor-android:2.0.0'
 
-    implementation 'com.github.SheHuan:NiceImageView:1.0.5'
+//    implementation 'com.github.SheHuan:NiceImageView:1.0.5'
 
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'

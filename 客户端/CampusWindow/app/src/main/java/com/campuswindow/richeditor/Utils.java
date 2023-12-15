@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 
 public class Utils {
     public static String TYPE = null;
@@ -63,6 +64,7 @@ public class Utils {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 TYPE = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE));
+                Log.i("TYPE",TYPE);
                 path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
             }
             cursor.close();

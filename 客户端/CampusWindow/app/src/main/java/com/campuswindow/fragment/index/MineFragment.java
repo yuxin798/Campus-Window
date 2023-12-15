@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,18 +35,34 @@ import com.campuswindow.EditUserDataActivity;
 import com.campuswindow.R;
 import com.campuswindow.Result;
 import com.campuswindow.adapter.MineAdapter;
+import com.campuswindow.chat.ChatUserDto;
+import com.campuswindow.constant.UserConstant;
 import com.campuswindow.entity.User;
 import com.campuswindow.fragment.mine.CollectFragment;
 import com.campuswindow.fragment.mine.CommentFragment;
 import com.campuswindow.fragment.mine.IssueFragment;
+import com.campuswindow.richeditor.Utils;
+import com.campuswindow.server.API;
 import com.campuswindow.service.index.SearchOneSelfService;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MineFragment extends Fragment {
     private TabLayout mineFgTbl;
@@ -61,7 +78,6 @@ public class MineFragment extends Fragment {
     private TextView name,label;
     private ImageView imgHead;
     private User user;
-
     private Handler handler;
 
     public MineFragment() {
@@ -82,8 +98,6 @@ public class MineFragment extends Fragment {
 
         setBtnlistener();//设置按钮事件
         dealNavigation();//处理侧滑栏点击事件
-
-//        imgHead.bringToFront();//将头像显示在最外层，不知道行不行
 
         mineAdapter = new MineAdapter(fragments,getActivity());
         mineFgVp2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -164,13 +178,7 @@ public class MineFragment extends Fragment {
                 mineDra.openDrawer(GravityCompat.END);
             }
         });
-//        btnSet.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), MineSetActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+
         //更换头像
         imgHead.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,20 +192,46 @@ public class MineFragment extends Fragment {
                         openAlbum();
                     }
                 }
-
+            //TODO 上传更换头像：
         });
         //编辑资料
         editData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userName = name.getText().toString();
-                String userLabel = label.getText().toString();
-                Intent intent = new Intent(getActivity(), EditUserDataActivity.class);
-//                intent.putExtra("name",userName);
-//                intent.putExtra("label",userLabel);
-                intent.putExtra("user",user);
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        Request build = new Request.Builder()
+                                .get()
+                                .url(API.FIND_CHAT_USER_DTO + "?userId=" + UserConstant.USER_ID)
+                                .build();
+                        Call call = client.newCall(build);
+                        try {
+                            Response response = call.execute();
+                            Gson gson = new Gson();
+                            Result result = gson.fromJson(response.body().string(), Result.class);
+                            Type type = new TypeToken<ChatUserDto>(){}.getType();
+                            ChatUserDto chatUserDto = gson.fromJson(gson.toJson(result.getData()), type);
+                            Log.i("chatUserDto",chatUserDto.toString());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String userName = name.getText().toString();
+                                    Intent intent = new Intent(getActivity(), EditUserDataActivity.class);
+                                    intent.putExtra("setName",userName);
+                                    intent.putExtra("avatar",chatUserDto.getAvatar());
+                                    Log.i("imageUri",chatUserDto.getAvatar());
+                                    startActivity(intent);
+                                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                }
+                            });
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }).start();
+
             }
         });
 //        //向上滚动时，新的标题样式：
@@ -249,15 +283,57 @@ public class MineFragment extends Fragment {
                                 .load(imageUri)
                                 .circleCrop()
                                 .into(imgHead);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String result = uploadAvatar();
+                                Log.i("result",result);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if("成功".equals(result)){
+                                            Toast.makeText(getContext(), "上传成功", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }
+                        }).start();
                     }
                 }
         );
+
+
     }
 /**
  * 进行加载图片
  * */
 
 
+    private String uploadAvatar() {
+        String realPath = Utils.getRealPath(getContext(), imageUri);
+        Log.i("realPath",realPath);
+        File file = new File(realPath);
+        OkHttpClient okHttpClient = new OkHttpClient();
+        MultipartBody requestBody = new MultipartBody.Builder()
+                .addFormDataPart("userId", UserConstant.USER_ID)
+                .addFormDataPart("avatar",file.getName(), RequestBody.create(file, MediaType.get("image/*")))
+                .build();
+        Request.Builder builder = new Request.Builder();
+        Request request = builder
+                .post(requestBody)
+                .url(API.USER_AVATAR)
+                .build();
+        Call call = okHttpClient.newCall(request);
+        try {
+            Response response = call.execute();
+            String string = response.body().string();
+            Gson gson = new Gson();
+            Result result = gson.fromJson(string, Result.class);
+            return result.getMsg();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private void defineMediator() {
         TabLayoutMediator mediator = new TabLayoutMediator(

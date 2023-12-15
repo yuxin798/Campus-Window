@@ -76,19 +76,19 @@ public class PostMsgActivity extends AppCompatActivity {
         mEditor.setPlaceholder("Insert text here...");
 
 
-        findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.undo();
-            }
-        });
-
-        findViewById(R.id.action_redo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.redo();
-            }
-        });
+//        findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.undo();
+//            }
+//        });
+//
+//        findViewById(R.id.action_redo).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.redo();
+//            }
+//        });
 
         findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,26 +112,26 @@ public class PostMsgActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_heading1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setHeading(1);
-            }
-        });
-
-        findViewById(R.id.action_heading2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setHeading(2);
-            }
-        });
-
-        findViewById(R.id.action_heading3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setHeading(3);
-            }
-        });
+//        findViewById(R.id.action_heading1).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.setHeading(1);
+//            }
+//        });
+//
+//        findViewById(R.id.action_heading2).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.setHeading(2);
+//            }
+//        });
+//
+//        findViewById(R.id.action_heading3).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.setHeading(3);
+//            }
+//        });
 
 //        findViewById(R.id.action_heading4).setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -182,77 +182,77 @@ public class PostMsgActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_bg_color).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.focusEditor();
-                new MaterialDialog.Builder(PostMsgActivity.this)
-                        .title("选择字体背景颜色")
-                        .items(R.array.text_back_color_items)
-                        .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                                dialog.dismiss();
-                                switch (which) {
-                                    case 0://红
-                                        mEditor.setTextBackgroundColor(Color.RED);
-                                        break;
-                                    case 1://黄
-                                        mEditor.setTextBackgroundColor(Color.YELLOW);
-                                        break;
-                                    case 2://绿
-                                        mEditor.setTextBackgroundColor(Color.GREEN);
-                                        break;
-                                    case 3://蓝
-                                        mEditor.setTextBackgroundColor(Color.BLUE);
-                                        break;
-                                    case 4://黑
-                                        mEditor.setTextBackgroundColor(Color.BLACK);
-                                        break;
-                                    case 5://透明
-                                        mEditor.setTextBackgroundColor(Color.WHITE);
-                                        break;
-                                }
-                                return false;
-                            }
-                        }).show();
-            }
-        });
+//        findViewById(R.id.action_bg_color).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.focusEditor();
+//                new MaterialDialog.Builder(PostMsgActivity.this)
+//                        .title("选择字体背景颜色")
+//                        .items(R.array.text_back_color_items)
+//                        .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+//                            @Override
+//                            public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+//                                dialog.dismiss();
+//                                switch (which) {
+//                                    case 0://红
+//                                        mEditor.setTextBackgroundColor(Color.RED);
+//                                        break;
+//                                    case 1://黄
+//                                        mEditor.setTextBackgroundColor(Color.YELLOW);
+//                                        break;
+//                                    case 2://绿
+//                                        mEditor.setTextBackgroundColor(Color.GREEN);
+//                                        break;
+//                                    case 3://蓝
+//                                        mEditor.setTextBackgroundColor(Color.BLUE);
+//                                        break;
+//                                    case 4://黑
+//                                        mEditor.setTextBackgroundColor(Color.BLACK);
+//                                        break;
+//                                    case 5://透明
+//                                        mEditor.setTextBackgroundColor(Color.WHITE);
+//                                        break;
+//                                }
+//                                return false;
+//                            }
+//                        }).show();
+//            }
+//        });
 
-        findViewById(R.id.action_indent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setIndent();
-            }
-        });
-
-        findViewById(R.id.action_outdent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setOutdent();
-            }
-        });
-
-        findViewById(R.id.action_align_left).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setAlignLeft();
-            }
-        });
-
-        findViewById(R.id.action_align_center).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setAlignCenter();
-            }
-        });
-
-        findViewById(R.id.action_align_right).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEditor.setAlignRight();
-            }
-        });
+//        findViewById(R.id.action_indent).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.setIndent();
+//            }
+//        });
+//
+//        findViewById(R.id.action_outdent).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.setOutdent();
+//            }
+//        });
+//
+//        findViewById(R.id.action_align_left).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.setAlignLeft();
+//            }
+//        });
+//
+//        findViewById(R.id.action_align_center).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.setAlignCenter();
+//            }
+//        });
+//
+//        findViewById(R.id.action_align_right).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditor.setAlignRight();
+//            }
+//        });
 
         findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -314,7 +314,9 @@ public class PostMsgActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 where = parent.getItemAtPosition(position).toString();
-                Toast.makeText(PostMsgActivity.this, "您选择了"+where, Toast.LENGTH_SHORT).show();
+                if(!"请选择……".equals(where)){
+                    Toast.makeText(PostMsgActivity.this, "您选择了"+where, Toast.LENGTH_SHORT).show();
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

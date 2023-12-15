@@ -1,10 +1,13 @@
 package com.campuswindow;
 
-import android.app.Activity;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -15,41 +18,75 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.bumptech.glide.Glide;
 import com.campuswindow.constant.UserConstant;
 import com.campuswindow.entity.ModifyInformationDto;
-import com.campuswindow.entity.User;
+import com.campuswindow.richeditor.Utils;
+import com.campuswindow.server.API;
 import com.campuswindow.service.index.ModifyUserDataService;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 
-public class EditUserDataActivity extends Activity {
+import java.io.File;
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public class EditUserDataActivity extends AppCompatActivity {
     private Button backBtn;
     private ImageView imgHeader;
     private TextView name,sex,num;
     private EditText label;
     private Button save;
-    private User user;
+    private ActivityResultLauncher<Intent> launcher;
+    private Uri imageUri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_data);
         findViews();
-        user = (User) getIntent().getSerializableExtra("user");
-        initViewsValue();
+        createLauncher();
+        name.setText(getIntent().getStringExtra("setName"));
+        Glide.with(this)
+                .load(getIntent().getStringExtra("avatar"))
+                .circleCrop()
+                .into(imgHeader);
         setListenerMethods();
-//        name.setText(getIntent().getStringExtra("setName"));
-        if(getIntent().getStringExtra("setName")!=null){
-            name.setText(getIntent().getStringExtra("setName"));
-        }
     }
 
-    private void initViewsValue() {
-        name.setText(user.getUserName());
-        label.setText(user.getSignature());
-//        sex.setText(user.getGender());
-    }
+
 
     private void setListenerMethods() {
+        //更换头像：
+        imgHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.
+                        PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(EditUserDataActivity.this, new
+                            String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                } else {
+                    openAlbum();
+                }
+            }
+        });
         //回退
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +100,7 @@ public class EditUserDataActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(EditUserDataActivity.this,MineSetNameActivity.class);
                 intent.putExtra("name",name.getText().toString());
+                intent.putExtra("avatar",imageUri);
                 startActivity(intent);
                 finish();
             }
@@ -164,6 +202,69 @@ public class EditUserDataActivity extends Activity {
                 }).start();
             }
         });
+    }
+
+    private void openAlbum() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        launcher.launch(intent);
+    }
+    private void createLauncher() {
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK) {
+                    Intent data = result.getData();
+                    imageUri = data.getData();
+                    Glide.with(EditUserDataActivity.this)
+                            .load(imageUri)
+                            .circleCrop()
+                            .into(imgHeader);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String result = uploadAvatar();
+                            Log.i("result",result);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if("成功".equals(result)){
+                                        Toast.makeText(getApplicationContext(), "上传成功", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    }).start();
+                }
+            }
+        });
+    }
+
+    private String uploadAvatar() {
+        String realPath = Utils.getRealPath(getApplicationContext(), imageUri);
+        Log.i("realPath",realPath);
+        File file = new File(realPath);
+        OkHttpClient okHttpClient = new OkHttpClient();
+        MultipartBody requestBody = new MultipartBody.Builder()
+                .addFormDataPart("userId", UserConstant.USER_ID)
+                .addFormDataPart("avatar",file.getName(), RequestBody.create(file, MediaType.get("image/*")))
+                .build();
+        Request.Builder builder = new Request.Builder();
+        Request request = builder
+                .post(requestBody)
+                .url(API.USER_AVATAR)
+                .build();
+        Call call = okHttpClient.newCall(request);
+        try {
+            Response response = call.execute();
+            String string = response.body().string();
+            Gson gson = new Gson();
+            Result result = gson.fromJson(string, Result.class);
+            return result.getMsg();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void findViews() {

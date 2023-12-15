@@ -39,7 +39,7 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
     @Modifying
     void updateOtherWindows(String linkId, String fromUserId);
 
-    @Query(value = "update chat_list set last_msg =?2, last_mgs_time = ?3 where link_id =?1", nativeQuery = true)
+    @Query(value = "update chat_list set last_msg =?2, last_msg_time = ?3 where link_id =?1", nativeQuery = true)
     @Modifying
     void updateLastMsgAndTime(String linkId, String content, Timestamp sendTime);
 

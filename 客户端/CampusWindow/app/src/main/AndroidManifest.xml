@@ -20,6 +20,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ClickPostedUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".chat.ChatDetailActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".SearchPostActivity"
             android:exported="false" />
         <activity

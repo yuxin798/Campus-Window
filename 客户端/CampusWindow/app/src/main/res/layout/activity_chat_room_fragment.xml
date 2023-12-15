@@ -2,19 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="5dp">
     <RelativeLayout
         android:id="@+id/chat_room_fg_r1"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.shehuan.niv.NiceImageView
+
+        <ImageView
             android:id="@+id/chat_room_img"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:src="@mipmap/ikun"
-            app:is_circle="true"/>
+            android:src="@mipmap/ikun" />
         <TextView
             android:id="@+id/chat_room_name"
             android:layout_toRightOf="@+id/chat_room_img"
@@ -46,10 +45,10 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:drawableLeft="@drawable/search3"/>
-    <ListView
-        android:id="@+id/chat_room_lv"
-        android:layout_below="@+id/chat_room_fg_search"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
         android:layout_marginTop="10dp"
+        android:layout_below="@+id/chat_room_fg_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </RelativeLayout>

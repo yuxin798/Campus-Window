@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EditUserDataActivity"
-    android:background="@color/gray"
-    android:padding="10dp">
+    android:background="@color/gray">
     <RelativeLayout
         android:id="@+id/r1"
         android:layout_width="match_parent"
@@ -17,7 +16,7 @@
         <Button
             android:id="@+id/edit_user_data_back_btn"
             android:layout_alignParentLeft="true"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:background="@drawable/angle_brackets_left"/>
         <TextView
@@ -40,16 +39,9 @@
         <ImageView
             android:id="@+id/edit_user_img"
             android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:src="@mipmap/ikun"/>
-<!--        <com.shehuan.niv.NiceImageView-->
-<!--            android:id="@+id/edit_user_img"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@mipmap/ikun"-->
-<!--            app:is_circle="true"/>-->
         <LinearLayout
             android:layout_marginTop="25dp"
             android:layout_width="match_parent"
@@ -116,16 +108,15 @@
             android:textStyle="bold"
             android:text="6/666"/>
     </LinearLayout>
-
     <Button
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/r2"
         android:id="@+id/edit_user_data_save_btn"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/shape_10dp_all_corners"
         android:text="保存"
         android:textSize="20dp"
         android:textStyle="bold"
         android:layout_marginTop="20dp"/>
-
 </RelativeLayout>

@@ -2,8 +2,6 @@ package com.campuswindow;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.campuswindow.constant.UserConstant;
 import com.campuswindow.service.user.LoginService;
+
+import java.io.ByteArrayInputStream;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edtEmail,edtPwd;
@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         getViews();
 
         setListeners();
-        setEditColor();
         lgCheckBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,32 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void setEditColor() {
-        edtEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    GradientDrawable gd = new GradientDrawable();
-                    gd.setStroke(3,Color.RED);
-                    edtEmail.setBackground(gd);
-                }else{
-                    edtEmail.setBackground(null);
-                }
-            }
-        });
-        edtPwd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    GradientDrawable gd = new GradientDrawable();
-                    gd.setStroke(3,Color.RED);
-                    edtPwd.setBackground(gd);
-                }else{
-                    edtPwd.setBackground(null);
-                }
-            }
-        });
-    }
+
 
     private void setListeners() {
         MyListener myListener = new MyListener();
@@ -122,6 +96,18 @@ public class LoginActivity extends AppCompatActivity {
 
     //登录事件：
     private void userLogin() {
+        String obj  = "abc";
+        byte b[] = obj.getBytes();
+        ByteArrayInputStream obj1 = new ByteArrayInputStream(b);
+        for (int i = 0; i < 2; ++ i) {
+            int c;
+            while ((c = obj1.read()) != -1) {
+                if (i == 0) {
+                    System.out.print(Character.toUpperCase((char)c));
+                }
+            }
+        }
+
         String email = edtEmail.getText().toString().trim();
         String pwd = edtPwd.getText().toString().trim();
         Log.i("email,pwd",email+pwd);
@@ -131,6 +117,23 @@ public class LoginActivity extends AppCompatActivity {
             //确认用户协议：
             confirmUserPrivacyAgreement();
         } else {
+//            RequestUtil.submit(() -> {
+//                Request request = new Request.Builder().build();
+//                OkHttpClient httpClient = new OkHttpClient();
+//                Response response = httpClient.newCall(request).execute();
+//                if (response.code() == 200) {
+//                    Result<Map<String, Map<String, List<User>>>> result = RequestUtil.fromResponse(response, new TypeToken<Result<Map<String, Map<String, List<User>>>>>() {}.getType());
+//                    result.getData().get("aaa").get("aaa").stream()
+//                                    .filter(v -> true)
+//                                            .forEach(System.out::println);
+//                    runOnUiThread(() -> {
+//
+//                    });
+//                }
+//                response.close();
+//                return response;
+//            });
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -188,6 +191,7 @@ public class LoginActivity extends AppCompatActivity {
     private void userRegister() {
         Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
         startActivity(intent);
+        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     //忘记密码事件
     private void userFgPwd() {

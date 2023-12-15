@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
+    android:background="@drawable/log_background1"
     tools:context=".LoginActivity">
 
     <ImageView
@@ -21,65 +21,165 @@
         android:text="校园之窗"
         android:gravity="center"
         android:textSize="50dp"/>
-    <EditText
-        android:id="@+id/edt_lg_email"
+    <RelativeLayout
+        android:id="@+id/login_r1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入邮箱"
-        android:text="728753465@qq.com"
-        android:textSize="25dp"
-        android:textColor="@color/black"
-        android:layout_below="@id/login_logo_txt"
-        android:drawableLeft="@mipmap/user"/>
-    <EditText
-        android:id="@+id/edt_lg_pwd"
+        android:layout_below="@+id/login_logo_txt"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/edt_lg_email"
+            android:layout_width="400dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="30dp"
+            android:paddingStart="50dp"
+            android:paddingEnd="10dp"
+            android:background="@drawable/shap_all_corners_gray"
+            android:maxLength="20"
+            android:textSize="20dp"
+            android:hint="请输入邮箱"
+            android:text="728753465@qq.com"
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/edt_lg_email"
+            android:layout_alignTop="@+id/edt_lg_email"
+            android:layout_alignEnd="@+id/edt_lg_email"
+            android:layout_alignBottom="@+id/edt_lg_email"
+            android:padding="15dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:scaleType="fitStart"
+            android:src="@mipmap/user" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/login_r2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入密码"
-        android:text="521125"
-        android:textSize="25dp"
-        android:textColor="@color/black"
-        android:drawableLeft="@mipmap/pwd"
-        android:layout_below="@+id/edt_lg_email"
-        android:inputType="numberPassword"/>
-    <Button
-        android:id="@+id/btn_lg_forget"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
+        android:layout_below="@+id/login_r1"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/edt_lg_pwd"
+            android:layout_width="400dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="30dp"
+            android:paddingStart="50dp"
+            android:paddingEnd="10dp"
+            android:background="@drawable/shap_all_corners_gray"
+            android:maxLength="20"
+            android:textSize="20dp"
+            android:hint="请输入密码"
+            android:text="521125"
+            android:inputType="numberPassword"
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/edt_lg_pwd"
+            android:layout_alignTop="@+id/edt_lg_pwd"
+            android:layout_alignEnd="@+id/edt_lg_pwd"
+            android:layout_alignBottom="@+id/edt_lg_pwd"
+            android:padding="15dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:scaleType="fitStart"
+            android:src="@mipmap/pwd" />
+    </RelativeLayout>
+<!--    <EditText-->
+<!--        android:id="@+id/edt_lg_email"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="请输入邮箱"-->
+<!--        android:text="728753465@qq.com"-->
+<!--        android:textSize="25dp"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:background="@null"-->
+<!--        android:layout_below="@id/login_logo_txt"-->
+<!--        android:drawableLeft="@mipmap/user"/>-->
+<!--    <EditText-->
+<!--        android:id="@+id/edt_lg_pwd"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="请输入密码"-->
+<!--        android:text="521125"-->
+<!--        android:textSize="25dp"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:drawableLeft="@mipmap/pwd"-->
+<!--        android:layout_below="@+id/edt_lg_email"-->
+<!--        android:inputType="numberPassword"/>-->
+<!--    <Button-->
+<!--        android:id="@+id/btn_lg_forget"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="忘记密码?"-->
+<!--        android:textSize="20dp"-->
+<!--        android:background="@color/white"-->
+<!--        android:layout_below="@+id/edt_lg_pwd"/>-->
+    <RelativeLayout
+        android:id="@+id/login_reg_forget"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="忘记密码?"
-        android:textSize="20dp"
-        android:background="@color/white"
-        android:layout_below="@+id/edt_lg_pwd"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/login_r2">
+        <Button
+            android:id="@+id/btn_lg_forget"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="忘记密码?"
+            android:textSize="20dp"
+            android:textStyle="italic|bold"
+            android:background="@color/white"
+            />
+        <Button
+            android:id="@+id/btn_lg_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注册"
+            android:textStyle="bold"
+            android:background="@color/white"
+            android:textSize="21dp" />
+    </RelativeLayout>
+
     <Button
+        android:layout_centerHorizontal="true"
         android:id="@+id/btn_lg_login1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
         android:text="登录"
-        android:textSize="25dp"
-        android:layout_below="@id/btn_lg_forget"/>
-    <Button
-        android:id="@+id/btn_lg_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="注册"
-        android:textSize="25dp"
-        android:layout_below="@id/btn_lg_login1"/>
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:background="@drawable/shap_all_corners_blue"
+        android:layout_below="@id/login_reg_forget"/>
+<!--    <Button-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:id="@+id/btn_lg_register"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="注册"-->
+<!--        android:textSize="25dp"-->
+<!--        android:background="@drawable/shap_all_corners_gray"-->
+<!--        android:layout_below="@id/btn_lg_login1"/>-->
+
+
 
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:gravity="center"
+        android:layout_marginTop="100dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-<!--        <RadioButton-->
-<!--            android:id="@+id/login_radio_btn"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="登录前，请先同意"-->
-<!--            android:checked="true"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="17dp"/>-->
         <CheckBox
             android:id="@+id/login_check_btn"
             android:layout_width="wrap_content"
@@ -90,11 +190,12 @@
             android:textSize="17dp"/>
         <TextView
             android:id="@+id/login_user_txt"
-            android:textColor="@color/purple_200"
+            android:textColor="@color/blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="用户隐私协议"
-            android:textSize="17dp"/>
+            android:textStyle="bold"
+            android:textSize="20dp"/>
 
     </LinearLayout>
 

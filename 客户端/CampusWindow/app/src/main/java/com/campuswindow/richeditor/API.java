@@ -1,4 +1,4 @@
-package com.campuswindow.richeditor;
+//package com.campuswindow.richeditor;
 
 //public class API {
 ////    public static final String IP = "http://10.7.88.211:8080/";
