@@ -2,8 +2,6 @@ package com.campuswindow.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,21 +37,18 @@ import okhttp3.Response;
 
 public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFragmentListAdapter.MyViewHolder> {
     private List<Activities> academicList;
-
     private Context mContext;
     private List<ActivityImage> activityImages;
     private View view;
     private OnItemClickListener mOnItemClickListener;
     private ImageAdapter imageAdapter;
     private Result result;
-
-
     private OnItemChildClickListener mOnItemChildClickListener;
-    private Handler handler;
-
-    public AcademicFragmentListAdapter() {
-        handler = new Handler(Looper.getMainLooper());
-    }
+//    private Handler handler;
+//
+//    public AcademicFragmentListAdapter() {
+//        handler = new Handler(Looper.getMainLooper());
+//    }
 
     public AcademicFragmentListAdapter(List<Activities> academicList, Context mContext) {
         this.academicList = academicList;

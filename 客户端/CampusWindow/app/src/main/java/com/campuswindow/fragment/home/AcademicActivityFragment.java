@@ -34,13 +34,10 @@ public class AcademicActivityFragment extends Fragment {
     private List<Activities> academicList = new ArrayList<>();
     private RecyclerView academicRe;
     private AcademicFragmentListAdapter academicFragmentListAdapter;
-
     private Handler handler;
-
     public AcademicActivityFragment() {
         handler = new Handler(Looper.getMainLooper());
     }
-
 
     @Nullable
     @Override
@@ -48,11 +45,8 @@ public class AcademicActivityFragment extends Fragment {
         View page = inflater.inflate(R.layout.index_academic_fragment,null);
         //初始化页面
         initPage(page);
-
         //获取数据源
         getAcademicList();
-//        listViewListenerMethod();
-
         return page;
     }
 
@@ -100,7 +94,6 @@ public class AcademicActivityFragment extends Fragment {
     }
 
     private void initPage(View page) {
-//        academicLv = page.findViewById(R.id.academic_lv);
         academicRe = page.findViewById(R.id.academic_re);
     }
 }
