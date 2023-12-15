@@ -27,7 +27,7 @@ public interface CommentRepository extends JpaRepository<Comment, String> {
     @Modifying
     void updateLove(String commentId, int i);
 
-    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentUserVo(c.commentId, c.activityId, a.activityTitle, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar) from Comment as c join Activity as a on c.activityId = a.activityId join User as u on c.userId = u.userId where c.userId = ?1 order by c.love desc, c.sendTime desc ")
+    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentUserVo(c.commentId, c.activityId, a.activityTitle, c.content, c.love, c.sendTime) from Comment as c join Activity as a on c.activityId = a.activityId where c.userId = ?1 order by c.love desc, c.sendTime desc ")
     List<CommentUserVo> findAllByUserId(String userId);
 
 //    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentVo(c.commentId, c.activityId, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar, m.userId, m.userName, m.avatar) " +

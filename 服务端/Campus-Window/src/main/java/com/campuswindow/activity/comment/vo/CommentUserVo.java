@@ -16,25 +16,19 @@ public class CommentUserVo {
     private String commentId;
     private String activityId;
     private String activityTitle;
-    private String userId;
     private String content;
     private int love;
     //不能为时间戳格式 数据库查询出来的格式是Date
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date sendTime;
-    private String userName;
-    private String avatar;
     private List<CommentImage> commentImages;
 
-    public CommentUserVo(String commentId, String activityId, String activityTitle, String userId, String content, int love, Date sendTime, String userName, String avatar) {
+    public CommentUserVo(String commentId, String activityId, String activityTitle, String content, int love, Date sendTime) {
         this.commentId = commentId;
         this.activityId = activityId;
         this.activityTitle = activityTitle;
-        this.userId = userId;
         this.content = content;
         this.love = love;
         this.sendTime = sendTime;
-        this.userName = userName;
-        this.avatar = avatar;
     }
 }

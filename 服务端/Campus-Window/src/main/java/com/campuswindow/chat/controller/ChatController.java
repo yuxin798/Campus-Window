@@ -3,7 +3,6 @@ package com.campuswindow.chat.controller;
 import com.campuswindow.chat.dto.ChatListDto;
 import com.campuswindow.chat.entity.ChatMessage;
 import com.campuswindow.chat.service.ChatForService;
-import com.campuswindow.chat.service.ChatService;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,8 +16,6 @@ import java.util.List;
 @Tag(name = "聊天接口")
 @RequestMapping("/chat")
 public class ChatController {
-
-    private final ChatService chatService;
     private final ChatForService chatForService;
 
     @PostMapping("/saveChatLink")
@@ -88,8 +85,7 @@ public class ChatController {
 //    }
 
     @Autowired
-    public ChatController(ChatService chatService, ChatForService chatForService) {
-        this.chatService = chatService;
+    public ChatController(ChatForService chatForService) {
         this.chatForService = chatForService;
     }
 }

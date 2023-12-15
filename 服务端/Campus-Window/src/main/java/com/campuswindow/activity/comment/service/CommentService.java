@@ -36,7 +36,7 @@ public class CommentService {
         commentRepository.save(comment);
         commentImageService.save(commentDto.getImages(), commentId, commentDto.getUserId(), 0);
         commentImageService.save(commentDto.getVideos(), commentId, commentDto.getUserId(), 1);
-//        activityService.addComment(commentDto.getActivityId());
+//        //Todo 发表评论 帖子评论数+1 activityService.addComment(commentDto.getActivityId());
     }
 
     /*
