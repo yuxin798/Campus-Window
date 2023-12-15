@@ -1,11 +1,12 @@
-package com.campuswindow.user.controller;
+package com.campuswindow.user.user.controller;
 
 
 import com.campuswindow.fileupload.FileUploadService;
-import com.campuswindow.user.dto.*;
-import com.campuswindow.user.entity.User;
-import com.campuswindow.user.service.UserService;
-import com.campuswindow.user.vo.ModifyInformationVo;
+import com.campuswindow.user.follow.service.FollowService;
+import com.campuswindow.user.user.dto.*;
+import com.campuswindow.user.user.entity.User;
+import com.campuswindow.user.user.service.UserService;
+import com.campuswindow.user.user.vo.*;
 import com.campuswindow.utils.MinioConstant;
 import com.campuswindow.utils.RedisConstant;
 import com.campuswindow.utils.ResultVOUtil;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -126,13 +128,24 @@ public class UserController {
     }
 
     @PostMapping("/avatar")
-    @Operation(summary = "上传头像")
-    public Result<String> uploadAvatar(String userId, MultipartFile avatar) throws IOException {
+    @Operation(summary = "上传头像图片")
+    public Result<String> updateAvatar(String userId, MultipartFile avatar) throws IOException {
         if (avatar.isEmpty()){
             throw new RuntimeException("头像不能为空");
         }
         String filePath = fileUploadService.save(avatar, MinioConstant.USERS_ROOT_PATH);
-        userService.uploadAvatar(userId, filePath);
+        userService.updateAvatar(userId, filePath);
+        return ResultVOUtil.success();
+    }
+
+    @PostMapping("/background")
+    @Operation(summary = "上传背景图片")
+    public Result<String> updateBackground(String userId, MultipartFile avatar) throws IOException {
+        if (avatar.isEmpty()){
+            throw new RuntimeException("背景不能为空");
+        }
+        String filePath = fileUploadService.save(avatar, MinioConstant.USERS_ROOT_PATH);
+        userService.updateBackground(userId, filePath);
         return ResultVOUtil.success();
     }
 
@@ -150,22 +163,64 @@ public class UserController {
     }
 
 
-    @GetMapping("findInformation")
-    @Operation(summary = "查询个人信息")
+    @GetMapping("/findInformation")
+    @Operation(summary = "修改个人信息页面查询个人信息")
         public Result<ModifyInformationVo> findInformation(String userId){
         ModifyInformationVo modifyInformationVo = userService.findInformation(userId);
         return ResultVOUtil.success(modifyInformationVo);
     }
 
-    @PostMapping("modifyInformation")
+    @PostMapping("/modifyInformation")
     @Operation(summary = "修改个人信息")
     public Result<?> modifyInformation(@RequestBody ModifyInformationDto modifyInformationDto){
         userService.modifyInformation(modifyInformationDto);
         return ResultVOUtil.success();
     }
 
+    @GetMapping("/followOtherUser")
+    @Operation(summary = "关注其他用户")
+    public Result<?> followOtherUser(String userId, String toUserId){
+        userService.followOtherUser(userId, toUserId);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/cancelFollowOtherUser")
+    @Operation(summary = "取消关注其他用户")
+    public Result<?> cancelFollowOtherUser(String userId, String toUserId){
+        userService.cancelFollowOtherUser(userId, toUserId);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/findUserByUserId")
+    @Operation(summary = "个人页面查询个人信息")
+    public Result<UserVo> findUserByUserId(String userId){
+        UserVo user = userService.findUserByUserId(userId);
+        return ResultVOUtil.success(user);
+    }
+
+    @GetMapping("/findFriendsByUserId")
+    @Operation(summary = "查询好友列表")
+    public Result<List<FriendsVo>> findFriendsByUserId(String userId){
+        List<FriendsVo> users = userService.findFriendsByUserId(userId);
+        return ResultVOUtil.success(users);
+    }
+
+    @GetMapping("/findFollowersByUserId")
+    @Operation(summary = "查询关注列表")
+    public Result<List<FollowersVo>> findFollowersByUserId(String userId){
+        List<FollowersVo> users = userService.findFollowersByUserId(userId);
+        return ResultVOUtil.success(users);
+    }
+
+    @GetMapping("/findFansByUserId")
+    @Operation(summary = "查询粉丝列表")
+    public Result<List<FansVo>> findFansByUserId(String userId){
+        List<FansVo> users = userService.findFansByUserId(userId);
+        return ResultVOUtil.success(users);
+    }
+
     @Autowired
-    public UserController(UserService userService, JavaMailSender mailSender, StringRedisTemplate redisTemplate, FileUploadService fileUploadService) {
+    public UserController(UserService userService, JavaMailSender mailSender, StringRedisTemplate redisTemplate, FileUploadService fileUploadService, FollowService followService) {
         this.userService = userService;
         this.mailSender = mailSender;
         this.redisTemplate = redisTemplate;

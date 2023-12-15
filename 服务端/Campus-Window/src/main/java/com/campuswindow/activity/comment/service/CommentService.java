@@ -26,7 +26,6 @@ public class CommentService {
     private CommentImageService commentImageService;
     private ActivityService activityService;
     private CommentLoveService commentLoveService;
-
     /*
      * 发表评论，同时将图片或视频网络地址保存到数据库中
      */
@@ -67,10 +66,29 @@ public class CommentService {
     public List<CommentVo> findAllCommentsByActivityId(String userId, String activityId) {
         return commentRepository.findAllByActivityId(activityId)
                 .stream()
-                .peek(e -> e.setReplyComments(commentRepository.findAllByParentId(e.getCommentId())))
+                .peek(e -> e.setReplyCount(findReplyCountByParentId(e.getCommentId())))
+//                .peek(e -> e.setReplyComments(commentRepository.findAllByParentId(e.getCommentId())))
                 .peek(e -> e.setLoved(commentLoveService.findCommentLoveByUserIdAndCommentId(userId, e.getCommentId())))
                 .peek(e -> e.setCommentImages(commentImageService.findCommentImageByCommentId(e.getCommentId()))).collect(Collectors.toList());
     }
+
+    /*
+     * 查询回复评论数
+     */
+    private int findReplyCountByParentId(String commentId) {
+        return commentRepository.findReplyCountByParentId(commentId);
+    }
+
+    /*
+     * 根据评论Id查询所有回复评论，包含图片和视频网络地址，并根据点赞数和发表事件降序排序
+     */
+    public List<CommentVo> findAllCommentsByCommentId(String userId, String commentId) {
+        return commentRepository.findAllByParentId(commentId)
+               .stream()
+               .peek(e -> e.setLoved(commentLoveService.findCommentLoveByUserIdAndCommentId(userId, e.getCommentId())))
+               .peek(e -> e.setCommentImages(commentImageService.findCommentImageByCommentId(e.getCommentId()))).collect(Collectors.toList());
+    }
+
 
     /*
      * 点赞
@@ -109,4 +127,5 @@ public class CommentService {
     public void setCommentLoveService(CommentLoveService commentLoveService) {
         this.commentLoveService = commentLoveService;
     }
+
 }

@@ -60,6 +60,16 @@ public class CommentController {
     }
 
     /*
+     * 根据评论Id查询所有回复评论
+     */
+    @GetMapping("/findAllCommentsByCommentId")
+    @Operation(summary = "根据评论Id查询所有回复评论")
+    public Result<List<CommentVo>> findAllCommentsByCommentId(String userId, String commentId){
+        List<CommentVo> comments= commentService.findAllCommentsByCommentId(userId, commentId);
+        return ResultVOUtil.success(comments);
+    }
+
+    /*
      * 点赞
      */
     @PostMapping("/addLove")

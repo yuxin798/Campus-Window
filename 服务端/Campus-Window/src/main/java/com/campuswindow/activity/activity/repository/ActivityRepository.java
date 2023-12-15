@@ -46,4 +46,7 @@ public interface ActivityRepository extends JpaRepository<Activity, String> {
 
     @Query(value = "select new com.campuswindow.activity.activity.vo.ActivityVo(e.activityId, e.activityTitle, e.activityContent, e.date, e.userId, u.userName, u.avatar, u.school, e.love, e.comment, e.collect) from Activity as e join ActivityCollect l on e.activityId = l.activityId join User as u on e.userId = u.userId where l.userId = ?1")
     List<ActivityVo> findAllCollectByUserId(String userId);
+
+    @Query(value = "select userId from Activity where activityId = ?1")
+    String findUserIdByActivityId(String activityId);
 }

@@ -10,7 +10,7 @@ import com.campuswindow.activity.activityimage.entity.ActivityImage;
 import com.campuswindow.activity.activityimage.service.ActivityImageService;
 import com.campuswindow.activity.activitylove.entity.ActivityLove;
 import com.campuswindow.activity.activitylove.service.ActivityLoveService;
-import com.campuswindow.user.service.UserService;
+import com.campuswindow.user.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,11 +70,15 @@ public class ActivityService {
     public void addLove(ActivityLove activityLove) {
         activityRepository.updateLove(activityLove.getActivityId(), 1);
         activityLoveService.addLove(activityLove);
+        String userId = activityRepository.findUserIdByActivityId(activityLove.getActivityId());
+        userService.updateLovesByUserId(userId, 1);
     }
 
     public void decreaseLove(ActivityLove activityLove) {
         activityRepository.updateLove(activityLove.getActivityId(), -1);
         activityLoveService.decreaseLove(activityLove);
+        String userId = activityRepository.findUserIdByActivityId(activityLove.getActivityId());
+        userService.updateLovesByUserId(userId, -1);
     }
 
     public List<ActivityVo> findAllByType(String userId, int type) {

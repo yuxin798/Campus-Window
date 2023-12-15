@@ -30,6 +30,22 @@ public interface CommentRepository extends JpaRepository<Comment, String> {
     @Query(value = "select new com.campuswindow.activity.comment.vo.CommentUserVo(c.commentId, c.activityId, a.activityTitle, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar) from Comment as c join Activity as a on c.activityId = a.activityId join User as u on c.userId = u.userId where c.userId = ?1 order by c.love desc, c.sendTime desc ")
     List<CommentUserVo> findAllByUserId(String userId);
 
-    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentVo(c.commentId, c.activityId, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar) from Comment as c join User as u on c.userId = u.userId where c.parentId = ?1")
+//    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentVo(c.commentId, c.activityId, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar, m.userId, m.userName, m.avatar) " +
+//            "from Comment as c " +
+//            "join User as u on c.userId = u.userId " +
+//            "join User as m on c.toUserId = m.userId " +
+//            "join Comment as a on c.parentId = a.commentId " +
+//            "where a.parentId = ?1 or c.parentId = ?1")
+//    List<CommentVo> findAllByParentId(String commentId);
+
+    @Query(value = "select new com.campuswindow.activity.comment.vo.CommentVo(c.commentId, c.activityId, c.userId, c.content, c.love, c.sendTime, u.userName, u.avatar, m.userId, m.userName) " +
+            "from Comment as c " +
+            "join User as u on c.userId = u.userId " +
+            "join User as m on c.toUserId = m.userId " +
+            "join Comment as a on c.parentId = a.commentId " +
+            "where a.parentId = ?1 or c.parentId = ?1")
     List<CommentVo> findAllByParentId(String commentId);
+
+    @Query(value = "select count(*) from Comment as c join Comment as a on c.parentId = a.commentId  where c.parentId = ?1 or a.parentId = ?1")
+    int findReplyCountByParentId(String commentId);
 }

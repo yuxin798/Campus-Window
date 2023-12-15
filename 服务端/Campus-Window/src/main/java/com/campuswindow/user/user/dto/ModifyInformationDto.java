@@ -1,4 +1,4 @@
-package com.campuswindow.user.dto;
+package com.campuswindow.user.user.dto;
 
 import lombok.Data;
 
