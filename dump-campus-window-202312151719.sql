@@ -131,6 +131,7 @@ CREATE TABLE `tbl_activity` (
 
 LOCK TABLES `tbl_activity` WRITE;
 /*!40000 ALTER TABLE `tbl_activity` DISABLE KEYS */;
+INSERT INTO `tbl_activity` VALUES ('5a5b35916fea40ee95d39e574071cecf','213131','八嘎','2023-12-15 15:49:38','1','河北师范大学',0,0,0,0),('9984512b3a6541f4822a352234a9618d','213131','八嘎','2023-12-15 15:49:43','3','河北师范大学',0,0,0,0),('d9dc742f3fef425086ea439356819ce8','666','666<br><br>','2023-12-15 15:49:53','3','河北师范大学',0,0,0,0);
 /*!40000 ALTER TABLE `tbl_activity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,7 +207,7 @@ CREATE TABLE `tbl_activity_love` (
 
 LOCK TABLES `tbl_activity_love` WRITE;
 /*!40000 ALTER TABLE `tbl_activity_love` DISABLE KEYS */;
-INSERT INTO `tbl_activity_love` VALUES ('386fbecc97734a70bf5610300a6543db','2','79ae19f6954c4535ba83e2eb081ea82f'),('876910aa4cba4d9ba3f521b20e10d79c','2','05b9e0a1e1bc4f2eb0619ecd1d07355f'),('899e331a882a4fb89f9df81a91554a33','2','f19e7ea5ed52469a92fea5ca2207df6b'),('9dea65faef294dc395abde9741f29c4e','1','0d6f0381e84e424d897c7c305b2e8e52'),('a7962756de8b4090b57a9c2a725c59e2','1','58fea0298b05448285c0e6bd721b524e'),('d8a620cacd3244ee97a27b31702cd804','1','05b9e0a1e1bc4f2eb0619ecd1d07355f');
+INSERT INTO `tbl_activity_love` VALUES ('386fbecc97734a70bf5610300a6543db','2','79ae19f6954c4535ba83e2eb081ea82f'),('76857343cbd24f2bbc02083edff72ba7','2','9ffe85f8aea44bb08305d880f5f1f8d7'),('7afdcc51ac10482190a062405586f6ed','1','9ffe85f8aea44bb08305d880f5f1f8d7'),('876910aa4cba4d9ba3f521b20e10d79c','2','05b9e0a1e1bc4f2eb0619ecd1d07355f'),('899e331a882a4fb89f9df81a91554a33','2','f19e7ea5ed52469a92fea5ca2207df6b'),('9dea65faef294dc395abde9741f29c4e','1','0d6f0381e84e424d897c7c305b2e8e52'),('a7962756de8b4090b57a9c2a725c59e2','1','58fea0298b05448285c0e6bd721b524e'),('d8a620cacd3244ee97a27b31702cd804','1','05b9e0a1e1bc4f2eb0619ecd1d07355f');
 /*!40000 ALTER TABLE `tbl_activity_love` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,7 +237,7 @@ CREATE TABLE `tbl_comment` (
 
 LOCK TABLES `tbl_comment` WRITE;
 /*!40000 ALTER TABLE `tbl_comment` DISABLE KEYS */;
-INSERT INTO `tbl_comment` VALUES ('2305cb58e2ba49ef89aa16b5f4d9c924','c6b1d040aed14ef6a914897b8e0e9212','3','真tm帅',0,'2023-12-12 18:20:18',NULL,NULL),('64f6a3a761c444d28026b479e89c3115','c6b1d040aed14ef6a914897b8e0e9212','1','888',0,'2023-12-14 08:33:28','2305cb58e2ba49ef89aa16b5f4d9c924','3'),('ceb598ef668b4e8195a6bc0be680822c','c6b1d040aed14ef6a914897b8e0e9212','2','999',0,'2023-12-14 08:31:32','2305cb58e2ba49ef89aa16b5f4d9c924','3'),('eeb9e9eaabab419f88dc834e5cf3db08','c6b1d040aed14ef6a914897b8e0e9212','1','真tm帅',2,'2023-12-12 18:14:42',NULL,NULL),('f5183badafdf4d6eb1c273027ba6d47b','c6b1d040aed14ef6a914897b8e0e9212','3','我爱你',0,'2023-12-14 08:43:54','ceb598ef668b4e8195a6bc0be680822c','2');
+INSERT INTO `tbl_comment` VALUES ('2305cb58e2ba49ef89aa16b5f4d9c924','c6b1d040aed14ef6a914897b8e0e9212','3','真tm帅',1,'2023-12-12 18:20:18',NULL,NULL),('64948d79743b432ebc7786c8223a8f58','c6b1d040aed14ef6a914897b8e0e9212','2','小小年级班门弄斧',1,'2023-12-14 16:18:08','eeb9e9eaabab419f88dc834e5cf3db08','1'),('64f6a3a761c444d28026b479e89c3115','c6b1d040aed14ef6a914897b8e0e9212','1','888',0,'2023-12-14 08:33:28','2305cb58e2ba49ef89aa16b5f4d9c924','3'),('ceb598ef668b4e8195a6bc0be680822c','c6b1d040aed14ef6a914897b8e0e9212','2','999',0,'2023-12-14 08:31:32','2305cb58e2ba49ef89aa16b5f4d9c924','3'),('de990fa45cc54177b66194bafdf8cbd5','c6b1d040aed14ef6a914897b8e0e9212','3','你能拿我咋滴',0,'2023-12-14 16:18:46','64948d79743b432ebc7786c8223a8f58','2'),('eeb9e9eaabab419f88dc834e5cf3db08','c6b1d040aed14ef6a914897b8e0e9212','1','真tm帅',2,'2023-12-12 18:14:42',NULL,NULL),('f5183badafdf4d6eb1c273027ba6d47b','c6b1d040aed14ef6a914897b8e0e9212','3','我爱你',1,'2023-12-14 08:43:54','ceb598ef668b4e8195a6bc0be680822c','2'),('f5bac6aebfb8467390e45f2d10339f6f','9999d040aed14ef6a914897b8e0e9212','2','我乃刘德助',0,'2023-12-14 16:19:58',NULL,NULL);
 /*!40000 ALTER TABLE `tbl_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,7 +289,7 @@ CREATE TABLE `tbl_comment_love` (
 
 LOCK TABLES `tbl_comment_love` WRITE;
 /*!40000 ALTER TABLE `tbl_comment_love` DISABLE KEYS */;
-INSERT INTO `tbl_comment_love` VALUES ('0e4bf99c95614a11af7f3c43fa769262','3','eeb9e9eaabab419f88dc834e5cf3db08'),('f5061b1b8580454b9ecccd568868fa3d','2','eeb9e9eaabab419f88dc834e5cf3db08');
+INSERT INTO `tbl_comment_love` VALUES ('0e4bf99c95614a11af7f3c43fa769262','3','eeb9e9eaabab419f88dc834e5cf3db08'),('3edee291757d4f939c5827874b12c93d','1','64948d79743b432ebc7786c8223a8f58'),('69cdd047c9ac4e1780695353d73d1630','1','2305cb58e2ba49ef89aa16b5f4d9c924'),('e2fe5be79a55418bbedd0ea7057451ed','1','f5183badafdf4d6eb1c273027ba6d47b'),('f5061b1b8580454b9ecccd568868fa3d','2','eeb9e9eaabab419f88dc834e5cf3db08');
 /*!40000 ALTER TABLE `tbl_comment_love` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -361,6 +362,11 @@ CREATE TABLE `tbl_user` (
   `create_time` datetime DEFAULT NULL,
   `gender` tinyint(4) DEFAULT NULL,
   `signature` varchar(100) DEFAULT NULL,
+  `loves` int(11) DEFAULT '0',
+  `friends` int(11) DEFAULT '0',
+  `followers` int(11) DEFAULT '0',
+  `fans` int(11) DEFAULT '0',
+  `background` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -371,8 +377,33 @@ CREATE TABLE `tbl_user` (
 
 LOCK TABLES `tbl_user` WRITE;
 /*!40000 ALTER TABLE `tbl_user` DISABLE KEYS */;
-INSERT INTO `tbl_user` VALUES ('1','9','1@qq.com','1','河北师范大学','http://192.168.144.132:9000/campus-bucket/users/428d21d0bc1b4e28b608afbb55aa6856.jpeg','2023-11-22 16:42:31',1,'9'),('2','欲心','789@qq.com','123456','123','http://192.168.144.132:9000/campus-bucket/activity/04375f22b0134ccfafade858c7621d02.jpeg','2023-11-22 17:15:10',1,NULL),('3','zhjm','728753465@qq.com','521125','河北师范大学','http://192.168.144.132:9000/campus-bucket/activity/04375f22b0134ccfafade858c7621d02.jpeg','2023-11-22 16:42:31',0,NULL),('8ad4fc5b81c54cb0a6ad3ad26bbd1ae1','7771','789777@qq.com','27773432','河北师范大学','http://192.168.144.132:9000/campus-bucket/users/default.jpg','2023-12-12 09:42:30',0,NULL);
+INSERT INTO `tbl_user` VALUES ('1','9','1@qq.com','1','河北师范大学','http://192.168.144.132:9000/campus-bucket/users/428d21d0bc1b4e28b608afbb55aa6856.jpeg','2023-11-22 16:42:31',1,'9',2,1,1,1,'http://192.168.144.132:9000/campus-bucket/users/1edac165b5b74558b62bd2d672d30dc4.jpeg'),('2','欲心','789@qq.com','123456','123','http://192.168.144.132:9000/campus-bucket/activity/04375f22b0134ccfafade858c7621d02.jpeg','2023-11-22 17:15:10',1,NULL,0,1,1,1,'http://192.168.144.132:9000/campus-bucket/users/5f76d3e783544b55b9f63586e8dc46ca.jpeg'),('3','zhjm','728753465@qq.com','521125','河北师范大学','http://192.168.144.132:9000/campus-bucket/activity/04375f22b0134ccfafade858c7621d02.jpeg','2023-11-22 16:42:31',0,NULL,0,0,0,0,'http://192.168.144.132:9000/campus-bucket/users/0ae46b4ee1cb44b1b0ed8117045bc3ce.jpeg'),('8ad4fc5b81c54cb0a6ad3ad26bbd1ae1','7771','789777@qq.com','27773432','河北师范大学','http://192.168.144.132:9000/campus-bucket/users/default.jpg','2023-12-12 09:42:30',0,NULL,0,0,0,0,'http://192.168.144.132:9000/campus-bucket/users/ca4bfd49a4d544ad9504f47d9adcf1d1.jpeg');
 /*!40000 ALTER TABLE `tbl_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_user_follow`
+--
+
+DROP TABLE IF EXISTS `tbl_user_follow`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tbl_user_follow` (
+  `follow_id` varchar(100) NOT NULL,
+  `user_id` varchar(100) DEFAULT NULL,
+  `to_user_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`follow_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_user_follow`
+--
+
+LOCK TABLES `tbl_user_follow` WRITE;
+/*!40000 ALTER TABLE `tbl_user_follow` DISABLE KEYS */;
+INSERT INTO `tbl_user_follow` VALUES ('4f185af5aab149179d92af1cbc47e86b','2','1'),('91e6f916c85b4ad2bfa0e57357dbae9b','1','2');
+/*!40000 ALTER TABLE `tbl_user_follow` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -388,4 +419,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-14  9:08:25
+-- Dump completed on 2023-12-15 17:19:48
