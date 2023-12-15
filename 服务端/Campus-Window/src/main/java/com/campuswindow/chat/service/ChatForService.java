@@ -7,7 +7,7 @@ import com.campuswindow.chat.entity.ChatMessage;
 import com.campuswindow.chat.repository.ChatLinkRepository;
 import com.campuswindow.chat.repository.ChatListRepository;
 import com.campuswindow.chat.repository.ChatMessageRepository;
-import com.campuswindow.user.repository.UserRepository;
+import com.campuswindow.user.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

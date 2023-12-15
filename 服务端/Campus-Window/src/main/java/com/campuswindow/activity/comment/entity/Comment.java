@@ -26,4 +26,6 @@ public class Comment {
     private int love;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Timestamp sendTime;
+    private String parentId;
+    private String toUserId;
 }

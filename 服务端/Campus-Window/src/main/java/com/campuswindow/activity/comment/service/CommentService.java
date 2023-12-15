@@ -2,6 +2,7 @@ package com.campuswindow.activity.comment.service;
 
 import com.campuswindow.activity.activity.service.ActivityService;
 import com.campuswindow.activity.comment.dto.CommentDto;
+import com.campuswindow.activity.comment.dto.ReplyCommentDto;
 import com.campuswindow.activity.comment.entity.Comment;
 import com.campuswindow.activity.comment.repository.CommentRepository;
 import com.campuswindow.activity.comment.vo.CommentUserVo;
@@ -25,18 +26,29 @@ public class CommentService {
     private CommentImageService commentImageService;
     private ActivityService activityService;
     private CommentLoveService commentLoveService;
-
     /*
      * 发表评论，同时将图片或视频网络地址保存到数据库中
      */
     public void addComment(CommentDto commentDto){
         String commentId = UUID.randomUUID().toString().replace("-", "");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Comment comment = new Comment(commentId, commentDto.getActivityId(), commentDto.getUserId(), commentDto.getContent(), 0, timestamp);
+        Comment comment = new Comment(commentId, commentDto.getActivityId(), commentDto.getUserId(), commentDto.getContent(), 0, timestamp, null, null);
         commentRepository.save(comment);
         commentImageService.save(commentDto.getImages(), commentId, commentDto.getUserId(), 0);
         commentImageService.save(commentDto.getVideos(), commentId, commentDto.getUserId(), 1);
-        activityService.addComment(commentDto.getActivityId());
+//        activityService.addComment(commentDto.getActivityId());
+    }
+
+    /*
+     * 回复评论，同时将图片或视频网络地址保存到数据库中
+     */
+    public void addReplyComment(ReplyCommentDto replyCommentDto) {
+        String commentId = UUID.randomUUID().toString().replace("-", "");
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Comment comment = new Comment(commentId, replyCommentDto.getActivityId(), replyCommentDto.getUserId(), replyCommentDto.getContent(), 0, timestamp, replyCommentDto.getParentId(), replyCommentDto.getToUserId());
+        commentRepository.save(comment);
+        commentImageService.save(replyCommentDto.getImages(), commentId, replyCommentDto.getUserId(), 0);
+        commentImageService.save(replyCommentDto.getVideos(), commentId, replyCommentDto.getUserId(), 1);
     }
 
     /*
@@ -54,9 +66,29 @@ public class CommentService {
     public List<CommentVo> findAllCommentsByActivityId(String userId, String activityId) {
         return commentRepository.findAllByActivityId(activityId)
                 .stream()
+                .peek(e -> e.setReplyCount(findReplyCountByParentId(e.getCommentId())))
+//                .peek(e -> e.setReplyComments(commentRepository.findAllByParentId(e.getCommentId())))
                 .peek(e -> e.setLoved(commentLoveService.findCommentLoveByUserIdAndCommentId(userId, e.getCommentId())))
                 .peek(e -> e.setCommentImages(commentImageService.findCommentImageByCommentId(e.getCommentId()))).collect(Collectors.toList());
     }
+
+    /*
+     * 查询回复评论数
+     */
+    private int findReplyCountByParentId(String commentId) {
+        return commentRepository.findReplyCountByParentId(commentId);
+    }
+
+    /*
+     * 根据评论Id查询所有回复评论，包含图片和视频网络地址，并根据点赞数和发表事件降序排序
+     */
+    public List<CommentVo> findAllCommentsByCommentId(String userId, String commentId) {
+        return commentRepository.findAllByParentId(commentId)
+               .stream()
+               .peek(e -> e.setLoved(commentLoveService.findCommentLoveByUserIdAndCommentId(userId, e.getCommentId())))
+               .peek(e -> e.setCommentImages(commentImageService.findCommentImageByCommentId(e.getCommentId()))).collect(Collectors.toList());
+    }
+
 
     /*
      * 点赞
@@ -95,4 +127,5 @@ public class CommentService {
     public void setCommentLoveService(CommentLoveService commentLoveService) {
         this.commentLoveService = commentLoveService;
     }
+
 }

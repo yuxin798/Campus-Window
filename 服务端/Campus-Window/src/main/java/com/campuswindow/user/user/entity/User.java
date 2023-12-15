@@ -1,4 +1,4 @@
-package com.campuswindow.user.entity;
+package com.campuswindow.user.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -31,6 +31,11 @@ public class User {
     private Timestamp createTime;
     private int gender;
     private String signature;
+    private int loves;
+    private int friends;
+    private int followers;
+    private int fans;
+    private String background;
 
     public @interface Login {}
 }

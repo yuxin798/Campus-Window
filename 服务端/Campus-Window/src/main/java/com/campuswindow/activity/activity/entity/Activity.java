@@ -25,6 +25,7 @@ public class Activity {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Timestamp date;
     private String userId;
+    private String school;
     private int love;
     private int comment;
     private int collect;

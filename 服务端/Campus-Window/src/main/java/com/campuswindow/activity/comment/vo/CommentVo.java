@@ -27,7 +27,11 @@ public class CommentVo {
     private String userName;
     private String avatar;
     private boolean isLoved;
+    private String toUserId;
+    private String toUserName;
     private List<CommentImage> commentImages;
+    private int replyCount;
+//    private List<CommentVo> replyComments;
 
     public CommentVo(String commentId, String activityId, String userId, String content, int love, Date sendTime, String userName, String avatar) {
         this.commentId = commentId;
@@ -38,5 +42,18 @@ public class CommentVo {
         this.sendTime = sendTime;
         this.userName = userName;
         this.avatar = avatar;
+    }
+
+    public CommentVo(String commentId, String activityId, String userId, String content, int love, Date sendTime, String userName, String avatar, String toUserId, String toUserName) {
+        this.commentId = commentId;
+        this.activityId = activityId;
+        this.userId = userId;
+        this.content = content;
+        this.love = love;
+        this.sendTime = sendTime;
+        this.userName = userName;
+        this.avatar = avatar;
+        this.toUserId = toUserId;
+        this.toUserName = toUserName;
     }
 }

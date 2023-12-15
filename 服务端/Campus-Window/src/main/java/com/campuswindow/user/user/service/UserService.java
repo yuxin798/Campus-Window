@@ -1,9 +1,10 @@
-package com.campuswindow.user.service;
+package com.campuswindow.user.user.service;
 
-import com.campuswindow.user.dto.*;
-import com.campuswindow.user.entity.User;
-import com.campuswindow.user.repository.UserRepository;
-import com.campuswindow.user.vo.ModifyInformationVo;
+import com.campuswindow.user.follow.service.FollowService;
+import com.campuswindow.user.user.dto.*;
+import com.campuswindow.user.user.entity.User;
+import com.campuswindow.user.user.repository.UserRepository;
+import com.campuswindow.user.user.vo.*;
 import com.campuswindow.utils.RedisConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -19,6 +22,7 @@ public class UserService {
 
     private UserRepository userRepository;
     private StringRedisTemplate redisTemplate;
+    private FollowService followService;
 
 //    @Autowired
 //    private AuthenticationManager authenticationManager;
@@ -43,6 +47,7 @@ public class UserService {
         //设置默认头像 TODO
         user.setAvatar("http://192.168.144.132:9000/campus-bucket/default.jpg");
         user.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        user.setBackground("http://192.168.144.132:9000/campus-bucket/activity/04375f22b0134ccfafade858c7621d02.jpeg");
         return userRepository.save(user);
     }
 
@@ -68,8 +73,12 @@ public class UserService {
         return loginUser;
     }
 
-    public int uploadAvatar(String userId, String avatar) {
-        return userRepository.updateAvatarByUserId(userId, avatar);
+    public void updateAvatar(String userId, String avatar) {
+        userRepository.updateAvatarByUserId(userId, avatar);
+    }
+
+    public void updateBackground(String userId, String filePath) {
+        userRepository.updateBackground(userId, filePath);
     }
 
     public void updatePassword(PasswordDto passwordDto) {
@@ -89,7 +98,7 @@ public class UserService {
         return userRepository.findLoginDtoByEmail(email);
     }
 
-    public void modifyInformation(modifyInformationDto modifyInformationDto) {
+    public void modifyInformation(ModifyInformationDto modifyInformationDto) {
         userRepository.updateInformationByUserId(modifyInformationDto.getUserId(), modifyInformationDto.getUserName(), modifyInformationDto.getGender(), modifyInformationDto.getSignature());
     }
 
@@ -103,7 +112,75 @@ public class UserService {
         this.redisTemplate = redisTemplate;
     }
 
+    @Autowired
+    public void setFollowService(FollowService followService) {
+        this.followService = followService;
+    }
+
     public ModifyInformationVo findInformation(String userId) {
         return userRepository.findInformation(userId);
+    }
+
+    public String findSchool(String userId) {
+        return userRepository.findSchoolByUserId(userId);
+    }
+
+    public void updateFollowersByUserId(String userId, int i) {
+        userRepository.updateFollowersByUserId(userId, i);
+    }
+
+    public void updateFansByUserId(String toUserId, int i) {
+        userRepository.updateFansByUserId(toUserId, i);
+    }
+
+    public void updateLovesByUserId(String userId, int i) {
+        userRepository.updateLovesByUserId(userId, i);
+    }
+
+    public void updateFriendsByUserIdAndToUserId(String userId, String toUserId, int i) {
+        userRepository.updateFriendsByUserIdAndToUserId(userId, i);
+        userRepository.updateFriendsByUserIdAndToUserId(toUserId, i);
+
+    }
+
+    public void followOtherUser(String userId, String toUserId) {
+        followService.followOtherUser(userId, toUserId);
+        userRepository.updateFollowersByUserId(userId, 1);
+        userRepository.updateFansByUserId(toUserId, 1);
+        int count = followService.findCountByUserIdAndToUserId(userId, toUserId);
+        if (count == 2){
+            updateFriendsByUserIdAndToUserId(userId, toUserId, 1);
+        }
+    }
+
+    public void cancelFollowOtherUser(String userId, String toUserId) {
+        followService.cancelFollowOtherUser(userId, toUserId);
+        userRepository.updateFollowersByUserId(userId, -1);
+        userRepository.updateFansByUserId(toUserId, -1);
+        int count = followService.findCountByUserIdAndToUserId(userId, toUserId);
+        if (count != 0){
+            updateFriendsByUserIdAndToUserId(userId, toUserId, -1);
+        }
+    }
+
+    public UserVo findUserByUserId(String userId) {
+        return userRepository.findUserByUserId(userId);
+    }
+
+    public List<FriendsVo> findFriendsByUserId(String userId) {
+        return userRepository.findFriendsByUserId(userId);
+    }
+
+    public List<FollowersVo> findFollowersByUserId(String userId) {
+        return userRepository.findFollowersByUserId(userId).stream()
+                .peek(e -> e.setMutualFollow(followService.mutualFollowIsOrNot(userId, e.getUserId())))
+                .collect(Collectors.toList());
+
+    }
+
+    public List<FansVo> findFansByUserId(String userId) {
+        return userRepository.findFansByUserId(userId).stream()
+                .peek(e -> e.setMutualFollow(followService.mutualFollowIsOrNot(userId, e.getUserId())))
+                .collect(Collectors.toList());
     }
 }

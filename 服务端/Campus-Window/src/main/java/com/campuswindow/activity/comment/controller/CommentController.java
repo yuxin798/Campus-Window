@@ -1,6 +1,7 @@
 package com.campuswindow.activity.comment.controller;
 
 import com.campuswindow.activity.comment.dto.CommentDto;
+import com.campuswindow.activity.comment.dto.ReplyCommentDto;
 import com.campuswindow.activity.comment.service.CommentService;
 import com.campuswindow.activity.comment.vo.CommentUserVo;
 import com.campuswindow.activity.comment.vo.CommentVo;
@@ -31,6 +32,13 @@ public class CommentController {
         return ResultVOUtil.success();
     }
 
+    @PostMapping("/replyComment")
+    @Operation(summary = "回复评论")
+    public Result<?> addComment(@RequestBody ReplyCommentDto replyCommentDto){
+        commentService.addReplyComment(replyCommentDto);
+        return ResultVOUtil.success();
+    }
+
     /*
      * 根据评论Id删除评论，同时删除该评论所有的视频或图片
      */
@@ -48,6 +56,16 @@ public class CommentController {
     @Operation(summary = "根据帖子Id查询所有评论")
     public Result<List<CommentVo>> findAllCommentsByActivityId(String userId, String activityId){
         List<CommentVo> comments= commentService.findAllCommentsByActivityId(userId, activityId);
+        return ResultVOUtil.success(comments);
+    }
+
+    /*
+     * 根据评论Id查询所有回复评论
+     */
+    @GetMapping("/findAllCommentsByCommentId")
+    @Operation(summary = "根据评论Id查询所有回复评论")
+    public Result<List<CommentVo>> findAllCommentsByCommentId(String userId, String commentId){
+        List<CommentVo> comments= commentService.findAllCommentsByCommentId(userId, commentId);
         return ResultVOUtil.success(comments);
     }
 

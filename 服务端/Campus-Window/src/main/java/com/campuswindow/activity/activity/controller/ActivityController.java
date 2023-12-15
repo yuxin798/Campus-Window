@@ -58,7 +58,7 @@ public class ActivityController {
      * 根据userId查询某个人的所有帖子
      */
     @GetMapping("/selectActivity")
-    @Operation(summary = "根据userId查询某个人的所有帖子")
+    @Operation(summary = "根据userId查询所有帖子")
     public Result<List<ActivityVo>> selectActivity(String userId){
         List<ActivityVo> activities = activityService.selectActivity(userId);
         return ResultVOUtil.success(activities);

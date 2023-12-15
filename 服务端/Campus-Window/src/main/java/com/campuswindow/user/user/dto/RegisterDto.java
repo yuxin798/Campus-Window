@@ -1,6 +1,5 @@
-package com.campuswindow.user.dto;
+package com.campuswindow.user.user.dto;
 
-import com.campuswindow.user.entity.User;
 import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
