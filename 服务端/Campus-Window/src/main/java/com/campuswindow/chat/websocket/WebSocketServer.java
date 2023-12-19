@@ -1,8 +1,8 @@
-package com.campuswindow.chat.group.websocket;
+package com.campuswindow.chat.websocket;
 
 import com.alibaba.fastjson.JSON;
-import com.campuswindow.chat.group.service.ChatGroupService;
-import com.campuswindow.chat.group.vo.ChatMessageGroupVo;
+import com.campuswindow.chat.service.ChatService;
+import com.campuswindow.chat.vo.ChatMessageVo;
 import com.campuswindow.user.user.dto.ChatUserDto;
 import com.campuswindow.user.user.service.UserService;
 import org.springframework.stereotype.Component;
@@ -17,11 +17,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @ServerEndpoint("/websocket/{userId}")
-public class WebSocketGroup {
+public class WebSocketServer {
     private static Map<String, Session> clients = new ConcurrentHashMap<>();
     private String userId;
     private static Integer number = 0;//在线用户数
-    public static ChatGroupService chatGroupService;
+    public static ChatService chatService;
     public static UserService userService;
 
     @OnOpen
@@ -35,7 +35,7 @@ public class WebSocketGroup {
     public void onClose(Session session) {
         number--;
 //        sendMessageToAll(JSON.toJSONString(number));
-        chatGroupService.updateWindows(userId, 0);
+        chatService.updateWindows(userId, 0);
 
         CloseReason close = new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "关闭客户端，下线！");
         try {
@@ -49,21 +49,21 @@ public class WebSocketGroup {
 
     @OnMessage
     public void onMessage(String message) {
-        ChatMessageGroupVo chatMessageGroup = JSON.parseObject(message, ChatMessageGroupVo.class);
+        ChatMessageVo chatMessageGroup = JSON.parseObject(message, ChatMessageVo.class);
         String linkId = chatMessageGroup.getLinkId();
         ChatUserDto chatUserDto = userService.findChatUserByUserId(chatMessageGroup.getUserId());
         chatMessageGroup.setUserName(chatUserDto.getUserName());
         chatMessageGroup.setAvatar(chatUserDto.getAvatar());
-        List<String> userIds = chatGroupService.findUserIdByLinkId(linkId);
+        List<String> userIds = chatService.findUserIdByLinkId(linkId);
         userIds.remove(userId);
         sendMessage(message, userIds);
         System.out.println(chatMessageGroup.toString());
-        chatGroupService.saveMessage(chatMessageGroup, userIds);
+        chatService.saveMessage(chatMessageGroup, userIds);
     }
 
     @OnError
     public void onError(Session session, Throwable throwable) {
-        chatGroupService.updateWindows(userId, 0);
+        chatService.updateWindows(userId, 0);
         CloseReason close = new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "关闭客户端，下线！");
         try {
             session.close(close);

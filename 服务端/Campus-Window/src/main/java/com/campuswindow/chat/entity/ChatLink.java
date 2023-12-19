@@ -1,4 +1,4 @@
-package com.campuswindow.chat.group.entity;
+package com.campuswindow.chat.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +11,10 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
-@Table(name = "chat_link_group")
+@Table(name = "chat_link")
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatLinkGroup {
+public class ChatLink {
     @Id
     private String id;
     //关系表id

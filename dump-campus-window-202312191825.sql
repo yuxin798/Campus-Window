@@ -16,6 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `chat_link`
+--
+
+DROP TABLE IF EXISTS `chat_link`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chat_link` (
+  `id` varchar(100) NOT NULL,
+  `link_id` varchar(100) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `type` tinyint(4) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `avatar` varchar(100) DEFAULT NULL,
+  `num` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chat_link`
+--
+
+LOCK TABLES `chat_link` WRITE;
+/*!40000 ALTER TABLE `chat_link` DISABLE KEYS */;
+INSERT INTO `chat_link` VALUES ('0773b8785ca748dfb7d81545441efd15','0773b8785ca748dfb7d81545441efd15','2023-12-19 17:47:23',0,NULL,NULL,'2'),('adac782c81e140fa9f984ae75acaca73','adac782c81e140fa9f984ae75acaca73','2023-12-18 22:42:12',0,NULL,NULL,'2'),('bc520a9cb12a4ecfbcd6cdbca9b82c8a','bc520a9cb12a4ecfbcd6cdbca9b82c8a','2023-12-18 22:42:05',0,NULL,NULL,'2'),('dda27352a3f74e2aaec7d4f2d17cb062','dda27352a3f74e2aaec7d4f2d17cb062','2023-12-18 22:43:08',1,'hello','http://192.168.144.132:9000/campus-bucket/users/1edac165b5b74558b62bd2d672d30dc4.jpeg','3');
+/*!40000 ALTER TABLE `chat_link` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `chat_list`
 --
 
@@ -23,18 +52,16 @@ DROP TABLE IF EXISTS `chat_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chat_list` (
-  `list_id` varchar(32) NOT NULL COMMENT '聊天列表主键',
-  `link_id` varchar(255) NOT NULL COMMENT '聊天主表id',
-  `from_user_id` varchar(30) NOT NULL COMMENT '发送者',
-  `to_user_id` varchar(30) NOT NULL COMMENT '接收者',
-  `from_window` tinyint(4) DEFAULT NULL,
-  `to_window` tinyint(4) DEFAULT NULL,
+  `list_id` varchar(100) NOT NULL DEFAULT '',
+  `link_id` varchar(100) DEFAULT NULL,
+  `user_id` varchar(100) DEFAULT NULL,
+  `window` tinyint(4) DEFAULT NULL,
   `last_msg` varchar(100) DEFAULT NULL,
   `last_msg_time` datetime DEFAULT NULL,
-  `unread` int(11) DEFAULT NULL COMMENT '未读数',
-  `status` tinyint(1) DEFAULT NULL COMMENT '是否删除',
-  PRIMARY KEY (`list_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  `unread` int(11) DEFAULT NULL,
+  `status` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`list_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +70,7 @@ CREATE TABLE `chat_list` (
 
 LOCK TABLES `chat_list` WRITE;
 /*!40000 ALTER TABLE `chat_list` DISABLE KEYS */;
-INSERT INTO `chat_list` VALUES ('1','3ed9aafaeaad46d1a89f8735a4563486','1','2',0,0,'3333','2023-12-12 10:25:31',0,1),('2','3ed9aafaeaad46d1a89f8735a4563486','2','1',0,0,'3333','2023-12-12 10:25:31',4,1);
+INSERT INTO `chat_list` VALUES ('34a69b1602b24f7998d52ef2515d8cfc','adac782c81e140fa9f984ae75acaca73','3',0,'jia d  ba \n','2023-12-19 18:23:43',0,1),('4c8de97c5bde4c0ba191c18f1e4f4932','0773b8785ca748dfb7d81545441efd15','1',0,'请开始聊天吧','2023-12-19 17:47:23',0,1),('6eab6d5e83e64106be2c75757d4747f7','adac782c81e140fa9f984ae75acaca73','1',0,'jia d  ba \n','2023-12-19 18:23:43',3,1),('a024ffff048e4e5f97613dfe6e821a1a','0773b8785ca748dfb7d81545441efd15','2',0,'请开始聊天吧','2023-12-19 17:47:23',0,1),('b1d7f94647ca4b3fb5db66a1102c7a52','dda27352a3f74e2aaec7d4f2d17cb062','2',0,'2313131','2023-12-19 18:24:17',7,1),('dbcf73dcb4514c8f8f65e54f4087def2','dda27352a3f74e2aaec7d4f2d17cb062','1',0,'2313131','2023-12-19 18:24:17',0,1),('ea125c39456f4ab1b173421c022c30ba','dda27352a3f74e2aaec7d4f2d17cb062','3',0,'2313131','2023-12-19 18:24:17',0,1);
 /*!40000 ALTER TABLE `chat_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -55,15 +82,14 @@ DROP TABLE IF EXISTS `chat_message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chat_message` (
-  `message_id` varchar(32) NOT NULL COMMENT '聊天内容id',
-  `link_id` varchar(255) DEFAULT NULL COMMENT '聊天主表id',
-  `from_user_Id` varchar(30) NOT NULL COMMENT '发送者',
-  `to_user_id` varchar(30) DEFAULT NULL COMMENT '接收者',
-  `content` varchar(255) NOT NULL COMMENT '聊天内容',
-  `send_time` datetime NOT NULL COMMENT '发送时间',
-  `type` int(11) NOT NULL COMMENT '消息类型',
-  PRIMARY KEY (`message_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  `message_id` varchar(100) NOT NULL DEFAULT '',
+  `link_id` varchar(100) DEFAULT NULL,
+  `user_id` varchar(100) DEFAULT NULL,
+  `content` varchar(100) DEFAULT NULL,
+  `send_time` datetime DEFAULT NULL,
+  `type` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,35 +98,8 @@ CREATE TABLE `chat_message` (
 
 LOCK TABLES `chat_message` WRITE;
 /*!40000 ALTER TABLE `chat_message` DISABLE KEYS */;
-INSERT INTO `chat_message` VALUES ('0eecca356a5b40059d260a1d99c8ccb3','3ed9aafaeaad46d1a89f8735a4563486','2','1','hello','2023-12-12 10:10:23',0),('114894428cde4e6db762aedd5750c4fb','3ed9aafaeaad46d1a89f8735a4563486','1','2','313131','2023-12-05 21:59:04',0),('14a0169524c5451eaebc430a77b67df4','3ed9aafaeaad46d1a89f8735a4563486','1','2','2424242','2023-12-05 22:36:21',0),('1b31bff2d0af429a87d2307b307bf59c','3ed9aafaeaad46d1a89f8735a4563486','1','2','woaini','2023-12-12 10:13:32',0),('1e72cae6c7de4fb79713306a5c25fb2a','3ed9aafaeaad46d1a89f8735a4563486','2','1','2222','2023-12-05 22:36:19',0),('1f4deb1c158342d083451fbdf120be8e','3ed9aafaeaad46d1a89f8735a4563486','2','1','1313','2023-12-12 10:07:45',0),('1fb81f4afe4040608d963081f8bee9a1','3ed9aafaeaad46d1a89f8735a4563486','1','2','13131','2023-12-05 22:00:44',0),('34234e2be2004e7a8ac0f8c4a7757a8d','3ed9aafaeaad46d1a89f8735a4563486','1','2','6666','2023-12-12 10:13:54',0),('3ead4613138e333341313563486','3ed9aafaeaad46d1a89f8735a4563486','2','1','bbb1','1970-01-21 00:43:06',0),('3f0462c79ed7468b84b1e0f40be23050','3ed9aafaeaad46d1a89f8735a4563486','1','2','213131','2023-12-05 22:35:13',0),('402eb0e57cc64b8bb64cb97c8e2b087b','3ed9aafaeaad46d1a89f8735a4563486','2','1','2424','2023-12-05 22:50:45',0),('40c54640d7dc4c4993aaa189cf7a2423','3ed9aafaeaad46d1a89f8735a4563486','2','1','广告词','2023-12-05 22:51:21',0),('41893ac4a59d43879437aaf71fa02e2c','3ed9aafaeaad46d1a89f8735a4563486','2','1','111111111111111111','2023-12-05 22:35:12',0),('427829126c2d4642871b5cfb7f136d32','3ed9aafaeaad46d1a89f8735a4563486','1','2','13131','2023-12-05 21:41:56',0),('4b93e828ef21414cade4dec22863f9c5','3ed9aafaeaad46d1a89f8735a4563486','1','2','aaaaaaaaaaaa','2023-12-05 22:35:21',0),('4cba5177e931407687e621fae3b28905','3ed9aafaeaad46d1a89f8735a4563486','1','2','13131','2023-12-05 21:44:45',0),('5f03f0c47cbd49e7adfc7910eb90223c','3ed9aafaeaad46d1a89f8735a4563486','2','1','wo yu chengfo ','2023-12-12 10:08:04',0),('81d98397d7a547f6a6c4ead5b572942f','3ed9aafaeaad46d1a89f8735a4563486','1','2','1321','2023-12-05 21:42:13',0),('847ac969c55f4a80ad66a61d6472fdf2','3ed9aafaeaad46d1a89f8735a4563486','1','2','23131','2023-12-05 22:33:34',0),('847f4311dd784ad18f60e182ab8f1001','3ed9aafaeaad46d1a89f8735a4563486','1','2','3131','2023-12-05 22:51:05',0),('899439f5fb334096a6c4f4c90dbfab3b','3ed9aafaeaad46d1a89f8735a4563486','1','2','`2`2','2023-12-05 22:39:08',0),('90786c3f016144609077e89a2c41dbad','3ed9aafaeaad46d1a89f8735a4563486','2','1','13131','2023-12-05 22:35:19',0),('91f59a4ca48044a48b68e26bacf49d49','3ed9aafaeaad46d1a89f8735a4563486','2','1','313131','2023-12-05 22:51:06',0),('9d13a4e36bde4640b8b7524fa03043b4','3ed9aafaeaad46d1a89f8735a4563486','2','1','131313','2023-12-05 22:47:27',0),('9e39c27d971740d78f04b0ef7672049c','3ed9aafaeaad46d1a89f8735a4563486','1','2','w ao\n','2023-12-05 22:51:21',0),('b28c0ebcec0c4f9ea6c49e06322398cd','3ed9aafaeaad46d1a89f8735a4563486','1','2','3333','2023-12-12 10:25:31',0),('c86377ea2fad458f90d51602e21dd4f8','3ed9aafaeaad46d1a89f8735a4563486','1','2','131313','2023-12-12 10:25:14',0),('ca8e910709a1407a90ec55e3b78ee4b0','3ed9aafaeaad46d1a89f8735a4563486','2','1','1111','2023-12-12 10:10:15',0),('da393642fd1845c5bc3cbe537d23d86e','3ed9aafaeaad46d1a89f8735a4563486','1','2','13131','2023-12-05 22:33:27',0),('ed6a67ae94d2412f801a40f786ccb89c','3ed9aafaeaad46d1a89f8735a4563486','2','1','rfcc','2023-12-08 23:21:10',0);
+INSERT INTO `chat_message` VALUES ('013485cc9efb4c928a6054105b2e14b8','dda27352a3f74e2aaec7d4f2d17cb062','1','woaini','2023-12-19 17:36:38',0),('04cc31a7898748848cc36e4b993314ee','adac782c81e140fa9f984ae75acaca73','3','999','2023-12-19 11:12:07',0),('05a89cbe0b6249f6b1a1fbf9b13d7cee','adac782c81e140fa9f984ae75acaca73','1','33322222222232','2023-12-19 10:55:01',0),('0e15b2ab83b64a489d9f6b73950c983b','dda27352a3f74e2aaec7d4f2d17cb062','1','23131','2023-12-19 18:24:15',0),('0e55bd7371804364a513199c7d3463b1','adac782c81e140fa9f984ae75acaca73','3','777777\n','2023-12-19 11:02:04',0),('1117b958fc534aa3abc98b4a9e8c3ed2','adac782c81e140fa9f984ae75acaca73','1','33332','2023-12-19 10:35:45',0),('1446a0c5c1c245839fa481de974da3ee','adac782c81e140fa9f984ae75acaca73','3','wo ye ai ni\n','2023-12-19 18:23:11',0),('1931fd617597499185a3d2640effacac','adac782c81e140fa9f984ae75acaca73','1','55555','2023-12-19 11:03:45',0),('1e4b4de1c3ae4199bd2f24cbab9a2d1a','adac782c81e140fa9f984ae75acaca73','1','3223223','2023-12-19 10:59:53',0),('1e8f67156b1c4108b33fdf4abbfe10c2','adac782c81e140fa9f984ae75acaca73','1','我爱你','2023-12-19 18:22:53',0),('1ea6936d583c4c1a971b4866b52b4968','adac782c81e140fa9f984ae75acaca73','3','777777777','2023-12-19 11:12:25',0),('30fd9efbf7b64a849df286fdcbccef85','adac782c81e140fa9f984ae75acaca73','1','999\n','2023-12-19 11:12:11',0),('31bc308b69184dc89370026a6b906994','dda27352a3f74e2aaec7d4f2d17cb062','1','999','2023-12-19 18:09:17',0),('3376aa95ba7a4a8face38a27ce2adac1','adac782c81e140fa9f984ae75acaca73','3','3222424','2023-12-19 10:59:44',0),('344b6bf50cae4beb893256a94a66a664','dda27352a3f74e2aaec7d4f2d17cb062','3','58888','2023-12-19 17:36:18',0),('358eaa5c80fb4ada9d76b656b70674de','adac782c81e140fa9f984ae75acaca73','3','555555555','2023-12-19 11:10:37',0),('36d1ff4624cf4ba9943ed7a6fb3cad14','adac782c81e140fa9f984ae75acaca73','3','222','2023-12-19 10:53:32',0),('377ce381026f41bfaca820dcc9889eb9','adac782c81e140fa9f984ae75acaca73','3','54188','2023-12-19 11:12:32',0),('37906fd655a34b25b4865c9477f0c794','adac782c81e140fa9f984ae75acaca73','3','8888888888','2023-12-19 17:32:03',0),('39d55de7f6e544dea9e013e45f2808a8','adac782c81e140fa9f984ae75acaca73','3','333','2023-12-19 10:38:25',0),('3aa611bcc70d4a1da82f514e1db50f0b','adac782c81e140fa9f984ae75acaca73','3','18845','2023-12-19 17:35:55',0),('5075e1a8d9ee43f392e5473875ab532f','adac782c81e140fa9f984ae75acaca73','1','54188','2023-12-19 10:57:13',0),('51d3466b360d4c99bcd4154d2fca38fd','dda27352a3f74e2aaec7d4f2d17cb062','1','54188','2023-12-19 18:08:57',0),('550b215b3e2c485c92e09a09f7c5b599','dda27352a3f74e2aaec7d4f2d17cb062','2','888888','2023-12-19 17:38:14',0),('5c345d66d84f4999928f2dbaa0971412','adac782c81e140fa9f984ae75acaca73','1','9999999999','2023-12-19 11:01:23',0),('5d72c85efdea46619f120f1cd642b310','adac782c81e140fa9f984ae75acaca73','3','33333333','2023-12-19 11:04:25',0),('5ebb41f82b0b48a7bc6b9351d4bae76b','dda27352a3f74e2aaec7d4f2d17cb062','3','7777777','2023-12-19 17:38:08',0),('63009b6448c64b51a195f41db72e1866','dda27352a3f74e2aaec7d4f2d17cb062','1','6666\n','2023-12-19 18:23:59',0),('64f9a9ce36be40f99d3a68cd4a826b78','adac782c81e140fa9f984ae75acaca73','3','2222','2023-12-19 10:57:59',0),('6bd7d13ac92c4f3198fd5a80b2768a2c','adac782c81e140fa9f984ae75acaca73','3','999\n','2023-12-19 17:31:00',0),('6bffa8202a5542b1a39556f2c97b8a2d','adac782c81e140fa9f984ae75acaca73','1','33332','2023-12-19 10:53:35',0),('76fa3647f4eb49db9bedaeeb77267eef','dda27352a3f74e2aaec7d4f2d17cb062','3','2313131','2023-12-19 18:24:17',0),('7893fd77567343f39edef00277b86d8a','adac782c81e140fa9f984ae75acaca73','3','jia d  ba \n','2023-12-19 18:23:43',0),('7bd876c26e184301bd3261605555a26c','dda27352a3f74e2aaec7d4f2d17cb062','1','7777','2023-12-19 17:36:26',0),('817574cd6b834c5bb2c4622c1af37c5c','dda27352a3f74e2aaec7d4f2d17cb062','2','7777','2023-12-19 17:37:19',0),('9016046778134819bff668a66a386a69','adac782c81e140fa9f984ae75acaca73','1','54188','2023-12-19 10:58:03',0),('93b2b9191f574612b9180ec1cb31b8cb','adac782c81e140fa9f984ae75acaca73','3','zhen de jiade ','2023-12-19 18:23:37',0),('95b36f8d13f6421c94717b14e4a0b8d2','adac782c81e140fa9f984ae75acaca73','1','54188','2023-12-19 17:35:44',0),('962268f171224afd9c4fdc07414a1957','adac782c81e140fa9f984ae75acaca73','3','3333333333333333','2023-12-19 11:10:47',0),('9822593a717e4a12a900ad765bcf6534','adac782c81e140fa9f984ae75acaca73','3','88875','2023-12-19 10:57:19',0),('9fd1a135c70947acbc1e02a4aa485c85','dda27352a3f74e2aaec7d4f2d17cb062','1','9999','2023-12-19 17:36:24',0),('a0fd0f4c788f49febfb499d5a8e879a1','adac782c81e140fa9f984ae75acaca73','1','3333','2023-12-19 11:10:24',0),('a231401660884fefb4e4757b9e03923c','adac782c81e140fa9f984ae75acaca73','3','6666666','2023-12-19 17:31:59',0),('a3fe87b1f69c48a28c3c174dee4ca82e','adac782c81e140fa9f984ae75acaca73','1','33332','2023-12-19 10:54:52',0),('b5bbb0d60c4a44778811db2598b78491','dda27352a3f74e2aaec7d4f2d17cb062','2','trrrr','2023-12-19 17:37:37',0),('ba737b8f5a9b434098283335d791e9e0','dda27352a3f74e2aaec7d4f2d17cb062','3','5115\n','2023-12-19 17:36:48',0),('bd36d1b4bfa6499582eb407c79fbf324','dda27352a3f74e2aaec7d4f2d17cb062','2','woaini','2023-12-19 17:37:28',0),('c06031f714cb426ca9ca79e30e0921bf','dda27352a3f74e2aaec7d4f2d17cb062','3','999','2023-12-19 17:37:34',0),('c20df6441fda4555b2988e301584d0e1','adac782c81e140fa9f984ae75acaca73','1','我真的好爱你呀\n','2023-12-19 18:23:02',0),('c6959c431c9c4705b7a195a2998bb3f5','adac782c81e140fa9f984ae75acaca73','1','```','2023-12-19 11:03:13',0),('c81fee15d07b49448b787a4a1c7b7f10','adac782c81e140fa9f984ae75acaca73','1','33332','2023-12-19 10:35:45',0),('cbe2179bb430452ab4055b884c66c4e0','adac782c81e140fa9f984ae75acaca73','3','333','2023-12-19 10:58:01',0),('d9516ed1bb4b4dceb632b9cec5fb3b2b','dda27352a3f74e2aaec7d4f2d17cb062','1','....','2023-12-19 17:36:30',0),('df9e5f5492b54e8789597dc8c04cc6a1','dda27352a3f74e2aaec7d4f2d17cb062','1','9999','2023-12-19 18:24:06',0),('e14f9c0c3b1f4db0820993c96dac30e0','adac782c81e140fa9f984ae75acaca73','1','33322222222232','2023-12-19 10:57:06',0),('e1aa2881944b47288300d87d0ceb9e7b','adac782c81e140fa9f984ae75acaca73','1','88888\n','2023-12-19 11:12:20',0),('e9a7513090734e719e0fcee3f99625a9','adac782c81e140fa9f984ae75acaca73','1','1111','2023-12-19 11:01:16',0),('e9c367e924734417838482b59f77c948','adac782c81e140fa9f984ae75acaca73','1','18845','2023-12-19 11:12:37',0),('eb76ffe085d84daa80290a7164644c29','adac782c81e140fa9f984ae75acaca73','3','w hao ai ni \n','2023-12-19 18:23:22',0),('ee6f80efae704e4ea1995900c79547a4','adac782c81e140fa9f984ae75acaca73','1','444444','2023-12-19 11:10:32',0),('f2f0d8e1ea0047988534d67460566734','adac782c81e140fa9f984ae75acaca73','1','33322222222232','2023-12-19 10:55:46',0),('f392df8cc0bd4e2783a930d73961ea01','dda27352a3f74e2aaec7d4f2d17cb062','3','ba ','2023-12-19 18:24:10',0),('f4263e0ea3e04fbda51e4f06187f69f7','adac782c81e140fa9f984ae75acaca73','3','3333','2023-12-19 10:36:38',0),('f8416da943254d12a9abf834e1fe10ce','adac782c81e140fa9f984ae75acaca73','1','54188','2023-12-19 10:58:03',0),('f8914de88c46449ca231131ef6f475f5','adac782c81e140fa9f984ae75acaca73','1','55555555','2023-12-19 11:10:51',0),('feb3a87b302943908c15356caefb2c71','dda27352a3f74e2aaec7d4f2d17cb062','3','9999','2023-12-19 17:32:18',0),('feee17c512014d8bbe2e99385659d73b','adac782c81e140fa9f984ae75acaca73','1','33332','2023-12-19 10:35:45',0);
 /*!40000 ALTER TABLE `chat_message` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `chat_user_link`
---
-
-DROP TABLE IF EXISTS `chat_user_link`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `chat_user_link` (
-  `id` varchar(100) NOT NULL,
-  `link_id` varchar(255) NOT NULL COMMENT '聊天主表id',
-  `from_user_id` varchar(30) NOT NULL COMMENT '发送者',
-  `to_user_id` varchar(30) DEFAULT NULL COMMENT '接收者',
-  `create_time` datetime DEFAULT NULL COMMENT '创建关联时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `chat_user_link`
---
-
-LOCK TABLES `chat_user_link` WRITE;
-/*!40000 ALTER TABLE `chat_user_link` DISABLE KEYS */;
-INSERT INTO `chat_user_link` VALUES ('72e420d0fcc94803a2772c3161d09cf1','3ed9aafaeaad46d1a89f8735a4563486','1','2','2023-12-03 21:33:44'),('be6553b1bc694fc38f907827db8bfe53','3ed9aafaeaad46d1a89f8735a4563486','2','1','2023-12-03 21:33:44');
-/*!40000 ALTER TABLE `chat_user_link` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -122,7 +121,7 @@ CREATE TABLE `tbl_activity` (
   `collect` int(11) DEFAULT NULL,
   `type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`activity_id`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +130,7 @@ CREATE TABLE `tbl_activity` (
 
 LOCK TABLES `tbl_activity` WRITE;
 /*!40000 ALTER TABLE `tbl_activity` DISABLE KEYS */;
-INSERT INTO `tbl_activity` VALUES ('5a5b35916fea40ee95d39e574071cecf','213131','八嘎','2023-12-15 15:49:38','1','河北师范大学',0,0,0,0),('9984512b3a6541f4822a352234a9618d','213131','八嘎','2023-12-15 15:49:43','3','河北师范大学',0,0,0,0),('d9dc742f3fef425086ea439356819ce8','666','666<br><br>','2023-12-15 15:49:53','3','河北师范大学',0,0,0,0);
+INSERT INTO `tbl_activity` VALUES ('2c91f4ecce1e4c08a36cf83a80e47b39','2133331','3131','2023-12-16 14:02:50','3','河北师范大学',0,2,0,0);
 /*!40000 ALTER TABLE `tbl_activity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +181,6 @@ CREATE TABLE `tbl_activity_image` (
 
 LOCK TABLES `tbl_activity_image` WRITE;
 /*!40000 ALTER TABLE `tbl_activity_image` DISABLE KEYS */;
-INSERT INTO `tbl_activity_image` VALUES ('2b2cc9232b184c6db566044e68db93af','92cef87ba09947849cd4906659569031','1','http://192.168.144.132:9000/campus-bucket/activity/34c69f9085f644f69e184ec79c8b69ea.mp4#t=0.01',1),('346c7029577842dd857b30b65bc4a591','3ddea1c5480f4365bb793cb7e5ddac0c','1','http://192.168.144.132:9000/campus-bucket/activity/68f33964370644afa8c1465a8a94e494.jpeg',0),('5a00ae56e83f420086462bfa7b8e9313','4728e065f8be4114b122115e86cb4f31','1','http://192.168.144.132:9000/campus-bucket/activity/ad47e186a8b34c00b60eff74513b5c56.mp4#t=0.01',1),('6f95e702069f409a9a0dbe8753634876','ef7b213768e6481f860f6487eed0fa69','1','http://192.168.144.132:9000/campus-bucket/activity/ad47e186a8b34c00b60eff74513b5c56.mp4#t=0.01',1),('9f4fde26aa5a4817b88a0d440ca137cc','92cef87ba09947849cd4906659569031','1','http://192.168.144.132:9000/campus-bucket/activity/1d360598752544f59e6636ba650cbfa9.jpeg',0),('9fa0e98801db4fb4a1cc6d83fa50fb0b','3ddea1c5480f4365bb793cb7e5ddac0c','1','http://192.168.144.132:9000/campus-bucket/activity/81bfca22d831402d9edc07a3bd74c529.mp4#t=0.01',1),('d843a879e58f4e398d6f277aed6dfbe5','4728e065f8be4114b122115e86cb4f31','1','http://192.168.144.132:9000/campus-bucket/activity/38859a533d7f4cebb6c9a333bdeeb85d.jpeg',0),('f9fbaca6f21e410dbdf21fa97d1315f9','ef7b213768e6481f860f6487eed0fa69','1','http://192.168.144.132:9000/campus-bucket/activity/38859a533d7f4cebb6c9a333bdeeb85d.jpeg',0);
 /*!40000 ALTER TABLE `tbl_activity_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +235,7 @@ CREATE TABLE `tbl_comment` (
 
 LOCK TABLES `tbl_comment` WRITE;
 /*!40000 ALTER TABLE `tbl_comment` DISABLE KEYS */;
-INSERT INTO `tbl_comment` VALUES ('2305cb58e2ba49ef89aa16b5f4d9c924','c6b1d040aed14ef6a914897b8e0e9212','3','真tm帅',1,'2023-12-12 18:20:18',NULL,NULL),('64948d79743b432ebc7786c8223a8f58','c6b1d040aed14ef6a914897b8e0e9212','2','小小年级班门弄斧',1,'2023-12-14 16:18:08','eeb9e9eaabab419f88dc834e5cf3db08','1'),('64f6a3a761c444d28026b479e89c3115','c6b1d040aed14ef6a914897b8e0e9212','1','888',0,'2023-12-14 08:33:28','2305cb58e2ba49ef89aa16b5f4d9c924','3'),('ceb598ef668b4e8195a6bc0be680822c','c6b1d040aed14ef6a914897b8e0e9212','2','999',0,'2023-12-14 08:31:32','2305cb58e2ba49ef89aa16b5f4d9c924','3'),('de990fa45cc54177b66194bafdf8cbd5','c6b1d040aed14ef6a914897b8e0e9212','3','你能拿我咋滴',0,'2023-12-14 16:18:46','64948d79743b432ebc7786c8223a8f58','2'),('eeb9e9eaabab419f88dc834e5cf3db08','c6b1d040aed14ef6a914897b8e0e9212','1','真tm帅',2,'2023-12-12 18:14:42',NULL,NULL),('f5183badafdf4d6eb1c273027ba6d47b','c6b1d040aed14ef6a914897b8e0e9212','3','我爱你',1,'2023-12-14 08:43:54','ceb598ef668b4e8195a6bc0be680822c','2'),('f5bac6aebfb8467390e45f2d10339f6f','9999d040aed14ef6a914897b8e0e9212','2','我乃刘德助',0,'2023-12-14 16:19:58',NULL,NULL);
+INSERT INTO `tbl_comment` VALUES ('05cd781b4d9b407081b17230f4060b4d','2c91f4ecce1e4c08a36cf83a80e47b39','3','我乃刘德助',0,'2023-12-18 10:28:34',NULL,NULL),('229dd370fb3048a0ba381e497daf9b6b','2c91f4ecce1e4c08a36cf83a80e47b39','2','德助',0,'2023-12-18 10:28:38',NULL,NULL),('87ecebf8513a4b76bc9ca89866f83794','2c91f4ecce1e4c08a36cf83a80e47b39','1','你能拿我咋滴',0,'2023-12-18 10:29:12','05cd781b4d9b407081b17230f4060b4d','3'),('a234113471374ef1bc63642b38695c39','2c91f4ecce1e4c08a36cf83a80e47b39','3','你能拿我咋滴',0,'2023-12-18 10:29:16','05cd781b4d9b407081b17230f4060b4d','2');
 /*!40000 ALTER TABLE `tbl_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,33 +289,6 @@ LOCK TABLES `tbl_comment_love` WRITE;
 /*!40000 ALTER TABLE `tbl_comment_love` DISABLE KEYS */;
 INSERT INTO `tbl_comment_love` VALUES ('0e4bf99c95614a11af7f3c43fa769262','3','eeb9e9eaabab419f88dc834e5cf3db08'),('3edee291757d4f939c5827874b12c93d','1','64948d79743b432ebc7786c8223a8f58'),('69cdd047c9ac4e1780695353d73d1630','1','2305cb58e2ba49ef89aa16b5f4d9c924'),('e2fe5be79a55418bbedd0ea7057451ed','1','f5183badafdf4d6eb1c273027ba6d47b'),('f5061b1b8580454b9ecccd568868fa3d','2','eeb9e9eaabab419f88dc834e5cf3db08');
 /*!40000 ALTER TABLE `tbl_comment_love` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tbl_msg`
---
-
-DROP TABLE IF EXISTS `tbl_msg`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tbl_msg` (
-  `msg_id` varchar(32) NOT NULL,
-  `msg_content` varchar(100) DEFAULT NULL,
-  `user_id` varchar(32) DEFAULT NULL,
-  `userName` varchar(100) DEFAULT NULL,
-  `avatar` varchar(100) DEFAULT NULL,
-  `isSend` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`msg_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tbl_msg`
---
-
-LOCK TABLES `tbl_msg` WRITE;
-/*!40000 ALTER TABLE `tbl_msg` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tbl_msg` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -419,4 +390,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-15 17:19:48
+-- Dump completed on 2023-12-19 18:25:57

@@ -1,8 +1,8 @@
 package com.campuswindow.config;
 
 
-import com.campuswindow.chat.group.service.ChatGroupService;
-import com.campuswindow.chat.group.websocket.WebSocketGroup;
+import com.campuswindow.chat.service.ChatService;
+import com.campuswindow.chat.websocket.WebSocketServer;
 import com.campuswindow.user.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,13 +12,13 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 @Configuration
 public class WebSocketConfig {
     @Autowired
-    public void socketGroupService(ChatGroupService chatGroupService){
-        WebSocketGroup.chatGroupService= chatGroupService;
+    public void socketGroupService(ChatService chatService){
+        WebSocketServer.chatService = chatService;
     }
 
     @Autowired
     public void socketUserService(UserService userService){
-        WebSocketGroup.userService= userService;
+        WebSocketServer.userService= userService;
     }
     @Bean
     public ServerEndpointExporter exporter(){
