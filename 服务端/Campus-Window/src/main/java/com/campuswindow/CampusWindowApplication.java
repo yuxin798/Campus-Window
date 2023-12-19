@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import(MinioProperties.class)
-public class CampusWindowApplication {
+public class  CampusWindowApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CampusWindowApplication.class, args);

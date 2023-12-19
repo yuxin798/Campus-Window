@@ -1,7 +1,6 @@
-package com.campuswindow.chat.repository;
+package com.campuswindow.chat.p2p.repository;
 
-import com.campuswindow.chat.dto.ChatListDto;
-import com.campuswindow.chat.entity.ChatList;
+import com.campuswindow.chat.p2p.dto.ChatListDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,10 +10,10 @@ import org.springframework.data.jpa.repository.Query;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface ChatListRepository extends JpaRepository<ChatList, String> {
-    List<ChatList> findChatListByFromUserId(String fromUserId);
+public interface ChatListRepository extends JpaRepository<com.campuswindow.chat.p2p.entity.ChatList, String> {
+    List<com.campuswindow.chat.p2p.entity.ChatList> findChatListByFromUserId(String fromUserId);
 
-    Page<ChatList> findAllByFromUserId(Pageable pageable, String fromUserId);
+    Page<com.campuswindow.chat.p2p.entity.ChatList> findAllByFromUserId(Pageable pageable, String fromUserId);
 
     @Query(value = "select from_window + to_window from chat_list where link_id =?1 and from_user_id =?2 and to_user_id =?3", nativeQuery = true)
     Integer selectIsSaveWindows(String linkId, String fromUserId, String toUserId);
@@ -43,7 +42,7 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
     @Modifying
     void updateLastMsgAndTime(String linkId, String content, Timestamp sendTime);
 
-    @Query(value = "select new com.campuswindow.chat.dto.ChatListDto(c.listId, c.linkId, c.fromUserId, c.toUserId,  u.userName, u.avatar, c.fromWindow, c.toWindow, c.lastMsg, c.lastMsgTime, c.unread, c.status) from ChatList as c join User as u on c.toUserId = u.userId where c.fromUserId = ?1 and (c.status = 1 or c.unread != 0)")
+    @Query(value = "select new com.campuswindow.chat.p2p.dto.ChatListDto(c.listId, c.linkId, c.fromUserId, c.toUserId,  u.userName, u.avatar, c.fromWindow, c.toWindow, c.lastMsg, c.lastMsgTime, c.unread, c.status) from ChatList as c join User as u on c.toUserId = u.userId where c.fromUserId = ?1 and (c.status = 1 or c.unread != 0)")
     List<ChatListDto> findAllByFromUserId(String fromUserId);
 
     @Query(value = "update chat_list set status = ?3 where from_user_id = ?1 and to_user_id = ?2",nativeQuery = true)

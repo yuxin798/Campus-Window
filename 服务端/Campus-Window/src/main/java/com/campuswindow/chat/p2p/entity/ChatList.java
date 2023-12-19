@@ -1,15 +1,24 @@
-package com.campuswindow.chat.dto;
+package com.campuswindow.chat.p2p.entity;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.sql.Timestamp;
 
+@Entity
+@Table(name = "chat_list")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatListDto {
+public class ChatList {
+
+    @Id
+    //列表id（自增）
     private String listId;
     //关系表主键
     private String linkId;
@@ -17,16 +26,16 @@ public class ChatListDto {
     private String fromUserId;
     //接收者
     private String toUserId;
-    private String toUserName;
-    private String toUserAvatar;
     //发送者是否在窗口
     private int fromWindow;
     //接收者是否在窗口
     private int toWindow;
     private String lastMsg;
-    private Date lastMsgTime;
+    private Timestamp lastMsgTime;
     //未读数 fromUser的未读数
     private int unread;
-    //是否被删除
+    //是否被删除 false代表删除  true代表未删除
     private int status;
+
 }
+

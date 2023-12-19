@@ -1,4 +1,4 @@
-package com.campuswindow.chat.dto;
+package com.campuswindow.chat.p2p.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

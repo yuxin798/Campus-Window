@@ -1,4 +1,4 @@
-package com.campuswindow.chat.entity;
+package com.campuswindow.chat.p2p.entity;
 
 import lombok.Data;
 

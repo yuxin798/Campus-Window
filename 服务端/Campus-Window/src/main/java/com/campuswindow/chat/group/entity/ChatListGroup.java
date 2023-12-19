@@ -1,5 +1,4 @@
-package com.campuswindow.chat.entity;
-
+package com.campuswindow.chat.group.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,31 +10,23 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "chat_list")
+@Table(name = "chat_list_group")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatList {
-
+public class ChatListGroup {
     @Id
     //列表id（自增）
     private String listId;
     //关系表主键
     private String linkId;
-    //发送者
-    private String fromUserId;
-    //接收者
-    private String toUserId;
-    //发送者是否在窗口
-    private int fromWindow;
-    //接收者是否在窗口
-    private int toWindow;
+    private String userId;
+    //用户是否在窗口
+    private int window;
     private String lastMsg;
     private Timestamp lastMsgTime;
     //未读数 fromUser的未读数
     private int unread;
     //是否被删除 false代表删除  true代表未删除
     private int status;
-
 }
-

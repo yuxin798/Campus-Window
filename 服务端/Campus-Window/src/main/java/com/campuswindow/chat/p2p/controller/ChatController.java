@@ -1,8 +1,9 @@
-package com.campuswindow.chat.controller;
+package com.campuswindow.chat.p2p.controller;
 
-import com.campuswindow.chat.dto.ChatListDto;
-import com.campuswindow.chat.entity.ChatMessage;
-import com.campuswindow.chat.service.ChatForService;
+
+import com.campuswindow.chat.p2p.dto.ChatListDto;
+import com.campuswindow.chat.p2p.entity.ChatMessage;
+import com.campuswindow.chat.p2p.service.ChatForService;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +21,7 @@ public class ChatController {
 
     @PostMapping("/saveChatLink")
     @Operation(summary = "发送者和接收者新建链接")
-    public Result<String> save(String fromUserId, String toUserId) {
+    public Result<?> save(String fromUserId, String toUserId) {
         chatForService.saveForPrivate(fromUserId, toUserId);
         return ResultVOUtil.success();
     }
@@ -36,7 +37,7 @@ public class ChatController {
     @Operation(summary = "获取聊天记录")
     public Result<List<ChatMessage>> recentChatRecords(String fromUserId, String toUserId){
         List<ChatMessage> chatMessages = chatForService.findAll(fromUserId, toUserId);
-        return  ResultVOUtil.success(chatMessages);
+        return ResultVOUtil.success(chatMessages);
     }
 
     @GetMapping("/updateEnterWindows")

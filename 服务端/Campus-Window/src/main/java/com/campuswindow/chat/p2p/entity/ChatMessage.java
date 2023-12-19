@@ -1,4 +1,4 @@
-package com.campuswindow.chat.entity;
+package com.campuswindow.chat.p2p.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

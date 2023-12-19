@@ -1,6 +1,6 @@
-package com.campuswindow.chat.repository;
+package com.campuswindow.chat.p2p.repository;
 
-import com.campuswindow.chat.entity.ChatMessage;
+import com.campuswindow.chat.p2p.entity.ChatMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

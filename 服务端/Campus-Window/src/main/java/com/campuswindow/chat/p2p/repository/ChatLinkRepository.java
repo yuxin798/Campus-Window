@@ -1,6 +1,7 @@
-package com.campuswindow.chat.repository;
+package com.campuswindow.chat.p2p.repository;
 
-import com.campuswindow.chat.entity.ChatLink;
+
+import com.campuswindow.chat.p2p.entity.ChatLink;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

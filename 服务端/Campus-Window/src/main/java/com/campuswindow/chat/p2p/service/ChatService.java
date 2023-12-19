@@ -1,7 +1,7 @@
-package com.campuswindow.chat.service;
+package com.campuswindow.chat.p2p.service;
 
-import com.campuswindow.chat.entity.Msg;
-import com.campuswindow.chat.repository.ChatRepository;
+import com.campuswindow.chat.p2p.entity.Msg;
+import com.campuswindow.chat.p2p.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
