@@ -58,7 +58,7 @@ public class ActivityService {
         return activityRepository.findAllLikeActivityTitle(activityTitle);
     }
 
-    public ActivityVo findOneByActivityId(String userId, String activityId, String toUserId) {
+    public ActivityVo findOneByActivityId(String userId, String activityId) {
         ActivityVo activityVo = activityRepository.findOneByActivityId(activityId);
         List<ActivityImage> images = activityImageService.findActivityImageByActivityId(activityId);
         activityVo.setActivityImages(images);
@@ -66,6 +66,7 @@ public class ActivityService {
         activityVo.setLoved(loved);
         boolean collected = activityCollectService.findActivityCollectByUserIdAndActivityId(userId, activityId);
         activityVo.setCollected(collected);
+        String toUserId = activityRepository.findUserIdByActivityId(activityId);
         boolean followed = followService.findFollowByUserIdAndToUserId(userId, toUserId);
         activityVo.setFollowed(followed);
         return activityVo;

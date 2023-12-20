@@ -121,10 +121,10 @@ public class ActivityController {
         return ResultVOUtil.success(activityService.findAllLikeActivityTitle(activityTitle));
     }
 
-    @GetMapping("/findActivityDetails/{userId}/{activityId}/{toUserId}")
+    @GetMapping("/findActivityDetails/{userId}/{activityId}")
     @Operation(summary = "根据帖子id查询帖子详情")
-    public Result<ActivityVo> findActivityByActivityId(@PathVariable("userId") String userId, @PathVariable("activityId") String activityId, @PathVariable("toUserId") String toUserId){
-        return ResultVOUtil.success(activityService.findOneByActivityId(userId, activityId, toUserId));
+    public Result<ActivityVo> findActivityByActivityId(@PathVariable("userId") String userId, @PathVariable("activityId") String activityId){
+        return ResultVOUtil.success(activityService.findOneByActivityId(userId, activityId));
     }
 
     @Autowired
