@@ -40,4 +40,12 @@ public class FollowService {
         }
         return false;
     }
+
+    public boolean findFollowByUserIdAndToUserId(String userId, String toUserId) {
+        int count = followRepository.findFollowByUserIdAndToUserId(userId, toUserId);
+        if (count == 1){
+            return true;
+        }
+        return false;
+    }
 }

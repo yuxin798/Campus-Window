@@ -10,6 +10,7 @@ import com.campuswindow.activity.activityimage.entity.ActivityImage;
 import com.campuswindow.activity.activityimage.service.ActivityImageService;
 import com.campuswindow.activity.activitylove.entity.ActivityLove;
 import com.campuswindow.activity.activitylove.service.ActivityLoveService;
+import com.campuswindow.user.follow.service.FollowService;
 import com.campuswindow.user.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class ActivityService {
     private ActivityLoveService activityLoveService;
     private ActivityCollectService activityCollectService;
     private UserService userService;
+    private FollowService followService;
 
     public Activity sendActivity(ActivityDto activityDto) throws ParseException {
         String activityId = UUID.randomUUID().toString().replaceAll("-", "");
@@ -56,14 +58,16 @@ public class ActivityService {
         return activityRepository.findAllLikeActivityTitle(activityTitle);
     }
 
-    public ActivityVo findOneByActivityId(String userId, String activityId) {
+    public ActivityVo findOneByActivityId(String userId, String activityId, String toUserId) {
         ActivityVo activityVo = activityRepository.findOneByActivityId(activityId);
         List<ActivityImage> images = activityImageService.findActivityImageByActivityId(activityId);
         activityVo.setActivityImages(images);
-        boolean isLoved = activityLoveService.findActivityLoveByUserIdAndActivityId(userId, activityId);
-        activityVo.setLoved(isLoved);
-        boolean isCollected = activityCollectService.findActivityCollectByUserIdAndActivityId(userId, activityId);
-        activityVo.setCollected(isCollected);
+        boolean loved = activityLoveService.findActivityLoveByUserIdAndActivityId(userId, activityId);
+        activityVo.setLoved(loved);
+        boolean collected = activityCollectService.findActivityCollectByUserIdAndActivityId(userId, activityId);
+        activityVo.setCollected(collected);
+        boolean followed = followService.findFollowByUserIdAndToUserId(userId, toUserId);
+        activityVo.setFollowed(followed);
         return activityVo;
     }
 
@@ -122,11 +126,12 @@ public class ActivityService {
     }
 
     @Autowired
-    public ActivityService(ActivityRepository activityRepository, ActivityImageService activityImageService, ActivityLoveService activityLoveService, ActivityCollectService activityCollectService, UserService userService) {
+    public ActivityService(ActivityRepository activityRepository, ActivityImageService activityImageService, ActivityLoveService activityLoveService, ActivityCollectService activityCollectService, UserService userService, FollowService followService) {
         this.activityRepository = activityRepository;
         this.activityImageService = activityImageService;
         this.activityLoveService = activityLoveService;
         this.activityCollectService = activityCollectService;
         this.userService = userService;
+        this.followService = followService;
     }
 }

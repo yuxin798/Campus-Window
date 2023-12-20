@@ -65,4 +65,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "select new com.campuswindow.user.user.vo.FansVo(u.userId, u.userName, u.avatar, u.signature) from User as u join Follow as f on u.userId = f.userId where f.toUserId = ?1")
     List<FansVo> findFansByUserId(String userId);
+
+    @Query(value = "select new com.campuswindow.user.user.vo.OtherUserVo(userId, userName, school, avatar, gender, signature, loves, friends, followers, fans, background) from User where userId =?1")
+    OtherUserVo findUserByToUserId(String toUserId);
 }

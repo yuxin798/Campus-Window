@@ -6,6 +6,7 @@ import com.campuswindow.chat.vo.ChatMessageVo;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/chat")
+@Tag(name = "聊天接口")
 public class ChatController {
-    @Autowired
     private ChatService chatService;
 
     @PostMapping("/saveChatLinkGroup")
@@ -73,5 +74,10 @@ public class ChatController {
     public Result<?> updateChatListStatus(@PathVariable("linkId") String linkId, @PathVariable("userId") String userId){
         chatService.updateChatListStatus(linkId, userId, false);
         return ResultVOUtil.success();
+    }
+
+    @Autowired
+    public void setChatService(ChatService chatService) {
+        this.chatService = chatService;
     }
 }

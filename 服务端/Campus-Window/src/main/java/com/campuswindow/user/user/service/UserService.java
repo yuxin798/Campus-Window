@@ -167,6 +167,13 @@ public class UserService {
         return userRepository.findUserByUserId(userId);
     }
 
+    public OtherUserVo findUserByToUserId(String userId, String toUserId) {
+        OtherUserVo user = userRepository.findUserByToUserId(toUserId);
+        boolean followed = followService.findFollowByUserIdAndToUserId(userId, toUserId);
+        user.setFollowed(followed);
+        return user;
+    }
+
     public List<FriendsVo> findFriendsByUserId(String userId) {
         return userRepository.findFriendsByUserId(userId);
     }

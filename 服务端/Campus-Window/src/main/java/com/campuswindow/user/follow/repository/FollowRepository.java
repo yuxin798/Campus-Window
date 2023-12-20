@@ -13,4 +13,7 @@ public interface FollowRepository extends JpaRepository<Follow, String> {
 
     @Query(value = "select count(*) from Follow where (userId = ?1 and toUserId = ?2) or (userId = ?2 and toUserId = ?1)")
     int findCountByUserIdAndToUserId(String userId, String toUserId);
+
+    @Query(value = "select count(*) from Follow where userId = ?1 and toUserId = ?2")
+    int findFollowByUserIdAndToUserId(String userId, String toUserId);
 }

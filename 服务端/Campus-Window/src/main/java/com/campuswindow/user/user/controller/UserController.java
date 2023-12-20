@@ -191,10 +191,17 @@ public class UserController {
         return ResultVOUtil.success();
     }
 
-    @GetMapping("/findUserByUserId")
+    @GetMapping("/findPersonalInfo")
     @Operation(summary = "个人页面查询个人信息")
-    public Result<UserVo> findUserByUserId(String userId){
+    public Result<UserVo> findPersonalInfo(String userId){
         UserVo user = userService.findUserByUserId(userId);
+        return ResultVOUtil.success(user);
+    }
+
+    @GetMapping("/findOtherInfo")
+    @Operation(summary = "个人页面查询他人信息")
+    public Result<OtherUserVo> findOtherInfo(String userId, String toUserId){
+        OtherUserVo user = userService.findUserByToUserId(userId, toUserId);
         return ResultVOUtil.success(user);
     }
 

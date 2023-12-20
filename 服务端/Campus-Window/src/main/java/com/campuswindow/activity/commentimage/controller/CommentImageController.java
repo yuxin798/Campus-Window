@@ -1,6 +1,5 @@
 package com.campuswindow.activity.commentimage.controller;
 
-import com.campuswindow.activity.commentimage.service.CommentImageService;
 import com.campuswindow.fileupload.FileUploadService;
 import com.campuswindow.utils.MinioConstant;
 import com.campuswindow.utils.ResultVOUtil;
@@ -18,8 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "评论文件处理接口")
 public class CommentImageController {
     private FileUploadService fileUploadService;
-    private CommentImageService commentImageService;
-
     /*
      * 评论文件处理接口
      */
@@ -34,9 +31,4 @@ public class CommentImageController {
     public void setFileUploadService(FileUploadService fileUploadService) {
         this.fileUploadService = fileUploadService;
     }
-    @Autowired
-    public void setCommentImageService(CommentImageService commentImageService) {
-        this.commentImageService = commentImageService;
-    }
-
 }

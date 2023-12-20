@@ -1,11 +1,10 @@
 package com.campuswindow.activity.activity.controller;
 
-import com.campuswindow.activity.activitycollect.entity.ActivityCollect;
-import com.campuswindow.activity.activitylove.entity.ActivityLove;
 import com.campuswindow.activity.activity.dto.ActivityDto;
 import com.campuswindow.activity.activity.service.ActivityService;
 import com.campuswindow.activity.activity.vo.ActivityVo;
-import com.campuswindow.fileupload.FileUploadService;
+import com.campuswindow.activity.activitycollect.entity.ActivityCollect;
+import com.campuswindow.activity.activitylove.entity.ActivityLove;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,9 +19,7 @@ import java.util.List;
 @RequestMapping("/activity")
 @Tag(name = "活动接口")
 public class ActivityController {
-
     private ActivityService activityService;
-    private FileUploadService fileUploadService;
 
     /*
      * 查询所有娱乐帖子，根据发表时间降序排序
@@ -124,18 +121,14 @@ public class ActivityController {
         return ResultVOUtil.success(activityService.findAllLikeActivityTitle(activityTitle));
     }
 
-    @GetMapping("/findActivityByActivityId/{userId}/{activityId}")
-    @Operation(summary = "根据帖子id查询帖子")
-    public Result<ActivityVo> findActivityByActivityId(@PathVariable("userId") String userId, @PathVariable("activityId") String activityId){
-        return ResultVOUtil.success(activityService.findOneByActivityId(userId, activityId));
+    @GetMapping("/findActivityDetails/{userId}/{activityId}/{toUserId}")
+    @Operation(summary = "根据帖子id查询帖子详情")
+    public Result<ActivityVo> findActivityByActivityId(@PathVariable("userId") String userId, @PathVariable("activityId") String activityId, @PathVariable("toUserId") String toUserId){
+        return ResultVOUtil.success(activityService.findOneByActivityId(userId, activityId, toUserId));
     }
 
     @Autowired
     public void setEntertainmentService(ActivityService activityService) {
         this.activityService = activityService;
-    }
-    @Autowired
-    public void setFileUploadService(FileUploadService fileUploadService) {
-        this.fileUploadService = fileUploadService;
     }
 }
