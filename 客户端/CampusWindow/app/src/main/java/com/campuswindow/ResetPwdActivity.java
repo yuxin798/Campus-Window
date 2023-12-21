@@ -47,18 +47,17 @@ public class ResetPwdActivity extends AppCompatActivity {
                             if(result.getMsg().equals("成功")){
                                 intent = new Intent(ResetPwdActivity.this,LoginActivity.class);
                                 startActivity(intent);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(ResetPwdActivity.this,"修改成功，快去登陆吧！",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         }
                     }).start();
                 }
             }
         });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(ResetPwdActivity.this,"修改成功，快去登陆吧！",Toast.LENGTH_SHORT).show();
-            }
-        });
     }
-
 }

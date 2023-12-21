@@ -27,7 +27,26 @@ public class IssueService {
     public Result getIssueList(){
         client = new OkHttpClient();
         request = new Request.Builder()
-                .url(API.ACTIVITY + "findAllByType?type=0&userId="+ UserConstant.USER_ID)
+                .url(API.ACTIVITY + "selectActivity?userId=" + UserConstant.USER_ID)
+                .get()
+                .build();
+        call = client.newCall(request);
+        try {
+            response = call.execute();
+            Gson gson = new Gson();
+            Result result = gson.fromJson(response.body().string(), new TypeToken<Result<List<Activities>>>() {}.getType());
+            Log.i("result24689",result.toString());
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //获取发帖人的发布数据源：
+    public Result getIssueListByUserId(String userId){
+        client = new OkHttpClient();
+        request = new Request.Builder()
+                .url(API.ACTIVITY + "selectActivity?userId="+ userId)
                 .get()
                 .build();
         call = client.newCall(request);

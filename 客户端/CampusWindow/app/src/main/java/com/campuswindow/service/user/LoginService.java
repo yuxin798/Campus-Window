@@ -34,7 +34,6 @@ public class LoginService {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            //处理响应 TODO 处理响应
             String string = response.body().string();
             Log.i("string:",string);
             Result result = gson.fromJson(string, Result.class);

@@ -4,30 +4,105 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ResetPwdActivity"
+    android:background="@drawable/log_background1"
     android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="重置密码"
-        android:textSize="50dp"
+        android:textSize="35dp"
+        android:background="@color/gray"
         android:gravity="center"/>
-    <EditText
-        android:id="@+id/edt_rt_pwd"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入新密码"
-        android:textSize="25dp"/>
-    <EditText
-        android:id="@+id/edt_rt_pwd2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="再次输入新密码"
-        android:textSize="25dp"/>
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:padding="12dp">
+        <RelativeLayout
+            android:id="@+id/login_r1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/edt_rt_pwd"
+                android:layout_width="400dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:paddingStart="60dp"
+                android:paddingEnd="10dp"
+                android:maxLength="20"
+                android:textSize="25dp"
+                android:hint="请输入密码" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/edt_rt_pwd"
+                android:layout_alignTop="@+id/edt_rt_pwd"
+                android:layout_alignEnd="@+id/edt_rt_pwd"
+                android:layout_alignBottom="@+id/edt_rt_pwd"
+                android:padding="15dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="10dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/pwd2" />
+        </RelativeLayout>
+<!--        <EditText-->
+<!--            android:id="@+id/edt_rt_pwd"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="请输入新密码"-->
+<!--            android:textSize="25dp"/>-->
+<!--        <EditText-->
+<!--            android:id="@+id/edt_rt_pwd2"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="再次输入新密码"-->
+<!--            android:textSize="25dp"/>-->
+        <RelativeLayout
+            android:id="@+id/login_r2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/edt_rt_pwd2"
+                android:layout_width="400dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:paddingStart="60dp"
+                android:paddingEnd="10dp"
+                android:maxLength="20"
+                android:textSize="25dp"
+                android:hint="请再次输入密码" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/edt_rt_pwd2"
+                android:layout_alignTop="@+id/edt_rt_pwd2"
+                android:layout_alignEnd="@+id/edt_rt_pwd2"
+                android:layout_alignBottom="@+id/edt_rt_pwd2"
+                android:padding="15dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="10dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/pwd2" />
+        </RelativeLayout>
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_rt_pwd"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
+        android:layout_marginTop="25dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/shap_all_corners_blue"
         android:text="重置密码"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
         android:textSize="25dp"/>
 
 </LinearLayout>

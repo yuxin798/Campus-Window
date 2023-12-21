@@ -50,10 +50,10 @@
             android:layout_alignEnd="@+id/edt_lg_email"
             android:layout_alignBottom="@+id/edt_lg_email"
             android:padding="15dp"
-            android:paddingStart="10dp"
+            android:paddingStart="4dp"
             android:paddingEnd="10dp"
             android:scaleType="fitStart"
-            android:src="@mipmap/user" />
+            android:src="@drawable/mail1" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -137,15 +137,14 @@
             android:text="忘记密码?"
             android:textSize="20dp"
             android:textStyle="italic|bold"
-            android:background="@color/white"
-            />
+            android:background="@color/transparent" />
         <Button
             android:id="@+id/btn_lg_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="注册"
             android:textStyle="bold"
-            android:background="@color/white"
+            android:background="@color/transparent"
             android:textSize="21dp" />
     </RelativeLayout>
 

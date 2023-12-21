@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.campuswindow.AmusementItemDetailActivity;
 import com.campuswindow.R;
 import com.campuswindow.Result;
-import com.campuswindow.adapter.AmusementFragmentListAdapter;
+import com.campuswindow.adapter.AcademicFragmentListAdapter;
 import com.campuswindow.entity.Activities;
 import com.campuswindow.service.home.AmusementService;
 import com.google.gson.Gson;
@@ -30,8 +30,8 @@ import java.util.List;
 public class AmusementFragment extends Fragment {
     private RecyclerView amusementRe;
     private List<Activities> amusementList = new ArrayList<>();
-
-    private AmusementFragmentListAdapter amusementFragmentListAdapter;
+//    private AmusementFragmentListAdapter amusementFragmentListAdapter;
+    private AcademicFragmentListAdapter amusementFragmentListAdapter;
 
     private Handler handler;
 
@@ -66,10 +66,10 @@ public class AmusementFragment extends Fragment {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                amusementFragmentListAdapter = new AmusementFragmentListAdapter(amusementList,getContext());
+                amusementFragmentListAdapter = new AcademicFragmentListAdapter(amusementList,getContext());
                 amusementRe.setAdapter(amusementFragmentListAdapter);
                 amusementRe.setLayoutManager(new LinearLayoutManager(getContext()));
-                amusementFragmentListAdapter.setOnItemClickListener(new AmusementFragmentListAdapter.OnItemClickListener() {
+                amusementFragmentListAdapter.setOnItemClickListener(new AcademicFragmentListAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(getContext(), AmusementItemDetailActivity.class);

@@ -23,7 +23,7 @@ public class ModifyUserDataService {
     private Call call;
     private Response response;
 
-    //获取数据源
+    //修改个人信息
     public Result getUserData(ModifyInformationDto modifyInformationDto){
         client = new OkHttpClient();
         String s = new Gson().toJson(modifyInformationDto);

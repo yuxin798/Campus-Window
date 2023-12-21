@@ -24,7 +24,7 @@ import okhttp3.Response;
 
 public class ForgetPwdActivity extends AppCompatActivity {
     private EditText edtFgEmail,edtFgCode;
-    private Button btnFgSend,btnFgNext;
+    private Button btnFgSend,btnFgNext,btnFgNo;
     private String emailCodeKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +56,10 @@ public class ForgetPwdActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String userCode = edtFgCode.getText().toString().trim();
                 String email = edtFgEmail.getText().toString().trim();
-
-                if (userCode.isEmpty()) {
+                if(email.isEmpty()){
+                    Toast.makeText(ForgetPwdActivity.this, "请填写邮箱", Toast.LENGTH_SHORT).show();
+                }
+                else if (userCode.isEmpty()) {
                     Toast.makeText(ForgetPwdActivity.this, "请填写验证码", Toast.LENGTH_SHORT).show();
                 } else if (email.isEmpty()) {
                     Toast.makeText(ForgetPwdActivity.this, "请填写邮箱", Toast.LENGTH_SHORT).show();
@@ -102,6 +104,13 @@ public class ForgetPwdActivity extends AppCompatActivity {
                 }
             }
         });
+        btnFgNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ForgetPwdActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void getViews() {
@@ -109,5 +118,6 @@ public class ForgetPwdActivity extends AppCompatActivity {
         edtFgCode = findViewById(R.id.edt_fg_code);
         btnFgSend = findViewById(R.id.btn_fg_send);
         btnFgNext = findViewById(R.id.btn_fg_next);
+        btnFgNo = findViewById(R.id.btn_fg_no);
     }
 }

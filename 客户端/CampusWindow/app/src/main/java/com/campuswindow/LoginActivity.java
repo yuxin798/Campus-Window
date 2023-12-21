@@ -20,8 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.campuswindow.constant.UserConstant;
 import com.campuswindow.service.user.LoginService;
 
-import java.io.ByteArrayInputStream;
-
 public class LoginActivity extends AppCompatActivity {
     private EditText edtEmail,edtPwd;
     private Button btnReg,btnFgPwd;
@@ -31,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox lgCheckBtn;
     private Button login1;
     boolean a;
-//    private VideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +37,20 @@ public class LoginActivity extends AppCompatActivity {
         getViews();
 
         setListeners();
-        lgCheckBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                a = lgCheckBtn.isChecked();
-            }
+//        lgCheckBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                a = lgCheckBtn.isChecked();
+//            }
+//        });
+        lgCheckBtn.setOnCheckedChangeListener((view,isChecked)->{
+            System.out.println(isChecked);
         });
-        if(lgCheckBtn.isChecked()){
-            lgCheckBtn.setChecked(!a);
-        }else{
-            lgCheckBtn.setChecked(!a);
-        }
+//        if(lgCheckBtn.isChecked()){
+//            lgCheckBtn.setChecked(!a);
+//        }else{
+//            lgCheckBtn.setChecked(!a);
+//        }
 
     }
 
@@ -60,9 +60,8 @@ public class LoginActivity extends AppCompatActivity {
         MyListener myListener = new MyListener();
         btnReg.setOnClickListener(myListener);
         btnFgPwd.setOnClickListener(myListener);
-//        lgRadioBtn.setOnClickListener(myListener);
-
         login1.setOnClickListener(myListener);
+        lgUserTxt.setOnClickListener(myListener);
     }
 
     private void getViews() {
@@ -90,23 +89,19 @@ public class LoginActivity extends AppCompatActivity {
                     //忘记事件：
                     userFgPwd();
                     break;
+                case R.id.login_user_txt:
+                    //打开用户协议：
+                    displayAgreement();
             }
         }
     }
 
+    private void displayAgreement() {
+
+    }
+
     //登录事件：
     private void userLogin() {
-        String obj  = "abc";
-        byte b[] = obj.getBytes();
-        ByteArrayInputStream obj1 = new ByteArrayInputStream(b);
-        for (int i = 0; i < 2; ++ i) {
-            int c;
-            while ((c = obj1.read()) != -1) {
-                if (i == 0) {
-                    System.out.print(Character.toUpperCase((char)c));
-                }
-            }
-        }
 
         String email = edtEmail.getText().toString().trim();
         String pwd = edtPwd.getText().toString().trim();
@@ -165,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
         WebView user = page.findViewById(R.id.login_user_web);
         Button btnNo = page.findViewById(R.id.login_btn_no);
         Button btnYes = page.findViewById(R.id.login_btn_yes);
-        user.loadUrl("file:///user/user.html");
+        user.loadUrl("file:///android_asset/user.html");
         final Dialog dialog = builder.create();
         dialog.show();
         dialog.getWindow().setContentView(page);

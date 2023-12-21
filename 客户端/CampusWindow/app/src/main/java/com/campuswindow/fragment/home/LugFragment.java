@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.campuswindow.LugItemDetailActivity;
 import com.campuswindow.R;
 import com.campuswindow.Result;
-import com.campuswindow.adapter.LugFragmentListAdapter;
+import com.campuswindow.adapter.AcademicFragmentListAdapter;
 import com.campuswindow.entity.Activities;
 import com.campuswindow.service.home.LugService;
 import com.google.gson.Gson;
@@ -31,7 +31,8 @@ import java.util.List;
 public class LugFragment extends Fragment {
     private RecyclerView lugRe;
     private List<Activities> lugList = new ArrayList<>();
-    private LugFragmentListAdapter lugFragmentListAdapter;
+//    private LugFragmentListAdapter lugFragmentListAdapter;
+    private AcademicFragmentListAdapter lugFragmentListAdapter;
 
     private Handler handler;
     public LugFragment() {
@@ -66,10 +67,11 @@ public class LugFragment extends Fragment {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                lugFragmentListAdapter = new LugFragmentListAdapter(lugList,getContext());
+                lugFragmentListAdapter = new AcademicFragmentListAdapter(lugList,getContext());
                 lugRe.setAdapter(lugFragmentListAdapter);
                 lugRe.setLayoutManager(new LinearLayoutManager(getContext()));
-                lugFragmentListAdapter.setOnItemClickListener(new LugFragmentListAdapter.OnItemClickListener() {
+                lugFragmentListAdapter.setAcademicList(lugList);
+                lugFragmentListAdapter.setOnItemClickListener(new AcademicFragmentListAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(getContext(), LugItemDetailActivity.class);

@@ -15,30 +15,38 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="-10dp"
-            android:background="@drawable/return3"
-            />
-        <ImageView
-            android:id="@+id/detailed_userimage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:background="@drawable/return3" />
         <LinearLayout
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_width="wrap_content"
+            android:id="@+id/activity_item"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/detailed_username"
-                android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+            <ImageView
+                android:id="@+id/detailed_user_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="我是爱困"/>
-            <TextView
-                android:id="@+id/detailed_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="2023-12-1"
-                />
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/detailed_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="我是爱困"/>
+                <TextView
+                    android:id="@+id/detailed_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2023-12-1" />
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
     <TextView
         android:id="@+id/detailed_title"
@@ -47,8 +55,7 @@
         android:textSize="25dp"
         android:textColor="@color/black"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        />
+        android:layout_height="80dp" />
     <jp.wasabeef.richeditor.RichEditor
         android:id="@+id/detailed_re"
         android:layout_width="match_parent"
@@ -60,56 +67,67 @@
     <RelativeLayout
         android:id="@+id/ll_dibu"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-
         <TextView
             android:id="@+id/et_comments"
             android:layout_width="200dp"
             android:layout_height="40dp"
             android:background="@drawable/edit_background" />
-
-        <CheckBox
-            android:layout_toRightOf="@+id/et_comments"
-            android:id="@+id/bt_thumbsup"
-            android:layout_width="45dp"
-            android:layout_height="35dp"
-            android:button="@null"
-            android:background="@drawable/selector_like"/>
-        <TextView
-            android:layout_alignLeft="@+id/bt_thumbsup"
-            android:layout_below="@+id/bt_thumbsup"
-            android:id="@+id/thumbsup_num"
-            android:layout_width="45dp"
-            android:layout_height="15dp"/>
-        <Button
-            android:layout_marginLeft="280dp"
-            android:id="@+id/bt_comments"
-
-            android:layout_width="45dp"
-            android:layout_height="35dp"
-            android:background="@drawable/comment"
-            />
-        <TextView
-            android:layout_alignLeft="@+id/bt_comments"
-            android:layout_below="@+id/bt_thumbsup"
-            android:id="@+id/comments_num"
-            android:layout_width="45dp"
-            android:layout_height="15dp"/>
-        <CheckBox
-
+        <LinearLayout
+            android:id="@+id/activity_academic_item_lin1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/activity_academic_item_lin2"
+            android:orientation="vertical">
+            <CheckBox
+                android:layout_toRightOf="@+id/et_comments"
+                android:id="@+id/bt_thumbsup"
+                android:layout_width="45dp"
+                android:layout_height="35dp"
+                android:button="@null"
+                android:background="@drawable/selector_like"/>
+            <TextView
+                android:id="@+id/thumbsup_num"
+                android:layout_width="45dp"
+                android:layout_height="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/activity_academic_item_lin2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/activity_academic_item_lin3"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/bt_comments"
+                android:layout_width="45dp"
+                android:layout_height="35dp"
+                android:background="@drawable/comment3" />
+            <TextView
+                android:id="@+id/comments_num"
+                android:layout_width="45dp"
+                android:layout_height="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/activity_academic_item_lin3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/collect1"
-            android:id="@+id/bt_collect_detailed"
-            android:layout_width="45dp"
-            android:layout_height="35dp"
-            android:button="@null"
-            />
-        <TextView
-            android:layout_alignLeft="@+id/bt_collect_detailed"
-            android:layout_below="@+id/bt_collect_detailed"
-            android:id="@+id/forword_num"
-            android:layout_width="45dp"
-            android:layout_height="15dp"/>
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
+            <CheckBox
+                android:background="@drawable/selector_collect"
+                android:id="@+id/bt_collect_detailed"
+                android:layout_width="45dp"
+                android:layout_height="35dp"
+                android:button="@null" />
+            <TextView
+                android:id="@+id/forword_num"
+                android:layout_width="45dp"
+                android:layout_height="15dp"/>
+        </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>

@@ -20,6 +20,7 @@ import com.campuswindow.R;
 import com.campuswindow.Result;
 import com.campuswindow.constant.UserConstant;
 import com.campuswindow.entity.Activities;
+import com.campuswindow.entity.ActivityCollect;
 import com.campuswindow.entity.ActivityImage;
 import com.campuswindow.entity.ActivityLove;
 import com.campuswindow.server.API;
@@ -44,11 +45,6 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
     private ImageAdapter imageAdapter;
     private Result result;
     private OnItemChildClickListener mOnItemChildClickListener;
-//    private Handler handler;
-//
-//    public AcademicFragmentListAdapter() {
-//        handler = new Handler(Looper.getMainLooper());
-//    }
 
     public AcademicFragmentListAdapter(List<Activities> academicList, Context mContext) {
         this.academicList = academicList;
@@ -88,6 +84,7 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
         //
         System.out.println("55555555555555555"+academicList.get(position).isLoved());
         holder.cbthumbsup.setChecked(academicList.get(position).isLoved());
+        holder.cbCollect.setChecked(academicList.get(position).isCollected());
 
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false));
         holder.recyclerView.setAdapter(imageAdapter);
@@ -126,11 +123,9 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
                                 .url(API.SERVER_URL+API.ADD_LOVE_ACTIVITY)
                                 .post(body).build();
                         try {
-                            Response execute = client.newCall(request).execute();
                             Response response = client.newCall(request).execute();
                             String string = response.body().string();
                             Result result = new Gson().fromJson(string, Result.class);
-
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -151,10 +146,9 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
                                 .url(API.SERVER_URL+API.DECREASE_LOVE_ACTIVITY)
                                 .post(body).build();
                         try {
-                            Response execute = client.newCall(request).execute();
                             Response response = client.newCall(request).execute();
                             String string = response.body().string();
-                             Result result = new Gson().fromJson(string, Result.class);
+                            Result result = new Gson().fromJson(string, Result.class);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -171,10 +165,55 @@ public class AcademicFragmentListAdapter extends RecyclerView.Adapter<AcademicFr
 //            holder.thumbsupNum.setText("" + academicActivity.getLove());
 //            holder.cbthumbsup.setChecked(activities.isLoved());
         });
-
-
+        holder.cbCollect.setOnCheckedChangeListener((view,isChecked)->{
+            Activities activity = academicList.get(position);
+            if(isChecked){
+//                holder.cbCollect.setChecked(isChecked);
+                activity.setCollected(isChecked);
+                ActivityCollect activityCollect = new ActivityCollect(UserConstant.USER_ID,activity.getActivityId());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8")
+                                ,new Gson().toJson(activityCollect));
+                        Request request = new Request.Builder()
+                                .url(API.SERVER_URL+API.ADD_COLLECT_ACTIVITY)
+                                .post(body).build();
+                        try {
+                            Response response = client.newCall(request).execute();
+                            String string = response.body().string();
+                            Result result = new Gson().fromJson(string, Result.class);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }).start();
+            }else{
+//                holder.cbCollect.setChecked(isChecked);
+                activity.setCollected(isChecked);
+                ActivityCollect activityCollect = new ActivityCollect(UserConstant.USER_ID,activity.getActivityId());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8")
+                                ,new Gson().toJson(activityCollect));
+                        Request request = new Request.Builder()
+                                .url(API.SERVER_URL+API.DECREASE_COLLECT_ACTIVITY)
+                                .post(body).build();
+                        try {
+                            Response response = client.newCall(request).execute();
+                            String string = response.body().string();
+                            Result result = new Gson().fromJson(string, Result.class);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }).start();
+            }
+        });
     }
-
 
     @Override
     public int getItemCount() {

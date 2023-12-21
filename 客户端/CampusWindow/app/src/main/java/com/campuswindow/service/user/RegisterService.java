@@ -38,7 +38,7 @@ public class RegisterService {
         call = client.newCall(request);
         try {
             response = call.execute();
-            //注册响应 TODO 获取注册响应
+
 //            Log.i("response:", response.body().string());
             Gson gson = new Gson();
             String string = response.body().string();

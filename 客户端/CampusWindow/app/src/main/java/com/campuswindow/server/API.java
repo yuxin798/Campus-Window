@@ -6,12 +6,19 @@ public class API {
 //关于用户的地址:
     //1.用户的登录、注册、忘记密码：
     public static final String USER = SERVER_URL + "user/";
-    //2.根据userId，查询个人信息
+    //2.根据userId，查询个人信息(使用的是修改个人资料，查询个人信息的接口)
     public static final String USER_FIND_INFO = SERVER_URL + "user/findInformation?userId=";
     //3.上传用户头像
     public static final String USER_AVATAR = SERVER_URL + "user/avatar";
     //4.修改用户用户信息
     public static final String USER_MODIFY_INFO = SERVER_URL + "user/modifyInformation";
+    //5.根据userId，查询他人信息：
+    public static final String OTHER_USER__FIND_INFO = SERVER_URL + "user/findOtherInfo?userId=";
+
+    //6.同2，都是查询个人信息，但是是用个人页面查询个人信息的接口
+    public static final String USER__FIND_INFO_TWO = SERVER_URL + "user/findPersonalInfo?userId=";
+
+
 
 //关于活动的地址:
     //1.获取 活动数据
@@ -24,6 +31,10 @@ public class API {
     public static final String ADD_LOVE_ACTIVITY = "activity/addLove";
     //5.帖子取消点赞
     public static final String DECREASE_LOVE_ACTIVITY = "activity/decreaseLove";
+    //6.帖子收藏
+    public static final String ADD_COLLECT_ACTIVITY = "activity/addCollect";
+    //7.帖子取消收藏
+    public static final String DECREASE_COLLECT_ACTIVITY = "activity/decreaseCollect";
 
 //发送帖子的设置:
     public static final String SEND_ACTIVITY = "activity/sendActivity";
@@ -42,10 +53,12 @@ public class API {
     //与服务构建WebSocket连接的API
     public static final String WEB_SOCKET = "ws://10.7.88.211:8080/websocket/";
 
+    //进入窗口的API
+    public static final String UPDATE_CHAT_LIST_ENTER_WINDOW = SERVER_URL + "chat/updateEnterWindows";
+    //离开窗口的API
+    public static final String UPDATE_CHAT_LIST_LEAVE_WINDOW = SERVER_URL + "chat/updateLeaveWindows";
 
 //   402宿舍:192.168.3.6      402:10.7.88.211       10.7.81.172  10.7.88.175   10.7.81.179
-
-
 
 
     //    public static final String SERVER_URL="http://192.168.43.22:8080/user/";

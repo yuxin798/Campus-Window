@@ -5,80 +5,262 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity"
     android:orientation="vertical">
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="注册"
-        android:gravity="center"
-        android:textSize="50dp"/>
-    <EditText
-        android:id="@+id/edt_re_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请输入用户名"
-        android:textSize="20dp"/>
-    <EditText
-        android:id="@+id/edt_re_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请输入邮箱"
-        android:textSize="20dp"/>
-
-
-    <EditText
-        android:id="@+id/edt_re_pwd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请输入密码"
-        android:textSize="20dp"/>
-    <EditText
-        android:id="@+id/edt_re_pwd2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="再次确认密码"
-        android:textSize="20dp"/>
-    <EditText
-        android:id="@+id/edt_re_school"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请输入本人所在学校"
-        android:textSize="20dp"/>
+        android:background="@color/gray">
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/btn_re_no"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@mipmap/leftarrow" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注册"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="30dp"/>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:id="@+id/edt_re_verify"
-            android:layout_width="0dp"
-            android:layout_weight="3"
+        android:padding="15dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/login_r1"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:hint="请输入验证码" />
-        <Button
-            android:id="@+id/btn_re_send"
-            android:layout_width="0dp"
+            android:layout_below="@+id/login_logo_txt"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/edt_re_name"
+                android:layout_width="400dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:paddingStart="60dp"
+                android:paddingEnd="10dp"
+                android:maxLength="20"
+                android:textSize="20dp"
+                android:hint="请输入用户名" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/edt_re_name"
+                android:layout_alignTop="@+id/edt_re_name"
+                android:layout_alignEnd="@+id/edt_re_name"
+                android:layout_alignBottom="@+id/edt_re_name"
+                android:padding="15dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="10dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/user" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/login_r2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="发送"
-            android:textSize="20dp"/>
+            android:layout_below="@+id/login_logo_txt"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/edt_re_email"
+                android:layout_width="400dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:paddingStart="60dp"
+                android:paddingEnd="10dp"
+                android:maxLength="20"
+                android:textSize="20dp"
+                android:hint="请输入邮箱" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/edt_re_email"
+                android:layout_alignTop="@+id/edt_re_email"
+                android:layout_alignEnd="@+id/edt_re_email"
+                android:layout_alignBottom="@+id/edt_re_email"
+                android:padding="15dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="10dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/mail3" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/login_r3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_logo_txt"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/edt_re_pwd"
+                android:layout_width="400dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:paddingStart="60dp"
+                android:paddingEnd="10dp"
+                android:maxLength="20"
+                android:textSize="20dp"
+                android:hint="请输入密码" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/edt_re_pwd"
+                android:layout_alignTop="@+id/edt_re_pwd"
+                android:layout_alignEnd="@+id/edt_re_pwd"
+                android:layout_alignBottom="@+id/edt_re_pwd"
+                android:padding="15dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="10dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/pwd2" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/login_r4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_logo_txt"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/edt_re_pwd2"
+                android:layout_width="400dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:paddingStart="60dp"
+                android:paddingEnd="10dp"
+                android:maxLength="20"
+                android:textSize="20dp"
+                android:hint="再次确认密码" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/edt_re_pwd2"
+                android:layout_alignTop="@+id/edt_re_pwd2"
+                android:layout_alignEnd="@+id/edt_re_pwd2"
+                android:layout_alignBottom="@+id/edt_re_pwd2"
+                android:padding="15dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="10dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/pwd2" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/login_r5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_logo_txt"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/edt_re_school"
+                android:layout_width="400dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:paddingStart="60dp"
+                android:paddingEnd="10dp"
+                android:maxLength="20"
+                android:textSize="20dp"
+                android:hint="请输入本人所在的学校" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/edt_re_school"
+                android:layout_alignTop="@+id/edt_re_school"
+                android:layout_alignEnd="@+id/edt_re_school"
+                android:layout_alignBottom="@+id/edt_re_school"
+                android:padding="15dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="10dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/school6" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/login_r6"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/login_logo_txt"
+                android:gravity="center">
+
+                <EditText
+                    android:id="@+id/edt_re_verify"
+                    android:layout_width="400dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="60dp"
+                    android:paddingEnd="10dp"
+                    android:maxLength="20"
+                    android:textSize="20dp"
+                    android:hint="请输入验证码" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/edt_re_verify"
+                    android:layout_alignTop="@+id/edt_re_verify"
+                    android:layout_alignEnd="@+id/edt_re_verify"
+                    android:layout_alignBottom="@+id/edt_re_verify"
+                    android:padding="15dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="10dp"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/auth_code5" />
+            </RelativeLayout>
+            <Button
+                android:id="@+id/btn_re_send"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="发送"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shap_all_corners_blue"
+                android:textColor="@color/white"
+                android:textSize="20dp"/>
+        </LinearLayout>
     </LinearLayout>
-<!--    <EditText-->
-<!--        android:id="@+id/edt_re_verify"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="请输入验证码"-->
-<!--        android:textSize="20dp"/>-->
+
     <Button
         android:id="@+id/btn_re_yes"
-        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="确认"
+        android:background="@drawable/shap_all_corners_blue"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:text="注册"
         android:textSize="20dp"/>
-    <Button
-        android:id="@+id/btn_re_no"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="取消"
-        android:textSize="20dp"/>
+
+<!--    <EditText-->
+<!--        android:id="@+id/edt_re_verify"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_weight="3"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="20dp"-->
+<!--        android:hint="请输入验证码" />-->
 </LinearLayout>

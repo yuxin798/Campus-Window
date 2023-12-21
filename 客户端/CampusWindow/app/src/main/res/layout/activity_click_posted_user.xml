@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ClickPostedUserActivity">
     <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/mine_fg_dra"
+        android:id="@+id/person_fg_dra"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/mine_fg_appbar"
+                android:id="@+id/person_fg_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:elevation="0dp">
@@ -55,7 +55,7 @@
                                         android:orientation="horizontal"
                                         android:gravity="right">
                                         <Button
-                                            android:id="@+id/mine_fg_attention"
+                                            android:id="@+id/person_fg_attention"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="关注"
@@ -63,7 +63,7 @@
                                             android:textSize="18dp"
                                             android:layout_marginRight="27dp"/>
                                         <Button
-                                            android:id="@+id/mine_fg_chat"
+                                            android:id="@+id/person_fg_chat"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="私信"
@@ -72,14 +72,14 @@
                                             android:layout_marginRight="27dp"/>
                                     </LinearLayout>
                                     <TextView
-                                        android:id="@+id/mine_fg_name"
+                                        android:id="@+id/person_fg_name"
                                         android:layout_marginLeft="20dp"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textStyle="bold"
                                         android:textSize="30dp"/>
                                     <TextView
-                                        android:id="@+id/mine_fg_label"
+                                        android:id="@+id/person_fg_label"
                                         android:layout_marginTop="5dp"
                                         android:layout_marginLeft="6dp"
                                         android:layout_width="match_parent"
@@ -96,15 +96,15 @@
                                             android:layout_weight="1"
                                             android:layout_height="wrap_content">
                                             <TextView
-                                                android:id="@+id/mine_fg_award_num"
+                                                android:id="@+id/person_fg_award_num"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:text="1abc"
                                                 android:textStyle="bold"
                                                 android:textSize="18dp"/>
                                             <TextView
-                                                android:id="@+id/mine_fg_award"
-                                                android:layout_toRightOf="@+id/mine_fg_award_num"
+                                                android:id="@+id/person_fg_award"
+                                                android:layout_toRightOf="@+id/person_fg_award_num"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:text=" 获赞"
@@ -115,15 +115,15 @@
                                             android:layout_weight="1"
                                             android:layout_height="wrap_content">
                                             <TextView
-                                                android:id="@+id/mine_fg_follow_num"
+                                                android:id="@+id/person_fg_follow_num"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:text="1abc"
                                                 android:textStyle="bold"
                                                 android:textSize="18dp"/>
                                             <TextView
-                                                android:id="@+id/mine_fg_follow"
-                                                android:layout_toRightOf="@+id/mine_fg_follow_num"
+                                                android:id="@+id/person_fg_follow"
+                                                android:layout_toRightOf="@+id/person_fg_follow_num"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:text=" 关注"
@@ -134,15 +134,15 @@
                                             android:layout_weight="1"
                                             android:layout_height="wrap_content">
                                             <TextView
-                                                android:id="@+id/mine_fg_fan_num"
+                                                android:id="@+id/person_fg_fan_num"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:text="1abc"
                                                 android:textStyle="bold"
                                                 android:textSize="18dp"/>
                                             <TextView
-                                                android:id="@+id/mine_fg_fan"
-                                                android:layout_toRightOf="@+id/mine_fg_fan_num"
+                                                android:id="@+id/person_fg_fan"
+                                                android:layout_toRightOf="@+id/person_fg_fan_num"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:text=" 粉丝"
@@ -153,15 +153,15 @@
                                             android:layout_weight="1"
                                             android:layout_height="wrap_content">
                                             <TextView
-                                                android:id="@+id/mine_fg_friend_num"
+                                                android:id="@+id/person_fg_friend_num"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:text="1abc"
                                                 android:textStyle="bold"
                                                 android:textSize="18dp"/>
                                             <TextView
-                                                android:id="@+id/mine_fg_friend"
-                                                android:layout_toRightOf="@+id/mine_fg_friend_num"
+                                                android:id="@+id/person_fg_friend"
+                                                android:layout_toRightOf="@+id/person_fg_friend_num"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:text=" 好友"
@@ -173,18 +173,18 @@
 
                             <!--                        这是头像-->
                             <ImageView
-                                android:id="@+id/mine_img"
+                                android:id="@+id/person_img"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginTop="20dp"
                                 android:layout_marginLeft="30dp"
                                 android:layout_width="100dp"
                                 android:layout_height="100dp" />
-                            <ImageView
-                                android:id="@+id/mine_btn_navig"
-                                android:src="@mipmap/navigation"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_gravity="right"/>
+<!--                            <ImageView-->
+<!--                                android:id="@+id/person_btn_navig"-->
+<!--                                android:src="@mipmap/navigation"-->
+<!--                                android:layout_width="50dp"-->
+<!--                                android:layout_height="50dp"-->
+<!--                                android:layout_gravity="right"/>-->
                         </FrameLayout>
                         <View
                             android:id="@+id/iv_tag"
@@ -195,7 +195,7 @@
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
                 <!--            放入要置顶的导航栏-->
                 <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/mine_fg_tbl"
+                    android:id="@+id/person_fg_tbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white" />
@@ -208,18 +208,18 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/mine_fg_vp2"
+                    android:id="@+id/person_fg_vp2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </androidx.core.widget.NestedScrollView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/mine_fg_nav"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:fitsSystemWindows="true"
-            app:menu="@menu/mine_navigation_item"/>
+<!--        <com.google.android.material.navigation.NavigationView-->
+<!--            android:id="@+id/person_fg_nav"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="end"-->
+<!--            android:fitsSystemWindows="true"-->
+<!--            app:menu="@menu/mine_navigation_item"/>-->
     </androidx.drawerlayout.widget.DrawerLayout>
 </LinearLayout>

@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="20dp"
-        android:text="是否同意用户隐私协议"/>
+        android:gravity="center"
+        android:text="温馨提示"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="5dp"
@@ -18,8 +19,8 @@
     <WebView
         android:id="@+id/login_user_web"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <LinearLayout
+        android:layout_height="200dp"/>
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -27,11 +28,14 @@
             android:id="@+id/login_btn_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
             android:text="取消"/>
         <Button
             android:id="@+id/login_btn_yes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
             android:text="同意"/>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

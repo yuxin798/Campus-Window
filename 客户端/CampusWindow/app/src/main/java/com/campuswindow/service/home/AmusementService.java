@@ -3,6 +3,7 @@ package com.campuswindow.service.home;
 import android.util.Log;
 
 import com.campuswindow.Result;
+import com.campuswindow.constant.UserConstant;
 import com.campuswindow.server.API;
 import com.google.gson.Gson;
 
@@ -23,7 +24,7 @@ public class AmusementService {
     public Result getAmusementList(){
         client = new OkHttpClient();
         request = new Request.Builder()
-                .url(API.ACTIVITY + "findAllByType?type=1")
+                .url(API.ACTIVITY + "findAllByType?type=1&userId="+ UserConstant.USER_ID)
                 .get()
                 .build();
         call = client.newCall(request);

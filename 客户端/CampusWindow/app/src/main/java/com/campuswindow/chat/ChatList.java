@@ -1,6 +1,8 @@
 package com.campuswindow.chat;
 
 
+import java.sql.Timestamp;
+
 /*
  * 聊天列表的实体类
  */
@@ -20,6 +22,7 @@ public class ChatList {
     //接收者是否在窗口
     private int toWindow;
     private String lastMsg;
+    private Timestamp lastMsgTime;
     //未读数 fromUser的未读数
     private int unread;
     //是否被删除
@@ -105,10 +108,51 @@ public class ChatList {
         this.unread = unread;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+//    public String getLastMsgTime() {
+//        return lastMsgTime;
+//    }
+//
+//    public void setLastMsgTime(String lastMsgTime) {
+//        this.lastMsgTime = lastMsgTime;
+//    }
+
+
+    public Timestamp getLastMsgTime() {
+        return lastMsgTime;
+    }
+
+    public void setLastMsgTime(Timestamp lastMsgTime) {
+        this.lastMsgTime = lastMsgTime;
+    }
+
     public ChatList() {
     }
 
-    public ChatList(String listId, String linkId, String fromUserId, String toUserId, String toUserName, String toUserAvatar, int fromWindow, int toWindow, String lastMsg, int unread, int status) {
+//    public ChatList(String listId, String linkId, String fromUserId, String toUserId, String toUserName, String toUserAvatar, int fromWindow, int toWindow, String lastMsg, String lastMsgTime, int unread, int status) {
+//        this.listId = listId;
+//        this.linkId = linkId;
+//        this.fromUserId = fromUserId;
+//        this.toUserId = toUserId;
+//        this.toUserName = toUserName;
+//        this.toUserAvatar = toUserAvatar;
+//        this.fromWindow = fromWindow;
+//        this.toWindow = toWindow;
+//        this.lastMsg = lastMsg;
+//        this.lastMsgTime = lastMsgTime;
+//        this.unread = unread;
+//        this.status = status;
+//    }
+
+
+    public ChatList(String listId, String linkId, String fromUserId, String toUserId, String toUserName, String toUserAvatar, int fromWindow, int toWindow, String lastMsg, Timestamp lastMsgTime, int unread, int status) {
         this.listId = listId;
         this.linkId = linkId;
         this.fromUserId = fromUserId;
@@ -118,6 +162,7 @@ public class ChatList {
         this.fromWindow = fromWindow;
         this.toWindow = toWindow;
         this.lastMsg = lastMsg;
+        this.lastMsgTime = lastMsgTime;
         this.unread = unread;
         this.status = status;
     }
@@ -134,6 +179,7 @@ public class ChatList {
                 ", fromWindow=" + fromWindow +
                 ", toWindow=" + toWindow +
                 ", lastMsg='" + lastMsg + '\'' +
+                ", lastMsgTime='" + lastMsgTime + '\'' +
                 ", unread=" + unread +
                 ", status=" + status +
                 '}';

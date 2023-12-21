@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.campuswindow"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -32,6 +32,11 @@ android {
 }
 
 dependencies {
+
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
+
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.1'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.1'
 
     implementation 'io.github.youth5201314:banner:2.2.2'
 

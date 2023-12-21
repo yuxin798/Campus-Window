@@ -1,9 +1,11 @@
 package com.campuswindow.chat;
 
+import java.io.Serializable;
+
 /*
  * 根据userId查询出来的用户头像和姓名的实体类
  */
-public class ChatUserDto {
+public class ChatUserDto implements Serializable {
     private String userId;
     private String userName;
     private String avatar;

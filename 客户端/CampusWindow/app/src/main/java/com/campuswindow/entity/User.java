@@ -13,6 +13,51 @@ public class User implements Serializable {
     private Timestamp createTime;
     private int gender;
     private String signature;
+    private int loves;
+    private int friends;
+    private int followers;
+    private int fans;
+    private String background;
+
+    public int getLoves() {
+        return loves;
+    }
+
+    public void setLoves(int loves) {
+        this.loves = loves;
+    }
+
+    public int getFriends() {
+        return friends;
+    }
+
+    public void setFriends(int friends) {
+        this.friends = friends;
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
+
+    public int getFans() {
+        return fans;
+    }
+
+    public void setFans(int fans) {
+        this.fans = fans;
+    }
+
+    public String getBackground() {
+        return background;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
+    }
 
     public String getUserId() {
         return userId;
@@ -98,6 +143,11 @@ public class User implements Serializable {
                 ", createTime=" + createTime +
                 ", gender=" + gender +
                 ", signature='" + signature + '\'' +
+                ", loves=" + loves +
+                ", friends=" + friends +
+                ", followers=" + followers +
+                ", fans=" + fans +
+                ", background='" + background + '\'' +
                 '}';
     }
 }

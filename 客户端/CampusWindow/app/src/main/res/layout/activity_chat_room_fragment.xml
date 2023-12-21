@@ -12,22 +12,31 @@
         <ImageView
             android:id="@+id/chat_room_img"
             android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:src="@mipmap/ikun" />
+            android:layout_height="55dp" />
         <TextView
             android:id="@+id/chat_room_name"
             android:layout_toRightOf="@+id/chat_room_img"
+            android:layout_marginLeft="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="北冥渔"/>
-        <TextView
-            android:id="@+id/chat_room_state"
-            android:layout_toRightOf="@+id/chat_room_img"
-            android:layout_alignBottom="@+id/chat_room_img"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="状态:"/>
-
+            android:layout_marginLeft="6dp"
+            android:layout_toRightOf="@+id/chat_room_img"
+            android:layout_alignBottom="@+id/chat_room_img">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="性别:"/>
+            <ImageView
+                android:id="@+id/chat_room_img_sex"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/nan"/>
+        </LinearLayout>
         <ImageView
             android:id="@+id/chat_room_btn_img"
             android:layout_width="50dp"
@@ -35,7 +44,6 @@
             android:layout_alignParentRight="true"
             android:layout_marginEnd="-3dp"
             android:src="@drawable/menu1" />
-
     </RelativeLayout>
 
     <EditText

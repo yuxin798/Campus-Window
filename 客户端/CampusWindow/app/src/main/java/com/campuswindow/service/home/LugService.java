@@ -3,6 +3,7 @@ package com.campuswindow.service.home;
 import android.util.Log;
 
 import com.campuswindow.Result;
+import com.campuswindow.constant.UserConstant;
 import com.campuswindow.server.API;
 import com.google.gson.Gson;
 
@@ -23,7 +24,7 @@ public class LugService {
     public Result getLugList(){
         client = new OkHttpClient();
         request = new Request.Builder()
-                .url(API.ACTIVITY + "findAllByType?type=2")
+                .url(API.ACTIVITY + "findAllByType?type=2&userId="+ UserConstant.USER_ID)
                 .get()
                 .build();
         call = client.newCall(request);

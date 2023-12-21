@@ -20,7 +20,7 @@ public class SearchOneSelfService {
     private Call call;
     private Response response;
 
-    //获取数据源
+    //获取自己的个人信息:
     public Result getUserData(){
         client = new OkHttpClient();
         request = new Request.Builder()
@@ -38,4 +38,42 @@ public class SearchOneSelfService {
             throw new RuntimeException(e);
         }
     }
+    //获取自己的个人信息2:
+    public Result getUserDataTWO(String userId){
+        client = new OkHttpClient();
+        request = new Request.Builder()
+                .url(API.USER__FIND_INFO_TWO + userId)
+                .get()
+                .build();
+        call = client.newCall(request);
+        try {
+            response = call.execute();
+            Gson gson = new Gson();
+            Result result = gson.fromJson(response.body().string(),Result.class);
+            Log.i("result",result.toString());
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //获取他人的个人信息：
+    public Result getOtherUserData(String userId){
+        client = new OkHttpClient();
+        request = new Request.Builder()
+                .url(API.OTHER_USER__FIND_INFO + UserConstant.USER_ID + "&toUserId="+userId)
+                .get()
+                .build();
+        call = client.newCall(request);
+        try {
+            response = call.execute();
+            Gson gson = new Gson();
+            Result result = gson.fromJson(response.body().string(),Result.class);
+            Log.i("result",result.toString());
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

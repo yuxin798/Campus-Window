@@ -13,12 +13,13 @@ public class Activities implements Serializable {
     private String avatar;
     private String school;
     private int love;
-    private List<ActivityImage> activityImages;
-    private int type;
     private int comment;
+    private int type;
     private int collect;
     private boolean loved;
-    private boolean isCollected;
+    private boolean collected;
+    public boolean followed;
+    private List<ActivityImage> activityImages;
 
     public int getLove() {
         return love;
@@ -133,11 +134,19 @@ public class Activities implements Serializable {
     }
 
     public boolean isCollected() {
-        return isCollected;
+        return collected;
     }
 
     public void setCollected(boolean collected) {
-        isCollected = collected;
+        this.collected = collected;
+    }
+
+    public boolean isFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(boolean followed) {
+        this.followed = followed;
     }
 
     @Override
@@ -152,12 +161,13 @@ public class Activities implements Serializable {
                 ", avatar='" + avatar + '\'' +
                 ", school='" + school + '\'' +
                 ", love=" + love +
-                ", activityImages=" + activityImages +
-                ", type=" + type +
                 ", comment=" + comment +
+                ", type=" + type +
                 ", collect=" + collect +
-                ", isLoved=" + loved +
-                ", isCollected=" + isCollected +
+                ", loved=" + loved +
+                ", collected=" + collected +
+                ", followed=" + followed +
+                ", activityImages=" + activityImages +
                 '}';
     }
 }

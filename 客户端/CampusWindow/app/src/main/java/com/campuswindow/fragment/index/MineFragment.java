@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -32,18 +34,23 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.campuswindow.EditUserDataActivity;
+import com.campuswindow.LoginActivity;
 import com.campuswindow.R;
 import com.campuswindow.Result;
 import com.campuswindow.adapter.MineAdapter;
 import com.campuswindow.chat.ChatUserDto;
 import com.campuswindow.constant.UserConstant;
+import com.campuswindow.entity.Activities;
 import com.campuswindow.entity.User;
+import com.campuswindow.entity.UserVo;
 import com.campuswindow.fragment.mine.CollectFragment;
 import com.campuswindow.fragment.mine.CommentFragment;
 import com.campuswindow.fragment.mine.IssueFragment;
 import com.campuswindow.richeditor.Utils;
 import com.campuswindow.server.API;
 import com.campuswindow.service.index.SearchOneSelfService;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -72,13 +79,20 @@ public class MineFragment extends Fragment {
     private ImageView btnNavig;
     private DrawerLayout mineDra;
     private NavigationView mineNav;
+    private AppBarLayout appBarLayout;
     private ActivityResultLauncher<Intent> launcher;
     private Uri imageUri;
     private Button editData;
     private TextView name,label;
     private ImageView imgHead;
+    private UserVo userVo;
     private User user;
     private Handler handler;
+    private LinearLayout headLayout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private Toolbar toolBar;
+    private TextView mineFgFriendNum,mineFgFanNum,mineFgAwardNum,mineFgFollowNum;
+    private List<Activities> loveList = new ArrayList<>();
 
     public MineFragment() {
         handler = new Handler(Looper.getMainLooper());
@@ -103,10 +117,17 @@ public class MineFragment extends Fragment {
         mineFgVp2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         mineFgVp2.setAdapter(mineAdapter);
         defineMediator();
+//        /**
+//         * 使用CollapsingToolbarLayout必须把title设置到CollapsingToolbarLayout上，
+//         * 设置到Toolbar上则不会显示
+//         */
+//        setTitleToCollapsingToolbarLayout();
+//        toolBar.setVisibility(View.GONE);
         return page;
     }
 
     private void getUserMsg() {
+        //获取用户的头像和姓名等信息
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -118,7 +139,41 @@ public class MineFragment extends Fragment {
                 runOnMainThread();
             }
         }).start();
+        //获取本人的获赞数、关注、朋友、粉丝数：
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SearchOneSelfService service = new SearchOneSelfService();
+                Result result = service.getUserDataTWO(UserConstant.USER_ID);
+                System.out.println(result+"66666");
+                Gson gson = new Gson();
+                userVo = gson.fromJson(gson.toJson(result.getData()), UserVo.class);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mineFgAwardNum.setText(""+Double.valueOf(userVo.getLoves()).intValue());
+                        mineFgFanNum.setText(""+Double.valueOf(userVo.getFans()).intValue());
+                        mineFgFollowNum.setText(""+Double.valueOf(userVo.getFollowers()).intValue());
+                        mineFgFriendNum.setText(""+Double.valueOf(userVo.getFriends()).intValue());
+                    }
+                });
+
+            }
+        }).start();
+
     }
+//    private void setTitleToCollapsingToolbarLayout() {
+//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                if (verticalOffset <= -headLayout.getHeight()/6) {
+//                    toolBar.setVisibility(View.VISIBLE);
+//                } else {
+//                    toolBar.setVisibility(View.GONE);
+//                }
+//            }
+//        });
+//    }
 
     private void runOnMainThread() {
         handler.post(new Runnable() {
@@ -145,22 +200,31 @@ public class MineFragment extends Fragment {
         mineNav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch(item.getItemId()){
-//                    case R.id.nav_camera:
-//                        break;
-//                    case R.id.nav_deal:
-//                        break;
-//                    case R.id.nav_gallery:
-//                        break;
-//                    case R.id.nav_manage:
-//                        break;
-//                    case R.id.nav_send:
-//                        break;
-//                    case R.id.nav_share:
-//                        break;
-//                    case R.id.nav_slideshow:
-//                        break;
-//                }
+                switch(item.getItemId()){
+                    case R.id.nav_account_security:
+                        //账号安全
+                        break;
+                    case R.id.nav_priority_setting:
+                        //隐私设置
+                        break;
+                    case R.id.nav_unsubscribe:
+                        //注销账户
+                        break;
+                    case R.id.nav_log_out:
+                        //退出登录
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.nav_user_agreement:
+                        //用户协议与隐私政策
+                        break;
+                    case R.id.nav_clear_cache:
+                        //清理缓存
+                        break;
+                    case R.id.nav_call_center:
+                        //客服中心
+                        break;
+                }
                 Toast.makeText(getActivity(),item.getTitle().toString(),Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -232,6 +296,22 @@ public class MineFragment extends Fragment {
                     }
                 }).start();
 
+                //上下都是为查询个人信息，但是这个要全面一点：
+//                SearchOneSelfService service = new SearchOneSelfService();
+//                Result result = service.getUserData();
+//                System.out.println(result+"66666");
+//                Gson gson = new Gson();
+//                user = gson.fromJson(gson.toJson(result.getData()),User.class);
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        String userName = name.getText().toString();
+//                        Intent intent = new Intent(getActivity(), EditUserDataActivity.class);
+//                        intent.putExtra("user",user);
+//                        startActivity(intent);
+//                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                    }
+//                });
             }
         });
 //        //向上滚动时，新的标题样式：
@@ -301,8 +381,6 @@ public class MineFragment extends Fragment {
                     }
                 }
         );
-
-
     }
 /**
  * 进行加载图片
@@ -367,12 +445,19 @@ public class MineFragment extends Fragment {
         editData = page.findViewById(R.id.mine_fg_edit);
         name = page.findViewById(R.id.mine_fg_name);
         label = page.findViewById(R.id.mine_fg_label);
+        appBarLayout = page.findViewById(R.id.mine_fg_appbar);
+        headLayout = page.findViewById(R.id.head_layout);
+        collapsingToolbarLayout = page.findViewById(R.id.mine_coll);
+        mineFgFriendNum = page.findViewById(R.id.mine_fg_friend_num);
+        mineFgFanNum = page.findViewById(R.id.mine_fg_fan_num);
+        mineFgAwardNum = page.findViewById(R.id.mine_fg_award_num);
+        mineFgFollowNum = page.findViewById(R.id.mine_fg_follow_num);
     }
 
     private void initPages() {
         fragments = new ArrayList<>();
-        fragments.add(new IssueFragment());
-        fragments.add(new CommentFragment());
-        fragments.add(new CollectFragment());
+        fragments.add(new IssueFragment(UserConstant.USER_ID));
+        fragments.add(new CommentFragment(UserConstant.USER_ID));
+        fragments.add(new CollectFragment(UserConstant.USER_ID));
     }
 }

@@ -6,19 +6,19 @@
     <item android:title="关于用户">
         <menu>
             <item
-                android:id="@+id/nav_camera"
+                android:id="@+id/nav_account_security"
                 android:title="账号安全"
                 android:icon="@mipmap/rightarrow"/>
             <item
-                android:id="@+id/nav_gallery"
+                android:id="@+id/nav_priority_setting"
                 android:title="隐私设置"
                 android:icon="@mipmap/rightarrow"/>
             <item
-                android:id="@+id/nav_slideshow"
+                android:id="@+id/nav_unsubscribe"
                 android:title="注销账户"
                 android:icon="@mipmap/rightarrow"/>
             <item
-                android:id="@+id/nav_manage"
+                android:id="@+id/nav_log_out"
                 android:title="退出登录"
                 android:icon="@mipmap/rightarrow"/>
         </menu>
@@ -26,16 +26,16 @@
     <item android:title="关于我们">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:title="客服中心"
-                android:icon="@mipmap/rightarrow"/>
-            <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_user_agreement"
                 android:title="用户服务协议与隐私政策"
                 android:icon="@mipmap/rightarrow"/>
             <item
-                android:id="@+id/nav_deal"
+                android:id="@+id/nav_clear_cache"
                 android:title="清理缓存"
+                android:icon="@mipmap/rightarrow"/>
+            <item
+                android:id="@+id/nav_call_center"
+                android:title="客服中心"
                 android:icon="@mipmap/rightarrow"/>
         </menu>
     </item>

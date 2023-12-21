@@ -16,13 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.campuswindow.R;
 import com.campuswindow.Result;
+import com.campuswindow.constant.UserConstant;
+import com.campuswindow.entity.ChatListVo;
 import com.campuswindow.interfaces.OnChatItemClickListener;
 import com.campuswindow.server.API;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -31,18 +37,18 @@ import okhttp3.Response;
 
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHolder> {
 
-    private List<ChatList> chatLists = new ArrayList<>();
+    private List<ChatListVo> chatLists = new ArrayList<>();
     private Context context;
     private OnChatItemClickListener onChatItemClickListener;
 
-    public void setChatLists(List<ChatList> chatLists) {
+    public void setChatLists(List<ChatListVo> chatLists) {
         this.chatLists = chatLists;
     }
 
     public ChatListAdapter() {
     }
 
-    public ChatListAdapter(List<ChatList> chatLists) {
+    public ChatListAdapter(List<ChatListVo> chatLists) {
         this.chatLists = chatLists;
     }
 
@@ -60,9 +66,13 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //根据下标，获取每一个ChatList
-        ChatList chatList = chatLists.get(position);
-        //设置头像
-        holder.name.setText(chatList.getToUserName());
+        ChatListVo chatList = chatLists.get(position);
+        //设置头像、时间
+        holder.name.setText(chatList.getName());
+        System.out.println(chatList.getLastMsgTime());
+
+        //获取日期差，并显示出来:
+        holder.time.setText(getDateLag(chatList.getLastMsgTime()));
         //设置最后一次发送的消息
         holder.msg.setText(chatList.getLastMsg());
         holder.unread.setText(chatList.getUnread() + "");
@@ -71,10 +81,12 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75, context.getResources().getDisplayMetrics());
         //设置对象头像
         Glide.with(context)
-                .load(chatList.getToUserAvatar())
+                .load(chatList.getAvatar())
                 .circleCrop()
                 .override(width, height)
                 .into(holder.img);
+
+
         //设置RecyclerView的点击事件监听器
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +107,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                //发送请求，更改与用户的状态
-                                updateChatListStatus(chatList.getFromUserId(), chatList.getToUserId(), holder.getAdapterPosition());
+                                updateChatListStatus(chatList.getLinkId(), UserConstant.USER_ID, holder.getAdapterPosition());
                             }
                         })
                         .setNegativeButton("取消", null);
@@ -106,14 +118,60 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         });
     }
 
-    private void updateChatListStatus(String fromUserId, String toUserId, int position) {
+    //获取时间差，判断显示日期
+    private String getDateLag(Date date) {
+        Date currentDate = new Date(); // 当前日期时间
+        Date lastMsgTime = date; // 获取Date类型的数据（最后一条消息时间）
+
+        // 计算日期差
+        Calendar currentCal = Calendar.getInstance();
+        currentCal.setTime(currentDate);
+        int currentDay = currentCal.get(Calendar.DAY_OF_YEAR);
+        int currentYear = currentCal.get(Calendar.YEAR);
+
+        Calendar lastMsgCal = Calendar.getInstance();
+        lastMsgCal.setTime(lastMsgTime);
+        int lastMsgDay = lastMsgCal.get(Calendar.DAY_OF_YEAR);
+        int lastMsgYear = lastMsgCal.get(Calendar.YEAR);
+
+        int dayDiff = currentDay - lastMsgDay;
+        int yearDiff = currentYear - lastMsgYear;
+
+        // 定义日期格式
+        SimpleDateFormat sdf;
+        SimpleDateFormat chineseSdf ;
+
+        // 根据日期差显示不同的文本
+        if (dayDiff < 1) {
+            // 小于一天，显示时分
+            sdf = new SimpleDateFormat("HH:mm");
+            return sdf.format(lastMsgTime);
+        } else if (dayDiff >= 1 && dayDiff < 2) {
+            // 大于等于一天但小于两天，显示昨天
+            return "昨天";
+        } else if (dayDiff >= 2 && dayDiff < 7) {
+            // 大于两天但小于一周，显示星期几
+            chineseSdf = new SimpleDateFormat("E", Locale.CHINESE);
+            return chineseSdf.format(lastMsgTime);
+        } else if (yearDiff == 0) {
+            // 大于一周，显示年月日
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(lastMsgTime);
+        } else {
+            // 大于一年
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(lastMsgTime);
+        }
+    }
+
+    private void updateChatListStatus(String linkId, String toUserId, int position) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 OkHttpClient client = new OkHttpClient();
                 Request build = new Request.Builder()
                         .get()
-                        .url(API.UPDATE_CHAT_LIST_STATUS + "/" + fromUserId + "/" + toUserId)
+                        .url(API.UPDATE_CHAT_LIST_STATUS + "/" + linkId + "/" + toUserId)
                         .build();
                 Call call = client.newCall(build);
                 try {

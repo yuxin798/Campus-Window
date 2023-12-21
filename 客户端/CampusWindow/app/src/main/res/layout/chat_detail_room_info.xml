@@ -6,7 +6,8 @@
     <RelativeLayout
         android:id="@+id/receive_relative"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp">
         <ImageView
             android:layout_alignParentLeft="true"
             android:id="@+id/image_receive"
@@ -18,30 +19,34 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
+<!--            <TextView-->
+<!--                android:id="@+id/text_name_receive"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_gravity="left"-->
+<!--                android:text="大青儿"-->
+<!--                android:textSize="20dp"-->
+<!--                android:textColor="#131313"-->
+<!--                android:layout_marginLeft="10dp"/>-->
             <TextView
-                android:id="@+id/text_name_receive"
-                android:layout_width="50dp"
-                android:layout_height="20dp"
-                android:layout_gravity="left"
-                android:text="大青儿"
-                android:textSize="20dp"
-                android:textColor="#131313"
-                android:layout_marginLeft="10dp"/>
-            <TextView
+                android:padding="10dp"
                 android:id="@+id/text_content_receive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:textSize="20dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:maxLength="20"
                 android:text="我是一段文字一段文"
-                android:background="@color/white"/>
+                android:background="@drawable/shape_all_corners"/>
         </LinearLayout>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/send_relative"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dp">
         <ImageView
             android:layout_alignParentRight="true"
             android:id="@+id/image_send"
@@ -63,14 +68,18 @@
 <!--                android:textColor="#131313"-->
 <!--                android:layout_marginRight="5dp"/>-->
             <TextView
+                android:padding="10dp"
                 android:id="@+id/text_content_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:text="我是一段文字一段文"
-                android:textSize="20dp"
-                android:background="#00BFFF"/>
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:maxLength="20"
+                android:background="@drawable/shape_all_corners_blue"/>
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.campuswindow;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +48,8 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
     private TextView thumbsupNum,commentsNum,collectNum;
     private CheckBox cbThumbsup,cbCollect;
 
+    private LinearLayout activityItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,13 +66,23 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
         userName.setText(entertainmentActivity.getUserName());
         //postTime.setText(entertainmentActivity.getDate().toString());
         postTitle.setText(entertainmentActivity.getActivityTitle());
+        System.out.println(entertainmentActivity.getActivityTitle());
+
+        System.out.println(entertainmentActivity.getActivityContent());
         richEditor.setHtml(entertainmentActivity.getActivityContent());
+
+        richEditor.setInputEnabled(false);
+
         if(entertainmentActivity.getLove()==0){
             thumbsupNum.setText("推荐");
         }else {
             thumbsupNum.setText(""+entertainmentActivity.getLove());
         }
         cbThumbsup.setChecked(entertainmentActivity.isLoved());
+
+        cbCollect.setChecked(entertainmentActivity.isCollected());
+        System.out.println(entertainmentActivity.isCollected()+"666666");
+
         commentRecyclerViewAdapter = new CommentRecyclerViewAdapter(commentList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(commentRecyclerViewAdapter);
@@ -104,10 +118,19 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
 
             }
         });
+        //设置点击事件，跳转到发帖人的主页面
+        activityItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AcademicItemDetailActivity.this,ClickPostedUserActivity.class);
+                intent.putExtra("activity",entertainmentActivity);
+                startActivity(intent);
+            }
+        });
 
     }
     private void findByView() {
-        imageView = findViewById(R.id.detailed_userimage);
+        imageView = findViewById(R.id.detailed_user_image);
         postTime = findViewById(R.id.detailed_time);
         userName = findViewById(R.id.detailed_username);
         postTitle = findViewById(R.id.detailed_title);
@@ -121,6 +144,7 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
         thumbsupNum = findViewById(R.id.thumbsup_num);
         commentsNum = findViewById(R.id.comments_num);
         collectNum = findViewById(R.id.comments_num);
+        activityItem = findViewById(R.id.activity_item);
     }
 
     //写评论弹窗
@@ -152,5 +176,4 @@ public class AcademicItemDetailActivity extends AppCompatActivity {
         View rootview = LayoutInflater.from(AcademicItemDetailActivity.this).inflate(R.layout.activity_academic_item_detail, null);
         mPopWindow.showAtLocation(rootview, Gravity.BOTTOM, 0, 0);
     }
-
 }

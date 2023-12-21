@@ -420,9 +420,18 @@ public class PostMsgActivity extends AppCompatActivity {
                         public void run() {
                             String realPath = Utils.getRealPath(getApplicationContext(), imageUri);
                             Log.i("realPath",realPath+"");
-                            String filePath = uploadAvatar(realPath, API.FILE_UPLOAD, Utils.TYPE);
-                            Log.i("filePath",filePath);
-                            if (Utils.TYPE.equals("video/mp4")) {
+//                            String filePath = uploadAvatar(realPath, API.FILE_UPLOAD, Utils.TYPE);
+//                            Log.i("filePath",filePath);
+
+                            String type = null;
+                            if (imageUri.toString().contains("video")){
+                                type = "video/mp4";
+                            }else {
+                                type = "image/jpeg";
+                            }
+                            String filePath = uploadAvatar(realPath, API.FILE_UPLOAD, type);
+
+                            if (type.equals("video/mp4")) {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -450,7 +459,7 @@ public class PostMsgActivity extends AppCompatActivity {
     private String uploadAvatar(String realPath, String api, String mediaType) {
         File file = new File(realPath);
         MultipartBody requestBody = new MultipartBody.Builder()
-                .addFormDataPart("file", file.getName(), RequestBody.create(file, MediaType.get(mediaType)))
+                .addFormDataPart("file", file.getName(), RequestBody.create(file, MediaType.parse(mediaType)))
                 .build();
         Request.Builder builder = new Request.Builder();
         Request request = builder

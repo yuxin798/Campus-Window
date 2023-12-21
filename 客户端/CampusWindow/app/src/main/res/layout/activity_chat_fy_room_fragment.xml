@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/chat_fy_room_fg_img_header"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/ikun"/>
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_fy_room_fg_ry"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <include layout="@layout/activity_chat_fy_room_right_part"
+        android:layout_weight="9"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"/>
+
+</LinearLayout>
