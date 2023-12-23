@@ -149,7 +149,10 @@ public class ChatService {
             updateChatListStatus(linkId, userId, true);
             updateChatListStatus(linkId, toUserId, true);
         }else {
-            saveForPrivate(userId, toUserId);
+            String linkId = findLinkIdByUserIdAndToUserId(userId, toUserId);
+            if (linkId == null){
+                saveForPrivate(userId, toUserId);
+            }
         }
     }
 
@@ -176,5 +179,17 @@ public class ChatService {
 
     public List<ChatListFollowVo> findFollowerByName(String userId, String userName) {
        return chatListRepository.findFollowerByName(userId, userName);
+    }
+
+    public String chatToOther(String userId, String toUserId) {
+        String linkId = chatListRepository.findLinkIdByUserIdAndToUserId(userId, toUserId);
+        if (linkId == null){
+            linkId = UUID.randomUUID().toString().replaceAll("-", "");
+            Timestamp createTime = new Timestamp(System.currentTimeMillis());
+            chatLinkRepository.save(new ChatLink(linkId, linkId, createTime, 0, null, null, 2));
+            chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, userId, 0, "请开始聊天吧", createTime, 0, 0));
+            chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, toUserId, 0, "请开始聊天吧", createTime, 0, 0));
+        }
+        return linkId;
     }
 }

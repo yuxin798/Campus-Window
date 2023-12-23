@@ -27,16 +27,16 @@ public class CommentController {
      */
     @PostMapping("/addComment")
     @Operation(summary = "发表评论")
-    public Result<?> addComment(@RequestBody CommentDto commentDto){
-        commentService.addComment(commentDto);
-        return ResultVOUtil.success();
+    public Result<String> addComment(@RequestBody CommentDto commentDto){
+        String commentId = commentService.addComment(commentDto);
+        return ResultVOUtil.success(commentId);
     }
 
     @PostMapping("/replyComment")
     @Operation(summary = "回复评论")
-    public Result<?> addComment(@RequestBody ReplyCommentDto replyCommentDto){
-        commentService.addReplyComment(replyCommentDto);
-        return ResultVOUtil.success();
+    public Result<String> addComment(@RequestBody ReplyCommentDto replyCommentDto){
+        String commentId = commentService.addReplyComment(replyCommentDto);
+        return ResultVOUtil.success(commentId);
     }
 
     /*

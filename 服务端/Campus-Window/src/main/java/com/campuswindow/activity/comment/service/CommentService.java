@@ -29,7 +29,7 @@ public class CommentService {
     /*
      * 发表评论，同时将图片或视频网络地址保存到数据库中
      */
-    public void addComment(CommentDto commentDto){
+    public String addComment(CommentDto commentDto){
         String commentId = UUID.randomUUID().toString().replace("-", "");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Comment comment = new Comment(commentId, commentDto.getActivityId(), commentDto.getUserId(), commentDto.getContent(), 0, timestamp, null, null);
@@ -37,18 +37,20 @@ public class CommentService {
         commentImageService.save(commentDto.getImages(), commentId, commentDto.getUserId(), 0);
         commentImageService.save(commentDto.getVideos(), commentId, commentDto.getUserId(), 1);
         activityService.addComment(commentDto.getActivityId());
+        return commentId;
     }
 
     /*
      * 回复评论，同时将图片或视频网络地址保存到数据库中
      */
-    public void addReplyComment(ReplyCommentDto replyCommentDto) {
+    public String addReplyComment(ReplyCommentDto replyCommentDto) {
         String commentId = UUID.randomUUID().toString().replace("-", "");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Comment comment = new Comment(commentId, replyCommentDto.getActivityId(), replyCommentDto.getUserId(), replyCommentDto.getContent(), 0, timestamp, replyCommentDto.getParentId(), replyCommentDto.getToUserId());
         commentRepository.save(comment);
         commentImageService.save(replyCommentDto.getImages(), commentId, replyCommentDto.getUserId(), 0);
         commentImageService.save(replyCommentDto.getVideos(), commentId, replyCommentDto.getUserId(), 1);
+        return commentId;
     }
 
     /*

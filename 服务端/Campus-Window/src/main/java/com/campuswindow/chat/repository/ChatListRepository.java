@@ -58,7 +58,7 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
     "case l.type when 1 then l.name when 0 then (select u.userName from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end," +
     "case l.type when 1 then l.avatar when 0 then (select u.avatar from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end ) " +
     "from ChatList as c join ChatLink as l on c.linkId = l.linkId " +
-    "where c.userId = ?1")
+    "where c.userId = ?1 order by c.status desc")
     List<ChatListFollowVo> findFollowersByUserId(String userId);
 
     @Query(value = "select c1.linkId from ChatList as c1 join ChatList as c2 on c1.linkId = c2.linkId join ChatLink as k on k.linkId = c2.linkId where k.type = 0 and c1.userId = ?1 and c2.userId = ?2 ")
@@ -76,6 +76,7 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
             "(l.type = 0 and c.linkId in (select e.linkId from ChatList as e " +
             "join User as u on e.userId = u.userId " +
             "join ChatLink as l on e.linkId = l.linkId " +
-            "where e.userId != ?1 and u.userName like %?2% )))")
+            "where e.userId != ?1 and u.userName like %?2% )))" +
+            "order by c.status desc")
     List<ChatListFollowVo> findFollowerByName(String userId, String userName);
 }

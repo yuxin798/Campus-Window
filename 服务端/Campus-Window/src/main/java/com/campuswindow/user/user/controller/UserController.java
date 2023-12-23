@@ -102,7 +102,7 @@ public class UserController {
 
     @PostMapping(path = "/login")
     @Operation(summary = "用户登录")
-    public Result<String> login(@RequestBody @Valid LoginDto loginDto, Errors errors){
+    public Result<ChatUserDto> login(@RequestBody @Valid LoginDto loginDto, Errors errors){
         //数据校验
         String errorMessage = null;
         if (errors.hasErrors()){
@@ -111,7 +111,7 @@ public class UserController {
         }
         //登陆校验
         User loginUser = userService.login(loginDto);
-        return ResultVOUtil.success(loginUser.getUserId());
+        return ResultVOUtil.success(new ChatUserDto(loginUser.getUserId(), loginUser.getUserName(), loginUser.getAvatar()));
     }
 
     @PostMapping("/updatePassword")

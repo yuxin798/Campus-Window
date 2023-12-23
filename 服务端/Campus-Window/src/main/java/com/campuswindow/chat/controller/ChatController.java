@@ -111,6 +111,13 @@ public class ChatController {
         return ResultVOUtil.success();
     }
 
+    @GetMapping("/chatToOther")
+    @Operation(summary = "私信按钮")
+    public Result<String> chatToOther(String userId, String toUserId){
+        String linkId = chatService.chatToOther(userId, toUserId);
+        return ResultVOUtil.success(linkId);
+    }
+
     @Autowired
     public void setChatService(ChatService chatService) {
         this.chatService = chatService;
