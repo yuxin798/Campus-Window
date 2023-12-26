@@ -39,9 +39,16 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
     void updateChatListStatus(String linkId, String userId, boolean b);
 
     @Query(value = "select new com.campuswindow.chat.vo.ChatListVo(c.listId, c.linkId, " +
-            "case l.type when 1 then l.name when 0 then (select u.userName from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end," +
-            "case l.type when 1 then l.avatar when 0 then (select u.avatar from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end," +
-            "l.num, c.lastMsg, c.lastMsgTime, c.unread, c.status, l.type) " +
+            "case l.type " +
+            "when 1 then (select g.groupName from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId) " +
+            "when 0 then (select u.userName from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end," +
+            "case l.type " +
+            "when 1 then (select g.groupAvatar from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId) " +
+            "when 0 then (select u.avatar from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end," +
+            "case l.type " +
+            "when 1 then (select g.groupNumber from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId) " +
+            "when 0 then 2 end, " +
+            "c.lastMsg, c.lastMsgTime, c.unread, c.status, l.type) " +
             "from ChatList as c join ChatLink as l on c.linkId = l.linkId " +
             "where c.userId = ?1 and (c.status = 1 or c.unread != 0) order by c.lastMsgTime desc")
     List<ChatListVo> findAllByFromUserId(String userId);
@@ -55,8 +62,12 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
 //            "from ChatList as c join ChatLink as l on c.linkId = l.linkId " +
 //            "where c.userId = ?1")
     @Query(value = "select new com.campuswindow.chat.vo.ChatListFollowVo(c.linkId, " +
-    "case l.type when 1 then l.name when 0 then (select u.userName from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end," +
-    "case l.type when 1 then l.avatar when 0 then (select u.avatar from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end ) " +
+    "case l.type " +
+            "when 1 then (select g.groupName from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId) " +
+            "when 0 then (select u.userName from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end," +
+    "case l.type " +
+            "when 1 then (select g.groupAvatar from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId) " +
+            "when 0 then (select u.avatar from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end ) " +
     "from ChatList as c join ChatLink as l on c.linkId = l.linkId " +
     "where c.userId = ?1 order by c.status desc")
     List<ChatListFollowVo> findFollowersByUserId(String userId);
@@ -69,14 +80,24 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
     void deleteAllByLinkId(String linkId);
 
     @Query(value = "select new com.campuswindow.chat.vo.ChatListFollowVo(c.linkId, " +
-            "case l.type when 1 then l.name when 0 then (select u.userName from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end ," +
-            "case l.type when 1 then l.avatar when 0 then (select u.avatar from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end) " +
+            "case l.type " +
+            "when 1 then (select g.groupName from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId and g.groupName like %?2%) " +
+            "when 0 then (select u.userName from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end ," +
+            "case l.type " +
+            "when 1 then (select g.groupAvatar from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId) " +
+            "when 0 then (select u.avatar from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end) " +
             "from ChatList as c join ChatLink as l on c.linkId = l.linkId " +
-            "where c.userId = ?1 and (l.name like %?2% or " +
-            "(l.type = 0 and c.linkId in (select e.linkId from ChatList as e " +
-            "join User as u on e.userId = u.userId " +
-            "join ChatLink as l on e.linkId = l.linkId " +
-            "where e.userId != ?1 and u.userName like %?2% )))" +
-            "order by c.status desc")
+            "where c.userId = ?1 ")
     List<ChatListFollowVo> findFollowerByName(String userId, String userName);
+
+    @Query(value = "select count(*) from ChatList where linkId = ?1")
+    int findChannelNumberByLinkId(String linkId);
+
+    @Query(value = "delete from ChatList where linkId = ?1 and userId = ?2")
+    @Modifying
+    void deleteAllByLinkIdAndUserId(String channelLinkId, String userId);
+
+
+    @Query(value = "select count(*) from ChatList where linkId = ?1 and userId = ?2")
+    int findByLinkIdAndUserId(String linkId, String userId);
 }

@@ -1,9 +1,8 @@
 package com.campuswindow.chat.controller;
 
+import com.campuswindow.chat.dto.ChatChannelDto;
 import com.campuswindow.chat.service.ChatService;
-import com.campuswindow.chat.vo.ChatListFollowVo;
-import com.campuswindow.chat.vo.ChatListVo;
-import com.campuswindow.chat.vo.ChatMessageVo;
+import com.campuswindow.chat.vo.*;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -116,6 +115,69 @@ public class ChatController {
     public Result<String> chatToOther(String userId, String toUserId){
         String linkId = chatService.chatToOther(userId, toUserId);
         return ResultVOUtil.success(linkId);
+    }
+
+    @PostMapping("/createChannel")
+    @Operation(summary = "创建频道")
+    public Result<?> createChannel(@RequestBody ChatChannelDto chatChannelDto){
+        chatService.createChannel(chatChannelDto);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/deleteChannel")
+    @Operation(summary = "删除频道")
+    public Result<?> deleteChannel(String linkId, String userId){
+        chatService.deleteChannel(linkId, userId);
+        return ResultVOUtil.success();
+    }
+
+    @PostMapping("/createChannelChild")
+    @Operation(summary = "创建子频道")
+    public Result<?> createChannelChild(@RequestBody ChatChannelDto chatChannelDto){
+        chatService.createChannelChild(chatChannelDto);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/deleteChannelChild")
+    @Operation(summary = "删除子频道")
+    public Result<?> deleteChannelChild(String linkId){
+        chatService.deleteChannelChild(linkId);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/enterChannel")
+    @Operation(summary = "进入频道")
+    public Result<?> enterChannel(String linkId, String userId){
+        chatService.enterChannel(linkId, userId);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/leaveChannel")
+    @Operation(summary = "离开频道")
+    public Result<?> leaveChannel(String linkId, String userId){
+        chatService.leaveChannel(linkId, userId);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/findChannel")
+    @Operation(summary = "根据用户Id查询所有频道")
+    public Result<List<ChatChannelVo>> findChannel(String userId){
+        List<ChatChannelVo> chatChannelVos = chatService.findChannel(userId);
+        return ResultVOUtil.success(chatChannelVos);
+    }
+
+    @GetMapping("/findChildChannel")
+    @Operation(summary = "根据频道Id查询子频道")
+    public Result<ChatChannelDetailVo> findChildChannel(String linkId, String userId){
+        ChatChannelDetailVo chatChannelVos = chatService.findChildChannel(linkId, userId);
+        return ResultVOUtil.success(chatChannelVos);
+    }
+
+    @GetMapping("/findAllChannel")
+    @Operation(summary = "根据频道名称模糊查询频道")
+    public Result<List<QueryChatChannelVo>> findAllChannel(String channelName, String userId){
+        List<QueryChatChannelVo> queryChatChannelVo = chatService.findChannelByChannelName(channelName, userId);
+        return ResultVOUtil.success(queryChatChannelVo);
     }
 
     @Autowired

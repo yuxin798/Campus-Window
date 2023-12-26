@@ -1,6 +1,7 @@
 package com.campuswindow.activity.activity.controller;
 
 import com.campuswindow.activity.activity.dto.ActivityDto;
+import com.campuswindow.activity.activity.dto.EditActivityDto;
 import com.campuswindow.activity.activity.service.ActivityService;
 import com.campuswindow.activity.activity.vo.ActivityVo;
 import com.campuswindow.activity.activitycollect.entity.ActivityCollect;
@@ -35,9 +36,19 @@ public class ActivityController {
      * 发帖，同时将图片或视频网络地址保存到数据库中
      */
     @PostMapping("/sendActivity")
-    @Operation(summary = "发帖")
+    @Operation(summary = "发布贴子")
     public Result<?> sendActivity(@RequestBody ActivityDto activityDto) throws ParseException {
         activityService.sendActivity(activityDto);
+        return ResultVOUtil.success();
+    }
+
+    /*
+     * 重新编辑帖子
+     */
+    @PostMapping("/editActivity")
+    @Operation(summary = "重新编辑帖子")
+    public Result<?> editActivity(@RequestBody EditActivityDto editActivityDto){
+        activityService.editActivity(editActivityDto);
         return ResultVOUtil.success();
     }
 

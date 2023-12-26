@@ -10,13 +10,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tbl_school")
 @Data
-@Schema(name = "学校")
+@Schema(description = "学校")
 public class School {
     @Id
-    @Schema(name = "学校Id")
+    @Schema(description = "学校Id")
     private int schoolId;
-    @Schema(name = "学校名称")
+    @Schema(description = "学校名称")
     private String schoolName;
-    @Schema(name = "校徽")
+    @Schema(description = "校徽")
     private String schoolLogo;
 }

@@ -6,7 +6,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ActivityDto {
+public class EditActivityDto {
+    @Schema(description = "活动Id")
+    private String activityId;
     @Schema(description = "活动标题")
     private String activityTitle;
     @Schema(description = "活动内容")

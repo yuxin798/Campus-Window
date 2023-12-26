@@ -7,21 +7,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 
 @Data
 @Entity
-@Table(name = "chat_link")
+@Table(name = "chat_group")
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatLink {
+public class ChatGroup {
     @Id
-    private String id;
-    //关系表id
     private String linkId;
-    private Timestamp createTime;
-    private int type;
-//    private String name;
-//    private String avatar;
-//    private int num;
+    private String groupName;
+    private String groupAvatar;
+    private int groupNumber;
 }

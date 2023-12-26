@@ -1,14 +1,9 @@
 package com.campuswindow.chat.service;
 
-import com.campuswindow.chat.entity.ChatLink;
-import com.campuswindow.chat.entity.ChatList;
-import com.campuswindow.chat.entity.ChatMessage;
-import com.campuswindow.chat.repository.ChatLinkRepository;
-import com.campuswindow.chat.repository.ChatListRepository;
-import com.campuswindow.chat.repository.ChatMessageRepository;
-import com.campuswindow.chat.vo.ChatListFollowVo;
-import com.campuswindow.chat.vo.ChatListVo;
-import com.campuswindow.chat.vo.ChatMessageVo;
+import com.campuswindow.chat.dto.ChatChannelDto;
+import com.campuswindow.chat.entity.*;
+import com.campuswindow.chat.repository.*;
+import com.campuswindow.chat.vo.*;
 import com.campuswindow.user.follow.service.FollowService;
 import com.campuswindow.user.user.repository.UserRepository;
 import com.campuswindow.user.user.service.UserService;
@@ -19,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,6 +25,10 @@ public class ChatService {
     private ChatLinkRepository chatLinkRepository;
     @Autowired
     private ChatListRepository chatListRepository;
+    @Autowired
+    private ChatGroupRepository chatGroupRepository;
+    @Autowired
+    private ChatChannelRepository chatChannelRepository;
     @Autowired
     private UserService userService;
     @Autowired
@@ -42,10 +42,11 @@ public class ChatService {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < userIds.size(); i++) {
             String username = userService.findUserNameByUserId(userIds.get(i));
-            builder.append(username);
+            builder.append("，" + username);
         }
         // TODO 默认图片自行设置
-        chatLinkRepository.save(new ChatLink(linkId, linkId, createTime, 1, builder.toString(), "http://192.168.144.132:9000/campus-bucket/users/default.jpg", userIds.size()));
+        chatGroupRepository.save(new ChatGroup(linkId, builder.toString(), "http://192.168.144.132:9000/campus-bucket/users/default.jpg", userIds.size()));
+        chatLinkRepository.save(new ChatLink(linkId, linkId, createTime, 1));
         for (String userId : userIds){
             String id = UUID.randomUUID().toString().replaceAll("-", "");
             chatListRepository.save(new ChatList(id, linkId, userId, 0, null, createTime, 0, 1));
@@ -55,7 +56,7 @@ public class ChatService {
     public void saveForPrivate(String fromUserId, String toUserId) {
         String linkId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
-        chatLinkRepository.save(new ChatLink(linkId, linkId, createTime, 0, null, null, 2));
+        chatLinkRepository.save(new ChatLink(linkId, linkId, createTime, 0));
         chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, fromUserId, 0, "请开始聊天吧", createTime, 0, 0));
         chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, toUserId, 0, "请开始聊天吧", createTime, 0, 0));
     }
@@ -186,10 +187,86 @@ public class ChatService {
         if (linkId == null){
             linkId = UUID.randomUUID().toString().replaceAll("-", "");
             Timestamp createTime = new Timestamp(System.currentTimeMillis());
-            chatLinkRepository.save(new ChatLink(linkId, linkId, createTime, 0, null, null, 2));
+            chatLinkRepository.save(new ChatLink(linkId, linkId, createTime, 0));
             chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, userId, 0, "请开始聊天吧", createTime, 0, 0));
             chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, toUserId, 0, "请开始聊天吧", createTime, 0, 0));
         }
         return linkId;
+    }
+
+    public void createChannel(ChatChannelDto chatChannelDto) {
+        String linkId = UUID.randomUUID().toString().replaceAll("-", "");
+        Timestamp createTime = new Timestamp(System.currentTimeMillis());
+        chatLinkRepository.save(new ChatLink(UUID.randomUUID().toString().replaceAll("-", ""), linkId, createTime, 2));
+        chatChannelRepository.save(new ChatChannel(linkId, chatChannelDto.getChannelName(), chatChannelDto.getChannelAvatar(), chatChannelDto.getChannelSignature(), chatChannelDto.getParentId(), chatChannelDto.getChannelMaster()));
+        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, chatChannelDto.getChannelMaster(), 0,  null, createTime, 0, 1));
+    }
+
+    public void createChannelChild(ChatChannelDto chatChannelDto) {
+        String linkId = UUID.randomUUID().toString().replaceAll("-", "");
+        Timestamp createTime = new Timestamp(System.currentTimeMillis());
+        chatLinkRepository.save(new ChatLink(UUID.randomUUID().toString().replaceAll("-", ""), linkId, createTime, 3));
+        chatChannelRepository.save(new ChatChannel(linkId, chatChannelDto.getChannelName(), chatChannelDto.getChannelAvatar(), null, chatChannelDto.getParentId(), chatChannelDto.getChannelMaster()));
+        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, chatChannelDto.getChannelMaster(), 0, "欢迎来到 " + chatChannelDto.getChannelName(), createTime, 0, 1));
+    }
+
+    public void enterChannel(String linkId, String userId) {
+        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, userId, 0, null, new Timestamp(System.currentTimeMillis()), 0, 1));
+        List<EnterChannelVo> enterChannelVos = chatChannelRepository.findChildChannelByParentId(linkId);
+        for (EnterChannelVo enterChannelVo : enterChannelVos){
+            chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), enterChannelVo.getLinkId(), userId, 0, enterChannelVo.getLastMsg(), new Timestamp(enterChannelVo.getLastMsgTime().getTime()), (int)enterChannelVo.getUnread(), 1));
+        }
+    }
+
+    public void leaveChannel(String linkId, String userId) {
+        chatChannelRepository.findChildChannelLinkIdByParentId(linkId)
+                .forEach(channelLinkId -> chatListRepository.deleteAllByLinkIdAndUserId(channelLinkId, userId));
+        chatListRepository.deleteAllByLinkIdAndUserId(linkId, userId);
+    }
+
+    public List<ChatChannelVo> findChannel(String userId) {
+        return chatChannelRepository.findChannelByUserId(userId);
+    }
+
+    public ChatChannelDetailVo findChildChannel(String linkId, String userId) {
+        ChatChannelDetailVo chatChannelDetailVo = chatChannelRepository.findChildChannelByLinkId(linkId);
+        List<ChatChannelListVo> chatChannelListVos =  chatChannelRepository.findChannelListByParentId(linkId, userId)
+                .stream()
+                .peek(e -> e.setUnread(chatMessageRepository.findUnreadByLinkId(e.getLinkId())))
+                .collect(Collectors.toList());
+        chatChannelDetailVo.setChatChannelListVos(chatChannelListVos);
+        int count = chatListRepository.findChannelNumberByLinkId(linkId);
+        chatChannelDetailVo.setChannelNumber(count);
+        return chatChannelDetailVo;
+    }
+
+    public void deleteChannelChild(String linkId) {
+        chatChannelRepository.deleteChannel(linkId);
+        chatLinkRepository.deleteByLinkId(linkId);
+        chatListRepository.deleteAllByLinkId(linkId);
+        chatMessageRepository.deleteAllByLinkId(linkId);
+    }
+
+    public void deleteChannel(String linkId, String userId) {
+        List<String> allLinkIds = chatChannelRepository.findChildChannelLinkIdByParentId(linkId);
+        allLinkIds.add(linkId);
+        for (String channelLinkId : allLinkIds){
+            chatChannelRepository.deleteChannel(channelLinkId);
+            chatLinkRepository.deleteByLinkId(channelLinkId);
+            chatListRepository.deleteAllByLinkIdAndUserId(channelLinkId, userId);
+            chatMessageRepository.deleteAllByLinkId(channelLinkId);
+        }
+    }
+
+    public List<QueryChatChannelVo> findChannelByChannelName(String channelName, String userId) {
+        return chatChannelRepository.findAllByChannelNameContainingIgnoreCase(channelName)
+                .stream()
+                .peek(e -> e.setEntered(existsByLinkIdAndUserId(e.getLinkId(), userId)))
+                .peek(e -> e.setChannelNumber(chatListRepository.findChannelNumberByLinkId(e.getLinkId())))
+                .collect(Collectors.toList());
+    }
+
+    private boolean existsByLinkIdAndUserId(String linkId, String userId) {
+        return chatListRepository.findByLinkIdAndUserId(linkId, userId) != 0;
     }
 }

@@ -10,6 +10,10 @@ import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity, String> {
 
+    @Query(value = "update Activity set activityTitle = ?2, activityContent = ?3, type = ?4 where activityId = ?1")
+    @Modifying
+    void updateActivityByActivityId(String activityId, String activityTitle, String activityContent, int type);
+
     @Query(value = "select new com.campuswindow.activity.activity.vo.ActivityVo(e.activityId, e.activityTitle, e.activityContent, e.date, e.userId, u.userName, u.avatar, u.school, e.love, e.comment, e.collect) from Activity as e join User as u on e.userId = u.userId where e.userId = ?1 order by e.date desc")
     List<ActivityVo> findActivityByUserId(String userId);
 
@@ -49,4 +53,6 @@ public interface ActivityRepository extends JpaRepository<Activity, String> {
 
     @Query(value = "select userId from Activity where activityId = ?1")
     String findUserIdByActivityId(String activityId);
+
+
 }

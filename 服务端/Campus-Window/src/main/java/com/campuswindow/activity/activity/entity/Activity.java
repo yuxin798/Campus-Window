@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "tbl_activity")
 @Data
-@Schema(name = "娱乐活动")
+@Schema(description = "娱乐活动")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Activity {

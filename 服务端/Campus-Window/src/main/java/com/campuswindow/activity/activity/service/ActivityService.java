@@ -1,6 +1,7 @@
 package com.campuswindow.activity.activity.service;
 
 import com.campuswindow.activity.activity.dto.ActivityDto;
+import com.campuswindow.activity.activity.dto.EditActivityDto;
 import com.campuswindow.activity.activity.entity.Activity;
 import com.campuswindow.activity.activity.repository.ActivityRepository;
 import com.campuswindow.activity.activity.vo.ActivityVo;
@@ -42,6 +43,14 @@ public class ActivityService {
         activityImageService.save(activityDto.getImages(), activityId, activityDto.getUserId(), 0);
         activityImageService.save(activityDto.getVideos(), activityId, activityDto.getUserId(), 1);
         return save;
+    }
+
+    public void editActivity(EditActivityDto editActivityDto) {
+        String activityId = editActivityDto.getActivityId();
+        activityRepository.updateActivityByActivityId(activityId, editActivityDto.getActivityTitle(), editActivityDto.getActivityContent(), editActivityDto.getType());
+        activityImageService.deleteActivityImageByActivityId(editActivityDto.getActivityId());
+        activityImageService.save(editActivityDto.getImages(), activityId, editActivityDto.getUserId(), 0);
+        activityImageService.save(editActivityDto.getVideos(), activityId, editActivityDto.getUserId(), 1);
     }
 
     public List<ActivityVo> selectActivity(String userId) {
