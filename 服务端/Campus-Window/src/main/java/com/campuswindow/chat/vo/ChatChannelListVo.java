@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatChannelListVo {
-    private String listId;
     //关系表主键
     private String linkId;
     //接收者
@@ -18,8 +17,7 @@ public class ChatChannelListVo {
     //未读数
     private int unread;
 
-    public ChatChannelListVo(String listId, String linkId, String name, String avatar, String lastMsg) {
-        this.listId = listId;
+    public ChatChannelListVo( String linkId, String name, String avatar, String lastMsg) {
         this.linkId = linkId;
         this.name = name;
         this.avatar = avatar;

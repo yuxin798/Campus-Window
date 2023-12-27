@@ -268,6 +268,13 @@ public class ChatService {
     }
 
     public List<QueryChatChannelVo> findChannelByChannelName(String channelName, String userId) {
+        if (channelName == null || "".equals(channelName)){
+            return chatChannelRepository.findAllChannel()
+                    .stream()
+                    .peek(e -> e.setEntered(existsByLinkIdAndUserId(e.getLinkId(), userId)))
+                    .peek(e -> e.setChannelNumber(chatListRepository.findChannelNumberByLinkId(e.getLinkId())))
+                    .collect(Collectors.toList());
+        }
         return chatChannelRepository.findAllByChannelNameContainingIgnoreCase(channelName)
                 .stream()
                 .peek(e -> e.setEntered(existsByLinkIdAndUserId(e.getLinkId(), userId)))

@@ -15,10 +15,10 @@ public interface ChatChannelRepository extends JpaRepository<ChatChannel, String
     @Query(value = "select new com.campuswindow.chat.vo.ChatChannelDetailVo(linkId, channelName, channelAvatar,channelBackground, channelMaster) from ChatChannel where linkId = ?1")
     ChatChannelDetailVo findChildChannelByLinkId(String linkId);
 
-    @Query(value = "select new com.campuswindow.chat.vo.ChatChannelListVo(l.listId, c1.linkId, c1.channelName, c1.channelAvatar, l.lastMsg) from ChatChannel as c1 join ChatChannel as c2 on c1.parentId = c2.linkId join ChatList as l on c1.linkId = l.linkId where c1.parentId = ?1 and l.userId = ?2")
+    @Query(value = "select distinct new com.campuswindow.chat.vo.ChatChannelListVo(c1.linkId, c1.channelName, c1.channelAvatar, l.lastMsg) from ChatChannel as c1 join ChatChannel as c2 on c1.parentId = c2.linkId join ChatList as l on c1.linkId = l.linkId where c1.parentId = ?1 and l.userId = ?2")
     List<ChatChannelListVo> findChannelListByParentId(String linkId, String userId);
 
-    @Query(value = "select new com.campuswindow.chat.vo.ChatChannelListVo(l.listId, c1.linkId, c1.channelName, c1.channelAvatar, l.lastMsg) from ChatChannel as c1 join ChatChannel as c2 on c1.parentId = c2.linkId join ChatList as l on c1.linkId = l.linkId where c1.parentId = ?1")
+    @Query(value = "select distinct new com.campuswindow.chat.vo.ChatChannelListVo(c1.linkId, c1.channelName, c1.channelAvatar, l.lastMsg) from ChatChannel as c1 join ChatChannel as c2 on c1.parentId = c2.linkId join ChatList as l on c1.linkId = l.linkId where c1.parentId = ?1")
     List<ChatChannelListVo> findChannelListByParentId(String linkId);
 
     @Query(value = "select new com.campuswindow.chat.vo.EnterChannelVo(c1.linkId, l.lastMsg, l.lastMsgTime, (select count(*) from ChatMessage where linkId = ?1)) from ChatChannel as c1 join ChatChannel as c2 on c1.parentId = c2.linkId join ChatList as l on c1.linkId = l.linkId where c1.parentId = ?1")
@@ -32,7 +32,10 @@ public interface ChatChannelRepository extends JpaRepository<ChatChannel, String
     @Modifying
     void deleteChannel(String linkId);
 
-    @Query(value = "select new com.campuswindow.chat.vo.QueryChatChannelVo(c.linkId, c.channelName, c.channelAvatar, c.channelSignature) from ChatChannel as c where c.channelName like %?1%")
+    @Query(value = "select new com.campuswindow.chat.vo.QueryChatChannelVo(c.linkId, c.channelName, c.channelAvatar, c.channelSignature) from ChatChannel as c join ChatLink as l on c.linkId = l.linkId where l.type = 2")
+    List<QueryChatChannelVo> findAllChannel();
+
+    @Query(value = "select new com.campuswindow.chat.vo.QueryChatChannelVo(c.linkId, c.channelName, c.channelAvatar, c.channelSignature) from ChatChannel as c join ChatLink as l on c.linkId = l.linkId where c.channelName like %?1% and l.type = 2")
     List<QueryChatChannelVo> findAllByChannelNameContainingIgnoreCase(String channelName);
 
     @Query(value = "update ChatChannel set channelName = ?2, channelAvatar = ?3, channelSignature = ?4, channelBackground = ?5 where linkId = ?1")
@@ -47,4 +50,5 @@ public interface ChatChannelRepository extends JpaRepository<ChatChannel, String
 
     @Query(value = "select new com.campuswindow.chat.vo.ChannelInfoVo(c.linkId, c.channelName, c.channelAvatar, c.channelSignature) from ChatChannel as c join ChatList as l on c.linkId = l.linkId join ChatLink as k on k.linkId = l.linkId where l.userId = ?1 and k.type = 2 and c.channelMaster != ?1")
     List<ChannelInfoVo> findOtherChannels(String userId);
+
 }
