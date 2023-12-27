@@ -13,4 +13,5 @@ public class ChatChannelDto {
     private String channelSignature;
     private String parentId;
     private String channelMaster;
+    private String channelBackground;
 }

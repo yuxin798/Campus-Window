@@ -97,7 +97,9 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
     @Modifying
     void deleteAllByLinkIdAndUserId(String channelLinkId, String userId);
 
-
     @Query(value = "select count(*) from ChatList where linkId = ?1 and userId = ?2")
     int findByLinkIdAndUserId(String linkId, String userId);
+
+    @Query(value = "select unread from ChatList where linkId =?1")
+    int findUnreadByLinkId(String linkId);
 }

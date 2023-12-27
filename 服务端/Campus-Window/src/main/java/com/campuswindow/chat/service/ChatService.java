@@ -198,7 +198,7 @@ public class ChatService {
         String linkId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         chatLinkRepository.save(new ChatLink(UUID.randomUUID().toString().replaceAll("-", ""), linkId, createTime, 2));
-        chatChannelRepository.save(new ChatChannel(linkId, chatChannelDto.getChannelName(), chatChannelDto.getChannelAvatar(), chatChannelDto.getChannelSignature(), chatChannelDto.getParentId(), chatChannelDto.getChannelMaster()));
+        chatChannelRepository.save(new ChatChannel(linkId, chatChannelDto.getChannelName(), chatChannelDto.getChannelAvatar(), chatChannelDto.getChannelSignature(), chatChannelDto.getParentId(), chatChannelDto.getChannelMaster(), chatChannelDto.getChannelBackground()));
         chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, chatChannelDto.getChannelMaster(), 0,  null, createTime, 0, 1));
     }
 
@@ -206,7 +206,7 @@ public class ChatService {
         String linkId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         chatLinkRepository.save(new ChatLink(UUID.randomUUID().toString().replaceAll("-", ""), linkId, createTime, 3));
-        chatChannelRepository.save(new ChatChannel(linkId, chatChannelDto.getChannelName(), chatChannelDto.getChannelAvatar(), null, chatChannelDto.getParentId(), chatChannelDto.getChannelMaster()));
+        chatChannelRepository.save(new ChatChannel(linkId, chatChannelDto.getChannelName(), chatChannelDto.getChannelAvatar(), null, chatChannelDto.getParentId(), chatChannelDto.getChannelMaster(), chatChannelDto.getChannelBackground()));
         chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, chatChannelDto.getChannelMaster(), 0, "欢迎来到 " + chatChannelDto.getChannelName(), createTime, 0, 1));
     }
 
@@ -230,10 +230,19 @@ public class ChatService {
 
     public ChatChannelDetailVo findChildChannel(String linkId, String userId) {
         ChatChannelDetailVo chatChannelDetailVo = chatChannelRepository.findChildChannelByLinkId(linkId);
-        List<ChatChannelListVo> chatChannelListVos =  chatChannelRepository.findChannelListByParentId(linkId, userId)
-                .stream()
-                .peek(e -> e.setUnread(chatMessageRepository.findUnreadByLinkId(e.getLinkId())))
-                .collect(Collectors.toList());
+        boolean entered = chatListRepository.findByLinkIdAndUserId(linkId, userId) == 1;
+        List<ChatChannelListVo> chatChannelListVos = null;
+        if (entered){
+            chatChannelListVos = chatChannelRepository.findChannelListByParentId(linkId, userId)
+                    .stream()
+                    .peek(e -> e.setUnread(chatListRepository.findUnreadByLinkId(e.getLinkId())))
+                    .collect(Collectors.toList());
+        }else {
+            chatChannelListVos = chatChannelRepository.findChannelListByParentId(linkId)
+                   .stream()
+                   .peek(e -> e.setUnread(chatMessageRepository.findUnreadByLinkId(e.getLinkId())))
+                   .collect(Collectors.toList());
+        }
         chatChannelDetailVo.setChatChannelListVos(chatChannelListVos);
         int count = chatListRepository.findChannelNumberByLinkId(linkId);
         chatChannelDetailVo.setChannelNumber(count);
@@ -268,5 +277,24 @@ public class ChatService {
 
     private boolean existsByLinkIdAndUserId(String linkId, String userId) {
         return chatListRepository.findByLinkIdAndUserId(linkId, userId) != 0;
+    }
+
+    public void modifyChannel(ModifyChannelVo modifyChannelVo) {
+        chatChannelRepository.updateChannelByLinkId(modifyChannelVo.getLinkId(), modifyChannelVo.getChannelName(), modifyChannelVo.getChannelAvatar(), modifyChannelVo.getChannelSignature(), modifyChannelVo.getChannelBackground());
+    }
+
+    public ChannelPersonalInfoVo findPersonalInfo(String userId) {
+        ChannelPersonalInfoVo personalInfo = chatChannelRepository.findPersonalInfo(userId);
+        List<ChannelInfoVo> myselfChannelInfoVos = chatChannelRepository.findMyselfChannels(userId)
+                .stream()
+                .peek(e -> e.setChannelNumber(chatListRepository.findChannelNumberByLinkId(e.getLinkId())))
+                .collect(Collectors.toList());
+        personalInfo.setMyselfChannels(myselfChannelInfoVos);
+        List<ChannelInfoVo> OtherChannelInfoVos = chatChannelRepository.findOtherChannels(userId)
+                .stream()
+                .peek(e -> e.setChannelNumber(chatListRepository.findChannelNumberByLinkId(e.getLinkId())))
+                .collect(Collectors.toList());
+        personalInfo.setOtherChannels(OtherChannelInfoVos);
+        return personalInfo;
     }
 }

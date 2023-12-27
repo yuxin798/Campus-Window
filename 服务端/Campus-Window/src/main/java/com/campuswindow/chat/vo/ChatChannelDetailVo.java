@@ -13,14 +13,16 @@ public class ChatChannelDetailVo {
     private String linkId;
     private String channelName;
     private String channelAvatar;
+    private String channelBackground;
     private String channelMaster;
     private int channelNumber;
     private List<ChatChannelListVo> chatChannelListVos;
 
-    public ChatChannelDetailVo(String linkId, String channelName, String channelAvatar, String channelMaster) {
+    public ChatChannelDetailVo(String linkId, String channelName, String channelAvatar, String channelBackground, String channelMaster) {
         this.linkId = linkId;
         this.channelName = channelName;
         this.channelAvatar = channelAvatar;
-        this.channelMaster = channelMaster;;
+        this.channelBackground = channelBackground;
+        this.channelMaster = channelMaster;
     }
 }
