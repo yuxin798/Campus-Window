@@ -179,7 +179,10 @@ public class ChatService {
     }
 
     public List<ChatListFollowVo> findFollowerByName(String userId, String userName) {
-       return chatListRepository.findFollowerByName(userId, userName);
+       return chatListRepository.findFollowerByName(userId, userName)
+               .stream()
+               .filter(e -> e.getName().contains(userName))
+               .collect(Collectors.toList());
     }
 
     public String chatToOther(String userId, String toUserId) {

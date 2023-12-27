@@ -32,7 +32,7 @@ public class ChatController {
 //    }
 
     @GetMapping("/getChatList")
-    @Operation(summary = "根据发送者ID获取聊天列表")
+    @Operation(summary = "根据用户ID获取聊天列表")
     public Result<List<ChatListVo>> getChatList(String userId) {
         List<ChatListVo> chatLists = chatService.findAllByFromUserId(userId);
         return ResultVOUtil.success(chatLists);

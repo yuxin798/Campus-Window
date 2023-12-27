@@ -50,7 +50,8 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
             "when 0 then 2 end, " +
             "c.lastMsg, c.lastMsgTime, c.unread, c.status, l.type) " +
             "from ChatList as c join ChatLink as l on c.linkId = l.linkId " +
-            "where c.userId = ?1 and (c.status = 1 or c.unread != 0) order by c.lastMsgTime desc")
+            "where c.userId = ?1 and (c.status = 1 or c.unread != 0) " +
+            "order by c.lastMsgTime desc")
     List<ChatListVo> findAllByFromUserId(String userId);
 
     @Query(value = "select userId from ChatList where linkId = ?1")
@@ -81,8 +82,8 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
 
     @Query(value = "select new com.campuswindow.chat.vo.ChatListFollowVo(c.linkId, " +
             "case l.type " +
-            "when 1 then (select g.groupName from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId and g.groupName like %?2%) " +
-            "when 0 then (select u.userName from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end ," +
+            "when 1 then (select g.groupName from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId) " +
+            "when 0 then (select u.userName from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end," +
             "case l.type " +
             "when 1 then (select g.groupAvatar from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId) " +
             "when 0 then (select u.avatar from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end) " +

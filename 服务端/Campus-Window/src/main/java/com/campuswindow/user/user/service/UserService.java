@@ -23,6 +23,8 @@ public class UserService {
     private UserRepository userRepository;
     private StringRedisTemplate redisTemplate;
     private FollowService followService;
+//    @Autowired
+//    private BCryptPasswordEncoder encoder;
 
 
 //    @Autowired
@@ -57,6 +59,9 @@ public class UserService {
         if (loginUser == null || !loginDto.getPassword().equals(loginUser.getPassword())){
             throw new RuntimeException("邮箱或密码错误");
         }
+//        if (loginUser == null || !encoder.matches(loginDto.getPassword(), loginUser.getPassword())){
+//            throw new RuntimeException("邮箱或密码错误");
+//        }
 //        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
 //        // authenticate方法会调用loadUserByUsername
 //        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
