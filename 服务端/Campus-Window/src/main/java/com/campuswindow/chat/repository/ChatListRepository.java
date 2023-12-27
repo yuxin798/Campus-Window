@@ -50,7 +50,7 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
             "when 0 then 2 end, " +
             "c.lastMsg, c.lastMsgTime, c.unread, c.status, l.type) " +
             "from ChatList as c join ChatLink as l on c.linkId = l.linkId " +
-            "where c.userId = ?1 and (c.status = 1 or c.unread != 0) " +
+            "where c.userId = ?1 and (c.status = 1 or c.unread != 0) and (l.type = 0 or l.type = 1)" +
             "order by c.lastMsgTime desc")
     List<ChatListVo> findAllByFromUserId(String userId);
 
@@ -70,7 +70,7 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
             "when 1 then (select g.groupAvatar from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId) " +
             "when 0 then (select u.avatar from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end ) " +
     "from ChatList as c join ChatLink as l on c.linkId = l.linkId " +
-    "where c.userId = ?1 order by c.status desc")
+    "where c.userId = ?1 and (l.type = 0 or l.type = 1) order by c.status desc")
     List<ChatListFollowVo> findFollowersByUserId(String userId);
 
     @Query(value = "select c1.linkId from ChatList as c1 join ChatList as c2 on c1.linkId = c2.linkId join ChatLink as k on k.linkId = c2.linkId where k.type = 0 and c1.userId = ?1 and c2.userId = ?2 ")
@@ -88,8 +88,8 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
             "when 1 then (select g.groupAvatar from ChatGroup as g join ChatLink as k on g.linkId = k.linkId where g.linkId = c.linkId) " +
             "when 0 then (select u.avatar from ChatList as e join User as u on e.userId = u.userId where e.userId != ?1 and e.linkId = c.linkId) end) " +
             "from ChatList as c join ChatLink as l on c.linkId = l.linkId " +
-            "where c.userId = ?1 ")
-    List<ChatListFollowVo> findFollowerByName(String userId, String userName);
+            "where c.userId = ?1 and (l.type = 0 or l.type = 1)")
+    List<ChatListFollowVo> findFollowerByName(String userId);
 
     @Query(value = "select count(*) from ChatList where linkId = ?1")
     int findChannelNumberByLinkId(String linkId);
