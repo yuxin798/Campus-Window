@@ -20,21 +20,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketServer {
     private static Map<String, Session> clients = new ConcurrentHashMap<>();
     private String userId;
-    private static Integer number = 0;//在线用户数
     public static ChatService chatService;
     public static UserService userService;
 
     @OnOpen
     public void OnOpen(Session session, @PathParam("userId") String userId){
         this.userId = userId;
-        number++;
         clients.put(userId, session);
     }
 
     @OnClose
     public void onClose(Session session) {
-        number--;
-//        sendMessageToAll(JSON.toJSONString(number));
         chatService.updateWindows(userId, 0);
 
         CloseReason close = new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "关闭客户端，下线！");
@@ -44,7 +40,6 @@ public class WebSocketServer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        // 判断当前连接是否还在线
     }
 
     @OnMessage

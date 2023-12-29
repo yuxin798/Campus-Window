@@ -47,10 +47,11 @@ public class ChatController {
 
     @GetMapping("/updateEnterWindows")
     @Operation(summary = "进入聊天窗")
-    public Result<?> updateEnterWindows(String linkId, String userId) {
+    public Result<String> updateEnterWindows(String linkId, String userId) {
         chatService.updateWindows(linkId, userId, 1);
         chatService.clearUnread(linkId, userId);
-        return ResultVOUtil.success();
+        String background = chatService.findChatBackground(linkId, userId);
+        return ResultVOUtil.success(background);
     }
 
     @GetMapping("/updateLeaveWindows")
@@ -92,6 +93,13 @@ public class ChatController {
     @Operation(summary = "取消关注其他用户")
     public Result<?> cancelFollowOtherUser(String userId, String toUserId){
         chatService.cancelFollowOtherUser(userId, toUserId);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/modifyChatBackground")
+    @Operation(summary = "修改聊天背景")
+    public Result<?> modifyChatBackground(String linkId, String userId, String background) {
+        chatService.modifyChatBackground(linkId, userId, background);
         return ResultVOUtil.success();
     }
 
@@ -146,21 +154,21 @@ public class ChatController {
     }
 
     @GetMapping("/enterChannel")
-    @Operation(summary = "进入频道")
+    @Operation(summary = "加入频道")
     public Result<?> enterChannel(String linkId, String userId){
         chatService.enterChannel(linkId, userId);
         return ResultVOUtil.success();
     }
 
     @GetMapping("/leaveChannel")
-    @Operation(summary = "离开频道")
+    @Operation(summary = "退出频道")
     public Result<?> leaveChannel(String linkId, String userId){
         chatService.leaveChannel(linkId, userId);
         return ResultVOUtil.success();
     }
 
     @GetMapping("/findChannel")
-    @Operation(summary = "根据用户Id查询所有频道")
+    @Operation(summary = "查询用户已加入的频道")
     public Result<List<ChatChannelVo>> findChannel(String userId){
         List<ChatChannelVo> chatChannelVos = chatService.findChannel(userId);
         return ResultVOUtil.success(chatChannelVos);

@@ -106,4 +106,11 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
 
     @Query(value = "select distinct linkId from ChatList where userId = ?1")
     List<String> findLinkIdByUserId(String userId);
+
+    @Query(value = "select background from ChatList where linkId = ?1 and userId = ?2")
+    String findChatBackground(String linkId, String userId);
+
+    @Query(value = "update ChatList set background = ?3 where linkId = ?1 and userId = ?2")
+    @Modifying
+    void updateChatBackground(String linkId, String userId, String background);
 }

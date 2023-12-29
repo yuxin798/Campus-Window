@@ -5,7 +5,6 @@ import com.campuswindow.chat.entity.*;
 import com.campuswindow.chat.repository.*;
 import com.campuswindow.chat.vo.*;
 import com.campuswindow.user.follow.service.FollowService;
-import com.campuswindow.user.user.repository.UserRepository;
 import com.campuswindow.user.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,37 +18,39 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ChatService {
+    private final ChatMessageRepository chatMessageRepository;
+    private final ChatLinkRepository chatLinkRepository;
+    private final ChatListRepository chatListRepository;
+    private final ChatGroupRepository chatGroupRepository;
+    private final ChatChannelRepository chatChannelRepository;
+    private final UserService userService;
+    private final FollowService followService;
+
     @Autowired
-    private ChatMessageRepository chatMessageRepository;
-    @Autowired
-    private ChatLinkRepository chatLinkRepository;
-    @Autowired
-    private ChatListRepository chatListRepository;
-    @Autowired
-    private ChatGroupRepository chatGroupRepository;
-    @Autowired
-    private ChatChannelRepository chatChannelRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private FollowService followService;
-    @Autowired
-    private UserRepository userRepository;
+    public ChatService(ChatMessageRepository chatMessageRepository, ChatLinkRepository chatLinkRepository, ChatListRepository chatListRepository, ChatGroupRepository chatGroupRepository, ChatChannelRepository chatChannelRepository, UserService userService, FollowService followService) {
+        this.chatMessageRepository = chatMessageRepository;
+        this.chatLinkRepository = chatLinkRepository;
+        this.chatListRepository = chatListRepository;
+        this.chatGroupRepository = chatGroupRepository;
+        this.chatChannelRepository = chatChannelRepository;
+        this.userService = userService;
+        this.followService = followService;
+    }
 
     public void saveForGroup(List<String> userIds) {
         String linkId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < userIds.size(); i++) {
-            String username = userService.findUserNameByUserId(userIds.get(i));
-            builder.append("，" + username);
+        for (String s : userIds) {
+            String username = userService.findUserNameByUserId(s);
+            builder.append("，").append(username);
         }
         // TODO 默认图片自行设置
         chatGroupRepository.save(new ChatGroup(linkId, builder.toString(), "http://8.130.17.7:9000/campus-bucket/activity/04375f22b0134ccfafade858c7621d02.jpeg", userIds.size()));
         chatLinkRepository.save(new ChatLink(linkId, linkId, createTime, 1));
         for (String userId : userIds){
             String id = UUID.randomUUID().toString().replaceAll("-", "");
-            chatListRepository.save(new ChatList(id, linkId, userId, 0, null, createTime, 0, 1));
+            chatListRepository.save(new ChatList(id, linkId, userId, 0, null, createTime, 0, 1, null));
         }
     }
 
@@ -57,8 +58,8 @@ public class ChatService {
         String linkId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         chatLinkRepository.save(new ChatLink(linkId, linkId, createTime, 0));
-        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, fromUserId, 0, "请开始聊天吧", createTime, 0, 0));
-        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, toUserId, 0, "请开始聊天吧", createTime, 0, 0));
+        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, fromUserId, 0, "请开始聊天吧", createTime, 0, 0, null));
+        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, toUserId, 0, "请开始聊天吧", createTime, 0, 0, null));
     }
 
 //    public void saveForFollow(String fromUserId, String toUserId) {
@@ -111,7 +112,7 @@ public class ChatService {
     }
 
     public void updateWindows(String userId, int i) {
-        chatListRepository.updateWindows(userId, 0);
+        chatListRepository.updateWindows(userId, i);
     }
 
     public void clearUnreadForMyself(String linkId, String userId) {
@@ -130,22 +131,31 @@ public class ChatService {
         return chatListRepository.findFollowersByUserId(userId);
     }
 
+    /*
+     * 查找聊天id
+     */
     public String findLinkIdByUserIdAndToUserId(String userId, String toUserId) {
         return chatListRepository.findLinkIdByUserIdAndToUserId(userId, toUserId);
     }
 
+    /**
+     * 删除聊天
+     */
     public void deleteByLinkId(String linkId) {
         chatListRepository.deleteAllByLinkId(linkId);
         chatLinkRepository.deleteByLinkId(linkId);
     }
 
+    /**
+     * 关注
+     */
     public void followOtherUser(String userId, String toUserId) {
         followService.followOtherUser(userId, toUserId);
         userService.updateFollowersByUserId(userId, 1);
         userService.updateFansByUserId(toUserId, 1);
         int count = followService.findCountByUserIdAndToUserId(userId, toUserId);
         if (count == 2){
-            updateFriendsByUserIdAndToUserId(userId, toUserId, 1);
+            userService.updateFriendsByUserIdAndToUserId(userId, toUserId, 1);
             String linkId = findLinkIdByUserIdAndToUserId(userId, toUserId);
             updateChatListStatus(linkId, userId, true);
             updateChatListStatus(linkId, toUserId, true);
@@ -157,10 +167,13 @@ public class ChatService {
         }
     }
 
+    /**
+     * 取消关注
+     */
     public void cancelFollowOtherUser(String userId, String toUserId) {
         int count = followService.findCountByUserIdAndToUserId(userId, toUserId);
         if (count == 2){
-            updateFriendsByUserIdAndToUserId(userId, toUserId, -1);
+            userService.updateFriendsByUserIdAndToUserId(userId, toUserId, -1);
             String linkId = findLinkIdByUserIdAndToUserId(userId, toUserId);
             updateChatListStatus(linkId, userId, false);
         }else {
@@ -172,12 +185,9 @@ public class ChatService {
         userService.updateFansByUserId(toUserId, -1);
     }
 
-    public void updateFriendsByUserIdAndToUserId(String userId, String toUserId, int i) {
-        userRepository.updateFriendsByUserIdAndToUserId(userId, i);
-        userRepository.updateFriendsByUserIdAndToUserId(toUserId, i);
-
-    }
-
+    /**
+     * 查找关注者
+     */
     public List<ChatListFollowVo> findFollowerByName(String userId, String name) {
         if (name == null ){
             name = "";
@@ -189,56 +199,77 @@ public class ChatService {
                .collect(Collectors.toList());
     }
 
+    /**
+     * 私信
+     */
     public String chatToOther(String userId, String toUserId) {
         String linkId = chatListRepository.findLinkIdByUserIdAndToUserId(userId, toUserId);
         if (linkId == null){
             linkId = UUID.randomUUID().toString().replaceAll("-", "");
             Timestamp createTime = new Timestamp(System.currentTimeMillis());
             chatLinkRepository.save(new ChatLink(linkId, linkId, createTime, 0));
-            chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, userId, 0, "请开始聊天吧", createTime, 0, 0));
-            chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, toUserId, 0, "请开始聊天吧", createTime, 0, 0));
+            chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, userId, 0, "请开始聊天吧", createTime, 0, 0, null));
+            chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, toUserId, 0, "请开始聊天吧", createTime, 0, 0, null));
         }
         return linkId;
     }
 
+    /**
+     * 创建频道
+     */
     public void createChannel(ChatChannelDto chatChannelDto) {
         String linkId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         chatLinkRepository.save(new ChatLink(UUID.randomUUID().toString().replaceAll("-", ""), linkId, createTime, 2));
         chatChannelRepository.save(new ChatChannel(linkId, chatChannelDto.getChannelName(), chatChannelDto.getChannelAvatar(), chatChannelDto.getChannelSignature(), chatChannelDto.getParentId(), chatChannelDto.getChannelMaster(), chatChannelDto.getChannelBackground()));
-        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, chatChannelDto.getChannelMaster(), 0,  null, createTime, 0, 1));
+        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, chatChannelDto.getChannelMaster(), 0,  null, createTime, 0, 1, null));
     }
 
+    /**
+     * 创建子频道
+     */
     public void createChannelChild(ChatChannelDto chatChannelDto) {
         String linkId = UUID.randomUUID().toString().replaceAll("-", "");
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         chatLinkRepository.save(new ChatLink(UUID.randomUUID().toString().replaceAll("-", ""), linkId, createTime, 3));
         chatChannelRepository.save(new ChatChannel(linkId, chatChannelDto.getChannelName(), chatChannelDto.getChannelAvatar(), null, chatChannelDto.getParentId(), chatChannelDto.getChannelMaster(), chatChannelDto.getChannelBackground()));
-        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, chatChannelDto.getChannelMaster(), 0, "欢迎来到 " + chatChannelDto.getChannelName(), createTime, 0, 1));
+        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, chatChannelDto.getChannelMaster(), 0, "欢迎来到 " + chatChannelDto.getChannelName(), createTime, 0, 1, null));
     }
 
+    /**
+     * 加入频道
+     */
     public void enterChannel(String linkId, String userId) {
-        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, userId, 0, null, new Timestamp(System.currentTimeMillis()), 0, 1));
+        chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), linkId, userId, 0, null, new Timestamp(System.currentTimeMillis()), 0, 1, null));
         List<EnterChannelVo> enterChannelVos = chatChannelRepository.findChildChannelByParentId(linkId);
         for (EnterChannelVo enterChannelVo : enterChannelVos){
-            chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), enterChannelVo.getLinkId(), userId, 0, enterChannelVo.getLastMsg(), new Timestamp(enterChannelVo.getLastMsgTime().getTime()), (int)enterChannelVo.getUnread(), 1));
+            chatListRepository.save(new ChatList(UUID.randomUUID().toString().replaceAll("-", ""), enterChannelVo.getLinkId(), userId, 0, enterChannelVo.getLastMsg(), new Timestamp(enterChannelVo.getLastMsgTime().getTime()), (int)enterChannelVo.getUnread(), 1, null));
         }
     }
 
+    /**
+     * 退出频道
+     */
     public void leaveChannel(String linkId, String userId) {
         chatChannelRepository.findChildChannelLinkIdByParentId(linkId)
                 .forEach(channelLinkId -> chatListRepository.deleteAllByLinkIdAndUserId(channelLinkId, userId));
         chatListRepository.deleteAllByLinkIdAndUserId(linkId, userId);
     }
 
+    /**
+     * 查询用户已加入的频道
+     */
     public List<ChatChannelVo> findChannel(String userId) {
         return chatChannelRepository.findChannelByUserId(userId);
     }
 
+    /**
+     * 查找子频道
+     */
     public ChatChannelDetailVo findChildChannel(String linkId, String userId) {
         ChatChannelDetailVo chatChannelDetailVo = chatChannelRepository.findChildChannelByLinkId(linkId);
         boolean entered = chatListRepository.findByLinkIdAndUserId(linkId, userId) == 1;
-        List<ChatChannelListVo> chatChannelListVos = null;
+        List<ChatChannelListVo> chatChannelListVos;
         if (entered){
             chatChannelListVos = chatChannelRepository.findChannelListByParentId(linkId, userId)
                     .stream()
@@ -256,6 +287,9 @@ public class ChatService {
         return chatChannelDetailVo;
     }
 
+    /**
+     * 删除子频道
+     */
     public void deleteChannelChild(String linkId) {
         chatChannelRepository.deleteChannel(linkId);
         chatLinkRepository.deleteByLinkId(linkId);
@@ -263,6 +297,9 @@ public class ChatService {
         chatMessageRepository.deleteAllByLinkId(linkId);
     }
 
+    /**
+     * 删除频道
+     */
     public void deleteChannel(String linkId, String userId) {
         List<String> allLinkIds = chatChannelRepository.findChildChannelLinkIdByParentId(linkId);
         allLinkIds.add(linkId);
@@ -274,8 +311,11 @@ public class ChatService {
         }
     }
 
+    /**
+     * 根据频道名称模糊查询频道
+     */
     public List<QueryChatChannelVo> findChannelByChannelName(String channelName, String userId) {
-        if (channelName == null || "".equals(channelName)){
+        if (channelName == null || channelName.isEmpty()){
             return chatChannelRepository.findAllChannel()
                     .stream()
                     .peek(e -> e.setEntered(existsByLinkIdAndUserId(e.getLinkId(), userId)))
@@ -289,14 +329,23 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 判断用户是否在频道中
+     */
     private boolean existsByLinkIdAndUserId(String linkId, String userId) {
         return chatListRepository.findByLinkIdAndUserId(linkId, userId) != 0;
     }
 
+    /**
+     * 修改频道信息
+     */
     public void modifyChannel(ModifyChannelVo modifyChannelVo) {
         chatChannelRepository.updateChannelByLinkId(modifyChannelVo.getLinkId(), modifyChannelVo.getChannelName(), modifyChannelVo.getChannelAvatar(), modifyChannelVo.getChannelSignature(), modifyChannelVo.getChannelBackground());
     }
 
+    /**
+     * 频道查询个人信息
+     */
     public ChannelPersonalInfoVo findPersonalInfo(String userId) {
         ChannelPersonalInfoVo personalInfo = chatChannelRepository.findPersonalInfo(userId);
         List<ChannelInfoVo> myselfChannelInfoVos = chatChannelRepository.findMyselfChannels(userId)
@@ -312,6 +361,9 @@ public class ChatService {
         return personalInfo;
     }
 
+    /**
+     * 查询频道主页
+     */
     public List<ChannelHomePageVo> findChannelHomePage(String userId) {
         List<String> linkIds = chatListRepository.findLinkIdByUserId(userId);
         List<ChannelHomePageVo> homePageChannels = chatChannelRepository.findHomePageChannels(userId);
@@ -320,5 +372,19 @@ public class ChatService {
                 .stream()
                 .peek(e -> e.setChannelNumber(chatListRepository.findChannelNumberByLinkId(e.getLinkId())))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 查询聊天背景
+     */
+    public String findChatBackground(String linkId, String userId) {
+        return chatListRepository.findChatBackground(linkId, userId);
+    }
+
+    /**
+     * 修改聊天背景
+     */
+    public void modifyChatBackground(String linkId, String userId, String background) {
+        chatListRepository.updateChatBackground(linkId, userId, background);
     }
 }

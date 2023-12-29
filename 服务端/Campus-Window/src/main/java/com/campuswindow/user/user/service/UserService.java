@@ -23,7 +23,14 @@ public class UserService {
     private UserRepository userRepository;
     private StringRedisTemplate redisTemplate;
     private FollowService followService;
-//    @Autowired
+
+    @Autowired
+    public UserService(UserRepository userRepository, StringRedisTemplate redisTemplate, FollowService followService) {
+        this.userRepository = userRepository;
+        this.redisTemplate = redisTemplate;
+        this.followService = followService;
+    }
+    //    @Autowired
 //    private BCryptPasswordEncoder encoder;
 
 
@@ -108,22 +115,6 @@ public class UserService {
         userRepository.updateInformationByUserId(modifyInformationDto.getUserId(), modifyInformationDto.getUserName(), modifyInformationDto.getGender(), modifyInformationDto.getSignature());
     }
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void setRedisTemplate(StringRedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
-
-    @Autowired
-    public void setFollowService(FollowService followService) {
-        this.followService = followService;
-    }
-
-
     public ModifyInformationVo findInformation(String userId) {
         return userRepository.findInformation(userId);
     }
@@ -147,7 +138,6 @@ public class UserService {
     public void updateFriendsByUserIdAndToUserId(String userId, String toUserId, int i) {
         userRepository.updateFriendsByUserIdAndToUserId(userId, i);
         userRepository.updateFriendsByUserIdAndToUserId(toUserId, i);
-
     }
 
 //    public void followOtherUser(String userId, String toUserId) {

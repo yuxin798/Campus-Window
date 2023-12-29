@@ -29,4 +29,5 @@ public class ChatList {
     private int unread;
     //是否被删除 false代表删除  true代表未删除
     private int status;
+    private String background;
 }

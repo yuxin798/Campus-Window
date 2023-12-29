@@ -23,7 +23,7 @@ public class CommentImageController {
     @PostMapping("/avatar")
     @Operation(summary = "上传文件")
     public Result<String> avatar(MultipartFile file) {
-        String url =  fileUploadService.save(file, MinioConstant.ACTIVITY_ROOT_PATH);
+        String url =  fileUploadService.save(file, MinioConstant.COMMENT_ROOT_PATH);
         return ResultVOUtil.success(url);
     }
 
