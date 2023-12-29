@@ -135,18 +135,18 @@ public class UserController {
         }
         String filePath = fileUploadService.save(avatar, MinioConstant.USERS_ROOT_PATH);
         userService.updateAvatar(userId, filePath);
-        return ResultVOUtil.success();
+        return ResultVOUtil.success(filePath);
     }
 
     @PostMapping("/background")
     @Operation(summary = "上传背景图片")
-    public Result<String> updateBackground(String userId, MultipartFile avatar) throws IOException {
-        if (avatar.isEmpty()){
+    public Result<String> updateBackground(String userId, MultipartFile background) throws IOException {
+        if (background.isEmpty()){
             throw new RuntimeException("背景不能为空");
         }
-        String filePath = fileUploadService.save(avatar, MinioConstant.USERS_ROOT_PATH);
+        String filePath = fileUploadService.save(background, MinioConstant.USERS_ROOT_PATH);
         userService.updateBackground(userId, filePath);
-        return ResultVOUtil.success();
+        return ResultVOUtil.success(filePath);
     }
 
     @GetMapping("/findOne")

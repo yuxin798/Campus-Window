@@ -3,12 +3,15 @@ package com.campuswindow.chat.controller;
 import com.campuswindow.chat.dto.ChatChannelDto;
 import com.campuswindow.chat.service.ChatService;
 import com.campuswindow.chat.vo.*;
+import com.campuswindow.fileupload.FileUploadService;
+import com.campuswindow.utils.MinioConstant;
 import com.campuswindow.utils.ResultVOUtil;
 import com.campuswindow.vo.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,6 +20,13 @@ import java.util.List;
 @Tag(name = "聊天接口")
 public class ChatController {
     private ChatService chatService;
+    private FileUploadService fileUploadService;
+
+    @Autowired
+    public ChatController(ChatService chatService, FileUploadService fileUploadService) {
+        this.chatService = chatService;
+        this.fileUploadService = fileUploadService;
+    }
 
     @PostMapping("/saveChatLinkGroup")
     @Operation(summary = "新建群组链接")
@@ -74,13 +84,6 @@ public class ChatController {
         List<ChatListFollowVo> users = chatService.findFollowerByName(userId, name);
         return ResultVOUtil.success(users);
     }
-//
-//    @GetMapping("/findFollowers")
-//    @Operation(summary = "聊天列表查询想要聊天的人（基于关注者）")
-//    public Result<List<ChatListFollowVo>> findFollower(String userId) {
-//        List<ChatListFollowVo> users = chatService.findFollowers(userId);
-//        return ResultVOUtil.success(users);
-//    }
 
     @GetMapping("/followOtherUser")
     @Operation(summary = "关注其他用户")
@@ -98,9 +101,10 @@ public class ChatController {
 
     @GetMapping("/modifyChatBackground")
     @Operation(summary = "修改聊天背景")
-    public Result<?> modifyChatBackground(String linkId, String userId, String background) {
-        chatService.modifyChatBackground(linkId, userId, background);
-        return ResultVOUtil.success();
+    public Result<String> modifyChatBackground(String linkId, String userId, MultipartFile background) {
+        String fileUrl = fileUploadService.save(background, MinioConstant.CHAT_ROOT_PATH);
+        chatService.modifyChatBackground(linkId, userId, fileUrl);
+        return ResultVOUtil.success(fileUrl);
     }
 
     @GetMapping("/clearUnreadForMyself/{linkId}/{userId}")
@@ -209,8 +213,4 @@ public class ChatController {
         return ResultVOUtil.success(channelHomePageVos);
     }
 
-    @Autowired
-    public void setChatService(ChatService chatService) {
-        this.chatService = chatService;
-    }
 }

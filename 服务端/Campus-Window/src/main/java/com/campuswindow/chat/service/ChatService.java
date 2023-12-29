@@ -94,7 +94,6 @@ public class ChatService {
         String linkId = chatMessageGroup.getLinkId();
         //更改最后一条的信息内容和时间
         chatListRepository.updateLastMsgAndTime(linkId, chatMessageGroup.getContent(), new Timestamp(System.currentTimeMillis()));
-
         //判断聊天是否在窗口聊天
         for (String userId : userIds) {
             // 1--只有一方在窗口中 未读数加给接收方，2--两者都在窗口中 清除未读数
