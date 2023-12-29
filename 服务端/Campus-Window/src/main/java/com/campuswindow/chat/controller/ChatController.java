@@ -173,13 +173,6 @@ public class ChatController {
         return ResultVOUtil.success(chatChannelVos);
     }
 
-    @GetMapping("/findAllChannel")
-    @Operation(summary = "根据频道名称模糊查询频道")
-    public Result<List<QueryChatChannelVo>> findAllChannel(String channelName, String userId){
-        List<QueryChatChannelVo> queryChatChannelVo = chatService.findChannelByChannelName(channelName, userId);
-        return ResultVOUtil.success(queryChatChannelVo);
-    }
-
     @PostMapping("/modifyChannel")
     @Operation(summary = "根据频道Id修改频道信息")
     public Result<List<?>> modifyChannel(@RequestBody ModifyChannelVo modifyChannelVo){
@@ -192,6 +185,20 @@ public class ChatController {
     public Result<ChannelPersonalInfoVo> findPersonalInfo(String userId){
         ChannelPersonalInfoVo channelPersonalInfoVo = chatService.findPersonalInfo(userId);
         return ResultVOUtil.success(channelPersonalInfoVo);
+    }
+
+    @GetMapping("/findAllChannel")
+    @Operation(summary = "根据频道名称模糊查询频道")
+    public Result<List<QueryChatChannelVo>> findAllChannel(String channelName, String userId){
+        List<QueryChatChannelVo> queryChatChannelVo = chatService.findChannelByChannelName(channelName, userId);
+        return ResultVOUtil.success(queryChatChannelVo);
+    }
+
+    @GetMapping("/ChannelHomePage")
+    @Operation(summary = "频道主页（发现其他频道）")
+    public Result<List<ChannelHomePageVo>> ChannelHomePage(String userId){
+        List<ChannelHomePageVo> channelHomePageVos = chatService.findChannelHomePage(userId);
+        return ResultVOUtil.success(channelHomePageVos);
     }
 
     @Autowired

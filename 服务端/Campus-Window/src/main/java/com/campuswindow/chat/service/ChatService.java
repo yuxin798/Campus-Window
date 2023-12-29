@@ -45,7 +45,7 @@ public class ChatService {
             builder.append("，" + username);
         }
         // TODO 默认图片自行设置
-        chatGroupRepository.save(new ChatGroup(linkId, builder.toString(), "http://192.168.144.132:9000/campus-bucket/users/default.jpg", userIds.size()));
+        chatGroupRepository.save(new ChatGroup(linkId, builder.toString(), "http://8.130.17.7:9000/campus-bucket/activity/04375f22b0134ccfafade858c7621d02.jpeg", userIds.size()));
         chatLinkRepository.save(new ChatLink(linkId, linkId, createTime, 1));
         for (String userId : userIds){
             String id = UUID.randomUUID().toString().replaceAll("-", "");
@@ -310,5 +310,15 @@ public class ChatService {
                 .collect(Collectors.toList());
         personalInfo.setOtherChannels(OtherChannelInfoVos);
         return personalInfo;
+    }
+
+    public List<ChannelHomePageVo> findChannelHomePage(String userId) {
+        List<String> linkIds = chatListRepository.findLinkIdByUserId(userId);
+        List<ChannelHomePageVo> homePageChannels = chatChannelRepository.findHomePageChannels(userId);
+        homePageChannels.removeIf(channelHomePageVo -> linkIds.contains(channelHomePageVo.getLinkId()));
+        return homePageChannels
+                .stream()
+                .peek(e -> e.setChannelNumber(chatListRepository.findChannelNumberByLinkId(e.getLinkId())))
+                .collect(Collectors.toList());
     }
 }

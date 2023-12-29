@@ -51,4 +51,6 @@ public interface ChatChannelRepository extends JpaRepository<ChatChannel, String
     @Query(value = "select new com.campuswindow.chat.vo.ChannelInfoVo(c.linkId, c.channelName, c.channelAvatar, c.channelSignature) from ChatChannel as c join ChatList as l on c.linkId = l.linkId join ChatLink as k on k.linkId = l.linkId where l.userId = ?1 and k.type = 2 and c.channelMaster != ?1")
     List<ChannelInfoVo> findOtherChannels(String userId);
 
+    @Query(value = "select new com.campuswindow.chat.vo.ChannelHomePageVo(c2.linkId, c2.channelName, c2.channelAvatar, c2.channelSignature, c2.channelBackground) from ChatChannel as c2 join ChatLink as l on c2.linkId = l.linkId where l.type = 2 ")
+    List<ChannelHomePageVo> findHomePageChannels(String userId);
 }

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface ChatListRepository extends JpaRepository<ChatList, String> {
-    @Query(value = "update chat_list set window = ?3 where link_id = ?1 and user_id =?2", nativeQuery = true)
+    @Query(value = "update chat_list set `window` = ?3 where link_id = ?1 and user_id =?2", nativeQuery = true)
     @Modifying
     void updateWindows(String linkId, String userId, int i);
 
@@ -23,14 +23,14 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
     @Modifying
     void updateLastMsgAndTime(String linkId, String content, Timestamp sendTime);
 
-    @Query(value = "select window from chat_list where link_id =?1 and user_id =?2", nativeQuery = true)
+    @Query(value = "select `window` from chat_list where link_id =?1 and user_id =?2", nativeQuery = true)
     int selectIsSaveWindows(String linkId, String userId);
 
     @Query(value = "update chat_list set unread = unread + 1 where link_id =?1 and user_id =?2", nativeQuery = true)
     @Modifying
     void updateUnread(String linkId, String userId);
 
-    @Query(value = "update chat_list set window = ?2 where user_id =?1", nativeQuery = true)
+    @Query(value = "update chat_list set `window` = ?2 where user_id =?1", nativeQuery = true)
     @Modifying
     void updateWindows(String userId, int i);
 
@@ -103,4 +103,7 @@ public interface ChatListRepository extends JpaRepository<ChatList, String> {
 
     @Query(value = "select unread from ChatList where linkId =?1")
     int findUnreadByLinkId(String linkId);
+
+    @Query(value = "select distinct linkId from ChatList where userId = ?1")
+    List<String> findLinkIdByUserId(String userId);
 }
